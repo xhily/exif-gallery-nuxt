@@ -2,8 +2,8 @@
 defineProps({
   filter: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 })
 
 const route = useRoute()

@@ -17,7 +17,7 @@ export default defineNuxtPlugin(() => {
     await upload(image).catch(err => toast.add({
       color: 'red',
       title: 'Failed to upload image',
-      description: err.data?.message || err.message
+      description: err.data?.message || err.message,
     }))
 
     getImages()
@@ -39,8 +39,8 @@ export default defineNuxtPlugin(() => {
         getImages,
         images,
         uploadImage,
-        deleteImage
-      } as FilePlugin
-    }
+        deleteImage,
+      } as FilePlugin,
+    },
   }
 })

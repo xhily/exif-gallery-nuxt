@@ -8,21 +8,21 @@ export default defineNuxtConfig({
     '@nuxt/ui',
     '@nuxt/eslint',
     '@vueuse/nuxt',
-    'nuxt-auth-utils'
+    'nuxt-auth-utils',
   ],
   hub: {
-    blob: true
+    blob: true,
   },
   experimental: {
-    viewTransition: true
+    viewTransition: true,
   },
   devtools: { enabled: true },
   eslint: {
     config: {
-      stylistic: {
-        quotes: 'single',
-        commaDangle: 'never'
-      }
-    }
-  }
+      standalone: false,
+      nuxt: {
+        sortConfigKeys: true,
+      },
+    },
+  },
 })

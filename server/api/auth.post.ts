@@ -1,3 +1,5 @@
+import process from 'node:process'
+
 export default eventHandler(async (event) => {
   const body = await readBody(event) || {}
   const session = await getUserSession(event)
@@ -8,7 +10,7 @@ export default eventHandler(async (event) => {
 
   if (body.password === adminPassword) {
     await setUserSession(event, {
-      user: { role: 'admin' }
+      user: { role: 'admin' },
     })
 
     return { loggedIn: true }

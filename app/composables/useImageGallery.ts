@@ -1,5 +1,5 @@
-import type { UseSwipeDirection } from '@vueuse/core'
 import type { BlobObject } from '@nuxthub/core'
+import type { UseSwipeDirection } from '@vueuse/core'
 import type { FilePlugin } from '../../types'
 
 export function useImageGallery() {
@@ -32,7 +32,7 @@ export function useImageGallery() {
           else
             router.push(`/detail/${file.images.value![currentIndex.value - 1]?.pathname.split('.')[0]}`)
         }
-      }
+      },
     })
   }
 
@@ -64,7 +64,7 @@ export function useImageGallery() {
     }
 
     await useFetch(imageToDownload.value.src, {
-      baseURL: `${config.public.imageApi}/ipx/_/tmdb/`
+      baseURL: `${config.public.imageApi}/ipx/_/tmdb/`,
     }).then((response) => {
       const blob = response.data.value as Blob
       const url: string = URL.createObjectURL(blob)
@@ -128,6 +128,6 @@ export function useImageGallery() {
     initSwipe,
     currentIndex,
     isFirstImg,
-    isLastImg
+    isLastImg,
   }
 }

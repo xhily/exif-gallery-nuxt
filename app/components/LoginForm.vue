@@ -7,11 +7,12 @@ const loading = ref(false)
 const toast = useToast()
 
 async function login() {
-  if (loading.value || !password.value) return
+  if (loading.value || !password.value)
+    return
   loading.value = true
   await $fetch('/api/auth', {
     method: 'POST',
-    body: { password: password.value }
+    body: { password: password.value },
   })
     .then(async () => {
       await refreshSession()
@@ -21,7 +22,7 @@ async function login() {
       toast.add({
         title: `Error ${err.statusCode}`,
         description: `${err.data?.message || err.message}. Please try again`,
-        color: 'red'
+        color: 'red',
       })
     })
   loading.value = false

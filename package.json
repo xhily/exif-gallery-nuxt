@@ -2,6 +2,7 @@
   "name": "nuxthub-starter",
   "type": "module",
   "private": true,
+  "packageManager": "pnpm@9.15.5",
   "scripts": {
     "dev": "nuxt dev",
     "build": "nuxt build",
@@ -14,25 +15,33 @@
     "logs:preview": "wrangler pages deployment tail --environment preview"
   },
   "dependencies": {
-    "@nuxt/eslint": "^0.5.7",
-    "@nuxt/fonts": "^0.9.2",
-    "@nuxt/ui": "^2.18.6",
-    "@nuxthub/core": "^0.7.20",
-    "@vueuse/core": "^11.1.0",
-    "@vueuse/nuxt": "^11.1.0",
-    "nuxt": "^3.13.2",
-    "nuxt-auth-utils": "^0.4.2",
+    "@nuxt/eslint": "^0.7.5",
+    "@nuxt/fonts": "^0.10.3",
+    "@nuxt/ui": "^2.21.0",
+    "@nuxthub/core": "^0.8.15",
+    "@vueuse/core": "^12.2.0",
+    "@vueuse/nuxt": "^12.5.0",
+    "nuxt": "^3.15.2",
+    "nuxt-auth-utils": "^0.5.10",
     "vue-advanced-cropper": "^2.8.9"
   },
   "devDependencies": {
-    "@iconify-json/simple-icons": "^1.2.5",
-    "@nuxt/devtools": "^1.5.1",
-    "eslint": "^9.11.1",
-    "lint-staged": "^15.2.10",
+    "@antfu/eslint-config": "^4.1.1",
+    "@iconify-json/simple-icons": "^1.2.23",
+    "@nuxt/devtools": "^1.7.0",
+    "eslint": "^9.19.0",
+    "lint-staged": "^15.4.3",
+
+    "pnpm": "^9.15.5",
     "simple-git-hooks": "^2.11.1",
-    "typescript": "^5.6.2",
-    "vue-tsc": "^2.1.6",
-    "wrangler": "^3.79.0"
+    "typescript": "^5.7.3",
+    "vue-tsc": "^2.2.0",
+    "wrangler": "^3.107.2"
   },
-  "packageManager": "pnpm@9.8.0"
+  "simple-git-hooks": {
+    "pre-commit": "pnpm lint-staged"
+  },
+  "lint-staged": {
+    "*": "eslint --fix"
+  }
 }

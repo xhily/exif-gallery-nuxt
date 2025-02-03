@@ -2,12 +2,12 @@
 defineProps({
   isOverDropZone: {
     type: Boolean,
-    default: false
+    default: false,
   },
   uploading: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 })
 
 const isSmallScreen = useMediaQuery('(max-width: 1024px)')
@@ -19,12 +19,12 @@ const isSmallScreen = useMediaQuery('(max-width: 1024px)')
     :color="isOverDropZone ? 'green' : 'gray'"
     :ui="{ color: {
       gray: {
-        solid: 'ring-0 border border-gray-700 border-dashed hover:border-solid bg-transparent dark:bg-transparent text-gray-600 dark:text-gray-400 hover:bg-transparent dark:hover:bg-transparent'
+        solid: 'ring-0 border border-gray-700 border-dashed hover:border-solid bg-transparent dark:bg-transparent text-gray-600 dark:text-gray-400 hover:bg-transparent dark:hover:bg-transparent',
       },
       green: {
-        solid: 'ring-0 border-2 border-green-400 bg-transparent dark:bg-transparent text-green-600 dark:text-green-400 hover:bg-transparent dark:hover:bg-transparent'
-      }
-    }
+        solid: 'ring-0 border-2 border-green-400 bg-transparent dark:bg-transparent text-green-600 dark:text-green-400 hover:bg-transparent dark:hover:bg-transparent',
+      },
+    },
     }"
     class="h-[100px] md:h-[200px] lg:h-[430px] transition-colors duration-200 group w-full"
   >

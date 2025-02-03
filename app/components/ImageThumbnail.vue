@@ -2,8 +2,8 @@
 defineProps({
   thumbnail: {
     type: Object,
-    default: null
-  }
+    default: null,
+  },
 })
 </script>
 
