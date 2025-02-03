@@ -248,7 +248,7 @@ onMounted(() => {
                     size="md"
                     class="hidden md:flex"
                     aria-label="Download original or modified image"
-                    @click="downloadImage(image.pathname, imageEl, contrast, blur, invert, saturate, hueRotate, sepia)"
+                    @click="imageEl && downloadImage(image.pathname, imageEl, contrast, blur, invert, saturate, hueRotate, sepia)"
                   />
                 </UTooltip>
               </div>
@@ -300,7 +300,7 @@ onMounted(() => {
               <UButton
                 variant="ghost"
                 color="gray"
-                :to="`/detail/${images![currentIndex - 1].pathname.split('.')[0]}`"
+                :to="`/detail/${images[currentIndex - 1]?.pathname.split('.')[0]}`"
                 size="lg"
                 icon="i-heroicons-chevron-left"
                 class="hidden md:flex ml-4"
@@ -345,10 +345,10 @@ onMounted(() => {
                     :src="`/images/${image.pathname}`"
                     :alt="image.pathname"
                     class="rounded object-contain transition-all duration-200 block"
-                    :class="[{ imageEl: route.params.slug[0] === image.pathname.split('.')[0] }, filter ? 'w-[80%] ml-[12px]' : 'w-full']"
-                    :style="`filter: contrast(${contrast}%) blur(${blur}px) invert(${invert}%) saturate(${saturate}%) hue-rotate(${hueRotate}deg) sepia(${sepia}%); object-fit:${objectFitSelected.toLowerCase()};`"
+                    :class="[{ imageEl: route.params.slug?.[0] === image.pathname.split('.')[0] }, filter ? 'w-[80%] ml-[12px]' : 'w-full']"
+                    :style="`filter: contrast(${contrast}%) blur(${blur}px) invert(${invert}%) saturate(${saturate}%) hue-rotate(${hueRotate}deg) sepia(${sepia}%); object-fit:${objectFitSelected?.toLowerCase()};`"
                     crossorigin="anonymous"
-                    @mousemove="magnifier ? magnifierImage($event, imageContainer, imageEl, magnifierEl!, zoomFactor) : () => {}"
+                    @mousemove="magnifier && imageContainer && imageEl ? magnifierImage($event, imageContainer, imageEl, magnifierEl!, zoomFactor) : () => {}"
                   >
                   <div
                     v-if="magnifier"
@@ -369,7 +369,7 @@ onMounted(() => {
               <UButton
                 variant="ghost"
                 color="gray"
-                :to="`/detail/${images![currentIndex + 1].pathname.split('.')[0]}`"
+                :to="`/detail/${images[currentIndex + 1]?.pathname.split('.')[0]}`"
                 size="lg"
                 icon="i-heroicons-chevron-right"
                 :ui="{ rounded: 'rounded-full' }"
