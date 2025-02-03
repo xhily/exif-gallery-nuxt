@@ -45,11 +45,16 @@
     "less",
     "scss",
     "pcss",
-    "postcss"
+    "tailwindcss"
   ],
 
   "files.associations": {
-    "*.css": "postcss"
+    "*.css": "tailwindcss"
   },
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+  "tailwindCSS.experimental.configFile": "tailwind.config.ts",
+
   "typescript.tsdk": "node_modules/typescript/lib"
 }
