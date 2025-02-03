@@ -1,46 +1,15 @@
 <script setup lang="ts">
 const isOpen = ref(false)
 
-const dropZoneRef = ref<HTMLElement>()
-const fileInput = ref<HTMLInputElement>()
 const mansoryItem = ref<Array<HTMLElement>>([])
 const deletingImg = ref('')
-const uploadingImg = ref(false)
 const disconnect = ref(false)
 
 const toast = useToast()
-const { uploadImage, deleteImage, images } = useFile()
+const { images, deleteImage } = useFile()
 const { loggedIn, clear } = useUserSession()
 
 const active = useState()
-
-const { isOverDropZone } = useDropZone(dropZoneRef, onDrop)
-
-function openFilePicker() {
-  fileInput.value?.click()
-}
-
-async function fileSelection(event: Event) {
-  const target = event.target as HTMLInputElement
-
-  if (target.files?.[0]) {
-    await uploadFile(target.files[0])
-  }
-}
-
-async function onDrop(files: File[] | null) {
-  if (files) {
-    await uploadFile(files[0] as File)
-  }
-}
-
-async function uploadFile(file: File) {
-  uploadingImg.value = true
-
-  await uploadImage(file)
-    .catch(() => toast.add({ title: 'An error occured', description: 'Please try again', color: 'red' }))
-    .finally(() => uploadingImg.value = false)
-}
 
 async function deleteFile(pathname: string) {
   deletingImg.value = pathname
@@ -61,7 +30,6 @@ async function clearSession() {
   <div>
     <section
       v-if="images"
-      ref="dropZoneRef"
       class="relative h-screen gap-[22px] p-4"
     >
       <UModal
@@ -127,31 +95,15 @@ async function clearSession() {
         class="w-full"
         :class="{ 'masonry-container': images && images.length }"
       >
-        <div v-if="loggedIn">
-          <input
-            ref="fileInput"
-            class="hidden"
-            type="file"
-            accept="image/*"
-            @change="fileSelection"
-          >
-          <UploadButton
-            :uploading="uploadingImg"
-            type="submit"
-            class="mb-6"
-            :is-over-drop-zone="isOverDropZone"
-            @click="openFilePicker"
-          />
-        </div>
         <div
-          v-else
+          v-if="!loggedIn"
           class="text-2xl text-white flex flex-col gap-y-4 items-center justify-center h-full w-full pb-8"
         >
           <h1 class="font-medium text-5xl">
             Welcome to image gallery
           </h1>
           <p class="text-gray-400">
-            You must be logged in to start uploading images
+            You must be logged in to manage images
           </p>
         </div>
 

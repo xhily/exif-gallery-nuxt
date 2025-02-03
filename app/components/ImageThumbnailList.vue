@@ -23,7 +23,7 @@ async function moveThumbnail(slug: string) {
 onMounted(async () => {
   await nextTick()
 
-  if (router.currentRoute.value.fullPath !== '/')
+  if (router.currentRoute.value.fullPath.startsWith('/detail/'))
     moveThumbnail(router.currentRoute.value.params.slug![0]!)
 })
 
@@ -31,7 +31,7 @@ onMounted(async () => {
 router.afterEach(async (to, _) => {
   await nextTick()
 
-  if (router.currentRoute.value.fullPath !== '/')
+  if (router.currentRoute.value.fullPath.startsWith('/detail/'))
     moveThumbnail(to.params.slug![0]!)
 })
 </script>
