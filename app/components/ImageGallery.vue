@@ -6,7 +6,10 @@ const deletingImg = ref('')
 const disconnect = ref(false)
 
 const toast = useToast()
-const { images, deleteImage } = useFile()
+const { photos } = usePhotos({
+  hidden: false,
+  uploading: false,
+})
 const { loggedIn, clear } = useUserSession()
 
 const active = useState()
@@ -14,7 +17,7 @@ const active = useState()
 async function deleteFile(pathname: string) {
   deletingImg.value = pathname
 
-  await deleteImage(pathname)
+  await $fetch(`/api/photos/:pathname`, { method: 'DELETE' })
     .catch(() => toast.add({ title: 'An error occured', description: 'Please try again', color: 'red' }))
     .finally(() => deletingImg.value = '')
 }
@@ -29,7 +32,7 @@ async function clearSession() {
 <template>
   <div>
     <section
-      v-if="images"
+      v-if="photos"
       class="relative h-screen gap-[22px] p-4"
     >
       <UModal
@@ -93,7 +96,7 @@ async function clearSession() {
 
       <div
         class="w-full"
-        :class="{ 'masonry-container': images && images.length }"
+        :class="{ 'masonry-container': photos && photos.length }"
       >
         <div
           v-if="!loggedIn"
@@ -103,38 +106,38 @@ async function clearSession() {
             Welcome to image gallery
           </h1>
           <p class="text-gray-400">
-            You must be logged in to manage images
+            You must be logged in to manage photos
           </p>
         </div>
 
         <ul
-          v-if="images && images.length"
+          v-if="photos && photos.length"
           class="grid grid-cols-1 gap-4 lg:block"
         >
           <li
-            v-for="image in images"
+            v-for="photo in photos"
             ref="mansoryItem"
-            :key="image.pathname"
+            :key="photo.pathname"
             class="relative w-full group masonry-item"
           >
             <UButton
               v-if="loggedIn"
-              :loading="deletingImg === image.pathname"
+              :loading="deletingImg === photo.pathname"
               color="white"
               icon="i-heroicons-trash-20-solid"
               class="absolute top-4 right-4 z-[9999] opacity-0 group-hover:opacity-100"
-              @click="deleteFile(image.pathname)"
+              @click="deleteFile(photo.pathname)"
             />
             <NuxtLink
-              :to="`/detail/${image.pathname.split('.')[0]}`"
-              @click="active = image.pathname.split('.')[0]"
+              :to="`/detail/${photo.pathname.split('.')[0]}`"
+              @click="active = photo.pathname.split('.')[0]"
             >
               <img
-                v-if="image"
+                v-if="photo"
                 width="527"
                 height="430"
-                :src="`/images/${image.pathname}`"
-                :class="{ imageEl: image.pathname.split('.')[0] === active }"
+                :src="`/photos/${photo.pathname}`"
+                :class="{ imageEl: photo.pathname.split('.')[0] === active }"
                 class="h-auto w-full max-h-[430px] rounded-md transition-all duration-200 border-image brightness-[.8] hover:brightness-100 will-change-[filter] object-cover"
               >
             </NuxtLink>

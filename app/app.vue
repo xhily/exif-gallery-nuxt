@@ -1,6 +1,4 @@
 <script setup lang="ts">
-const { getImages } = useFile()
-
 useHead({
   link: [
     { rel: 'icon', href: '/favicon.ico' },
@@ -22,8 +20,6 @@ useSeoMeta({
   ogImage: 'https://image-gallery.nuxt.dev/social-card.png',
   twitterCard: 'summary_large_image',
 })
-
-await getImages()
 </script>
 
 <template>
@@ -33,6 +29,6 @@ await getImages()
   >
     <UNotifications />
     <NuxtPage />
-    <ImageThumbnailList :class="$router.currentRoute.value.fullPath !== '/' ? 'opacity-100 z-[9999]' : 'opacity-0 z-[-1]'" />
+    <!-- <ImageThumbnailList :class="$router.currentRoute.value.fullPath !== '/' ? 'opacity-100 z-[9999]' : 'opacity-0 z-[-1]'" /> -->
   </div>
 </template>

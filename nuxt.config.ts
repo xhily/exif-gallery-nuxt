@@ -12,6 +12,7 @@ export default defineNuxtConfig({
   ],
   hub: {
     blob: true,
+    database: true,
   },
   experimental: {
     viewTransition: true,

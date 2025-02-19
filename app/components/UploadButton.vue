@@ -26,7 +26,7 @@ const isSmallScreen = useMediaQuery('(max-width: 1024px)')
       },
     },
     }"
-    class="h-[100px] md:h-[200px] lg:h-[430px] transition-colors duration-200 group w-full"
+    class="transition-colors duration-200 group w-full"
   >
     <div class="w-full flex items-center justify-center">
       <div
@@ -35,7 +35,7 @@ const isSmallScreen = useMediaQuery('(max-width: 1024px)')
       >
         <div
           v-if="!isSmallScreen"
-          class="w-full rounded-md flex items-center justify-center h-[430px]"
+          class="w-full rounded-md flex items-center justify-center h-40"
         >
           <UIcon
             name="i-heroicons-arrow-up-tray"

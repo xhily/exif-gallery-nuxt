@@ -1,11 +1,13 @@
 <script setup lang="ts">
+const router = useRouter()
+
 const dropZoneRef = ref<HTMLElement>()
 const fileInput = ref<HTMLInputElement>()
 const uploadingImg = ref(false)
 const disconnect = ref(false)
 
 const toast = useToast()
-const { uploadImage, deleteImage, images } = useFile()
+const { photos } = usePhotos()
 const { loggedIn, clear } = useUserSession()
 
 const { isOverDropZone } = useDropZone(dropZoneRef, onDrop)
@@ -16,28 +18,53 @@ function openFilePicker() {
 
 async function fileSelection(event: Event) {
   const target = event.target as HTMLInputElement
-
-  if (target.files?.[0]) {
-    await uploadFile(target.files[0])
+  if (target.files?.length) {
+    await uploadFiles(Array.from(target.files))
   }
 }
 
 async function onDrop(files: File[] | null) {
-  if (files) {
-    await uploadFile(files[0] as File)
+  if (files?.length) {
+    await uploadFiles(files)
   }
 }
 
-async function uploadFile(file: File) {
+async function uploadFiles(files: File[]) {
   uploadingImg.value = true
 
-  await uploadImage(file)
-    .catch(() => toast.add({ title: 'An error occured', description: 'Please try again', color: 'red' }))
-    .finally(() => uploadingImg.value = false)
+  const formData = new FormData()
+  files.forEach((file, index) => {
+    formData.append(`file[${index}]`, file)
+    formData.append(`lastModified[${index}]`, file.lastModified.toString())
+  })
+
+  try {
+    const response = await $fetch('/api/photos/upload', {
+      method: 'POST',
+      body: formData,
+    })
+
+    if (response.success) {
+      router.push('/admin/uploading')
+    }
+    else {
+      toast.add({ title: '上传失败', description: '请重试', color: 'red' })
+    }
+  }
+  catch (error: any) {
+    toast.add({
+      title: '上传失败',
+      description: error.data?.message || error.message || '请重试',
+      color: 'red',
+    })
+  }
+  finally {
+    uploadingImg.value = false
+  }
 }
 
 async function deleteFile(pathname: string) {
-  await deleteImage(pathname)
+  await $fetch(`/api/photos/${pathname}`, { method: 'DELETE' })
     .catch(() => toast.add({ title: 'An error occured', description: 'Please try again', color: 'red' }))
 }
 
@@ -73,6 +100,7 @@ async function clearSession() {
           class="hidden"
           type="file"
           accept="image/*"
+          multiple
           @change="fileSelection"
         >
         <UploadButton
@@ -84,16 +112,16 @@ async function clearSession() {
         />
 
         <ul
-          v-if="images && images.length"
+          v-if="photos && photos.length"
           class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
         >
           <li
-            v-for="image in images"
-            :key="image.pathname"
+            v-for="photo in photos"
+            :key="photo.pathname"
             class="relative group"
           >
             <img
-              :src="`/images/${image.pathname}`"
+              :src="`/photos/${photo.pathname}`"
               class="w-full h-48 object-cover rounded-md"
               alt=""
             >
@@ -102,7 +130,7 @@ async function clearSession() {
               color="white"
               icon="i-heroicons-trash-20-solid"
               class="absolute top-2 right-2 opacity-0 group-hover:opacity-100"
-              @click="deleteFile(image.pathname)"
+              @click="deleteFile(photo.pathname)"
             />
           </li>
         </ul>

@@ -56,5 +56,8 @@
   },
   "tailwindCSS.experimental.configFile": "tailwind.config.ts",
 
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "cSpell.words": [
+    "exif"
+  ]
 }

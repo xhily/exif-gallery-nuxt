@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { BlobObject } from '@nuxthub/core'
-
 const bottomMenu = ref()
 const imageEl = ref<HTMLImageElement>()
 const magnifierEl = ref<HTMLElement>()
@@ -21,37 +19,19 @@ const objectsFit = ref(['Contain', 'Cover', 'Scale-down', 'Fill', 'None'])
 const objectFitSelected = ref(objectsFit.value[0])
 const filterUpdated = ref(false)
 
-const { images, uploadImage } = useFile()
 const { loggedIn } = useUserSession()
 
-const isSmallScreen = useMediaQuery('(max-width: 1024px)')
-const { currentIndex, isFirstImg, isLastImg, downloadImage, applyFilters, initSwipe, convertBase64ToFile, magnifierImage } = useImageGallery()
-
-const active = useState()
 const route = useRoute()
 const router = useRouter()
 
-const image: ComputedRef<BlobObject> = computed(() => {
-  return images.value!.filter((file: BlobObject) => file.pathname.split('.')[0] === route.params.slug![0])[0]!
-})
+const pathname = route.params.slug?.[0]
 
-onKeyStroke('Escape', () => {
+if (!pathname) {
   router.push('/')
-})
+}
 
-onKeyStroke('ArrowLeft', () => {
-  if (isFirstImg.value)
-    router.push('/')
-  else
-    router.push(`/detail/${images.value[currentIndex.value - 1]?.pathname.split('.')[0]}`)
-})
-
-onKeyStroke('ArrowRight', () => {
-  if (isLastImg.value)
-    router.push('/')
-  else
-    router.push(`/detail/${images.value[currentIndex.value + 1]?.pathname.split('.')[0]}`)
-})
+const isSmallScreen = useMediaQuery('(max-width: 1024px)')
+const { currentIndex, isFirstImg, isLastImg, downloadImage, applyFilters, initSwipe, convertBase64ToFile, magnifierImage } = useImageGallery()
 
 function resetFilter() {
   contrast.value = 100
@@ -72,15 +52,15 @@ function cancelFilter() {
 }
 
 async function saveImage() {
-  if (filterUpdated.value && imageEl.value) {
-    savingImg.value = true
+  // if (filterUpdated.value && imageEl.value) {
+  //   savingImg.value = true
 
-    const modifiedImage = await applyFilters(imageEl.value, contrast.value, blur.value, invert.value, saturate.value, hueRotate.value, sepia.value)
+  //   const modifiedImage = await applyFilters(imageEl.value, contrast.value, blur.value, invert.value, saturate.value, hueRotate.value, sepia.value)
 
-    const imageToUpload = await convertBase64ToFile(modifiedImage, image)
+  //   const imageToUpload = await convertBase64ToFile(modifiedImage, image)
 
-    await uploadImage(imageToUpload, true).finally(() => savingImg.value = false)
-  }
+  //   await uploadImage(imageToUpload, true).finally(() => savingImg.value = false)
+  // }
 }
 
 watch([contrast, blur, invert, saturate, hueRotate, sepia], () => {
@@ -93,11 +73,11 @@ onMounted(() => {
 </script>
 
 <template>
-  <div v-if="image">
+  <div v-if="pathname">
     <!-- background -->
     <div class="absolute inset-0 w-full h-full">
       <img
-        :src="`/images/${image.pathname}`"
+        :src="`/photos/${pathname}`"
         class="object-cover w-full h-full blur-[70px] brightness-[.2] will-change-[filter]"
         alt=""
       >
@@ -234,7 +214,7 @@ onMounted(() => {
                     color="gray"
                     icon="i-heroicons-arrow-up-right-20-solid"
                     size="md"
-                    :to="`/images/${image.pathname}`"
+                    :to="`/photos/${pathname}`"
                     target="_blank"
                     aria-label="Open original image"
                   />
@@ -248,7 +228,7 @@ onMounted(() => {
                     size="md"
                     class="hidden md:flex"
                     aria-label="Download original or modified image"
-                    @click="imageEl && downloadImage(image.pathname, imageEl, contrast, blur, invert, saturate, hueRotate, sepia)"
+                    @click="imageEl && downloadImage(pathname, imageEl, contrast, blur, invert, saturate, hueRotate, sepia)"
                   />
                 </UTooltip>
               </div>
@@ -297,7 +277,7 @@ onMounted(() => {
               text="Previous"
               :shortcuts="['←']"
             >
-              <UButton
+              <!-- <UButton
                 variant="ghost"
                 color="gray"
                 :to="`/detail/${images[currentIndex - 1]?.pathname.split('.')[0]}`"
@@ -306,7 +286,7 @@ onMounted(() => {
                 class="hidden md:flex ml-4"
                 aria-label="Go to previous image"
                 @click="active === image.pathname.split('.')[0]"
-              />
+              /> -->
             </UTooltip>
 
             <div
@@ -318,7 +298,7 @@ onMounted(() => {
                 text="Back to gallery"
                 :shortcuts="['Esc']"
               >
-                <UButton
+                <!-- <UButton
                   to="/"
                   size="xl"
                   color="gray"
@@ -331,7 +311,7 @@ onMounted(() => {
                     name="i-heroicons-rectangle-group-20-solid"
                     class="w-6 h-6"
                   />
-                </UButton>
+                </UButton> -->
               </UTooltip>
             </div>
 
@@ -340,12 +320,12 @@ onMounted(() => {
               <div ref="imageContainer">
                 <div class="group">
                   <img
-                    v-if="image"
+                    v-if="pathname"
                     ref="imageEl"
-                    :src="`/images/${image.pathname}`"
-                    :alt="image.pathname"
+                    :src="`/photos/${pathname}`"
+                    :alt="pathname"
                     class="rounded object-contain transition-all duration-200 block"
-                    :class="[{ imageEl: route.params.slug?.[0] === image.pathname.split('.')[0] }, filter ? 'w-[80%] ml-[12px]' : 'w-full']"
+                    :class="[{ imageEl: route.params.slug?.[0] === pathname.split('.')[0] }, filter ? 'w-[80%] ml-[12px]' : 'w-full']"
                     :style="`filter: contrast(${contrast}%) blur(${blur}px) invert(${invert}%) saturate(${saturate}%) hue-rotate(${hueRotate}deg) sepia(${sepia}%); object-fit:${objectFitSelected?.toLowerCase()};`"
                     crossorigin="anonymous"
                     @mousemove="magnifier && imageContainer && imageEl ? magnifierImage($event, imageContainer, imageEl, magnifierEl!, zoomFactor) : () => {}"
@@ -354,7 +334,7 @@ onMounted(() => {
                     v-if="magnifier"
                     ref="magnifierEl"
                     class="w-[100px] h-[100px] absolute border border-gray-200 pointer-events-none rounded-full block opacity-0 group-hover:opacity-100 transition-opacity duration-200 "
-                    :style="`background-image: url('/images/${image.pathname}'`"
+                    :style="`background-image: url('/photos/${pathname}'`"
                   />
                 </div>
               </div>
@@ -366,7 +346,7 @@ onMounted(() => {
               text="Next"
               :shortcuts="['→']"
             >
-              <UButton
+              <!-- <UButton
                 variant="ghost"
                 color="gray"
                 :to="`/detail/${images[currentIndex + 1]?.pathname.split('.')[0]}`"
@@ -376,7 +356,7 @@ onMounted(() => {
                 class="hidden md:flex mr-4"
                 aria-label="Go to next image"
                 @click="active === image.pathname.split('.')[0]"
-              />
+              /> -->
             </UTooltip>
 
             <!-- back to gallery if last image -->
@@ -386,7 +366,7 @@ onMounted(() => {
               :shortcuts="['Esc']"
             >
               <div class="flex">
-                <UButton
+                <!-- <UButton
                   variant="ghost"
                   color="gray"
                   to="/"
@@ -399,7 +379,7 @@ onMounted(() => {
                     name="i-heroicons-rectangle-group-20-solid"
                     class="w-6 h-6"
                   />
-                </UButton>
+                </UButton> -->
               </div>
             </UTooltip>
           </div>
