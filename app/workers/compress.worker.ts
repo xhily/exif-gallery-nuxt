@@ -3,7 +3,7 @@ import { decode as decodeJpeg, encode as encodeJpeg } from '@jsquash/jpeg'
 import resize from '@jsquash/resize'
 import { decode as decodeWebp, encode as encodeWebp } from '@jsquash/webp'
 
-self.onmessage = async (e) => {
+globalThis.onmessage = async (e) => {
   const { file, options } = e.data
 
   try {
@@ -18,7 +18,7 @@ self.onmessage = async (e) => {
       imageData = await decodeJpeg(arrayBuffer)
     }
 
-    const result = {}
+    const result: compressFiles = {}
 
     if (options.generateThumbnail) {
       const thumbnailData = await resize(imageData, {
@@ -57,9 +57,9 @@ self.onmessage = async (e) => {
       }
     }
 
-    self.postMessage({ success: true, result })
+    globalThis.postMessage({ success: true, result })
   }
   catch (error) {
-    self.postMessage({ success: false, error: error.message })
+    globalThis.postMessage({ success: false, error })
   }
 }
