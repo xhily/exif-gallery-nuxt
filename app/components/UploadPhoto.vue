@@ -1,14 +1,37 @@
 <script setup lang="ts">
-defineProps<{
+import Viewer from 'viewerjs'
+import 'viewerjs/dist/viewer.css'
+
+const props = defineProps<{
   id: number
   file: File
+  compressFile?: compressFiles
 }>()
 
 const emit = defineEmits(['update'])
 
 const photo = defineModel<IPhoto>({ required: true })
 
-const activeItemId = ref<number | null>(null)
+const activeItemId = ref<number>()
+
+let viewer: Viewer | undefined
+const viewerRef = ref<HTMLElement>()
+
+onMounted(() => {
+  if (!viewerRef.value)
+    return
+  viewer = new Viewer(viewerRef.value, {
+    transition: false,
+    toolbar: {
+      prev: 1,
+      zoomIn: 1,
+      oneToOne: 1,
+      reset: 1,
+      zoomOut: 1,
+      next: 1,
+    },
+  })
+})
 
 function formatExposure(meta: IPhoto): string {
   return `ƒ/${meta.fNumber} • ${meta.exposureTime}s • ISO ${meta.iso}`
@@ -20,18 +43,25 @@ function formatDate(timestamp?: number | Date | null): string {
   return new Date(timestamp).toLocaleDateString()
 }
 
-function getBlobUrl(file: File): string {
-  return URL.createObjectURL(file)
-}
-
 function toggleItem(id: number) {
-  activeItemId.value = activeItemId.value === id ? null : id
+  activeItemId.value = activeItemId.value === id ? undefined : id
 }
 
 function handleSubmit(item: IPhoto) {
   emit('update', item)
-  activeItemId.value = null
+  activeItemId.value = undefined
 }
+
+watch(() => [props.file, props.compressFile], async () => {
+  await nextTick()
+  if (viewer)
+    viewer.update()
+})
+
+onUnmounted(() => {
+  if (viewer)
+    viewer.destroy()
+})
 </script>
 
 <template>
@@ -51,31 +81,12 @@ function handleSubmit(item: IPhoto) {
             {{ file.name }}
           </div>
           <div class="flex flex-wrap gap-6 items-start flex-1">
-            <div class="flex gap-4">
-              <div class="flex flex-col items-center gap-1">
-                <img
-                  :src="getBlobUrl(file)"
-                  :alt="file.name"
-                  class="w-24 h-24 object-cover rounded"
-                >
-                <span class="text-xs text-gray-500">Original</span>
-                <span class="text-xs text-gray-500">{{ (file.size / 1024).toFixed(1) }}KB</span>
-              </div>
-              <!-- WebP and AVIF previews will be added when compression is implemented -->
-              <div class="flex flex-col items-center gap-1 opacity-50">
-                <div class="w-24 h-24 bg-gray-100 rounded flex items-center justify-center">
-                  <span class="text-sm text-gray-400">WebP</span>
-                </div>
-                <span class="text-xs text-gray-500">WebP</span>
-                <span class="text-xs text-gray-500">-</span>
-              </div>
-              <div class="flex flex-col items-center gap-1 opacity-50">
-                <div class="w-24 h-24 bg-gray-100 rounded flex items-center justify-center">
-                  <span class="text-sm text-gray-400">AVIF</span>
-                </div>
-                <span class="text-xs text-gray-500">AVIF</span>
-                <span class="text-xs text-gray-500">-</span>
-              </div>
+            <div ref="viewerRef" class="flex gap-4">
+              <UploadPhotoImage type="original" :file="file" />
+              <UploadPhotoImage type="JPEG" :file="compressFile?.jpeg" />
+              <UploadPhotoImage type="WebP" :file="compressFile?.webp" />
+              <UploadPhotoImage type="AVIF" :file="compressFile?.avif" />
+              <UploadPhotoImage type="thumbnail" :file="compressFile?.thumbnail" />
             </div>
 
             <div class="flex flex-col gap-2 flex-1 min-w-[200px]">
@@ -115,10 +126,10 @@ function handleSubmit(item: IPhoto) {
           <UFormGroup label="标题" name="title">
             <UInput v-model="photo.title" />
           </UFormGroup>
-
-          <UFormGroup label="拍摄时间" name="takenAt">
+          <!-- FIXME -->
+          <!-- <UFormGroup label="拍摄时间" name="takenAt">
             <DatePickerButton v-model="photo.takenAt" mode="datetime" />
-          </UFormGroup>
+          </UFormGroup> -->
 
           <UFormGroup label="相机型号" name="model">
             <UInput v-model="photo.model" />

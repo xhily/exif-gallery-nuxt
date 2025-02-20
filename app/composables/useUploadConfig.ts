@@ -1,8 +1,10 @@
 import { useLocalStorage } from '@vueuse/core'
 
+export type compressFormat = 'compress-only' | 'webp' | 'avif' | 'webp-avif'
+
 export interface UploadConfig {
   enableCompression: boolean
-  optimizationTarget: 'compress-only' | 'webp' | 'avif' | 'webp-avif'
+  optimizationTarget: compressFormat
   generateThumbnail: boolean
 }
 

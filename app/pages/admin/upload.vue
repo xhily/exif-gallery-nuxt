@@ -4,11 +4,7 @@ import pLimit from 'p-limit'
 interface FileEntry {
   id: number
   file: File
-  compressedFile?: {
-    webp?: File
-    avif?: File
-    thumbnail?: File
-  }
+  compressedFile?: compressFiles
   photo: IPhoto
 }
 
@@ -48,14 +44,16 @@ function processFiles(rawFiles: File[]) {
   })
   Promise.allSettled(exifTasks)
 
-  const compressTasks = fileEntries.map(async (fileEntry) => {
-    // TODO 压缩图片
-    console.warn('压缩图片:', fileEntry)
-  })
+  const compressLimit = pLimit(4)
+  const compressTasks = fileEntries.map(fileEntry => compressLimit(async () => {
+    const compressedFile = await compressImage(fileEntry.file)
+    fileEntry.compressedFile = compressedFile
+    setFile(fileEntry)
+  }))
   Promise.allSettled(compressTasks)
 
-  const limit = pLimit(1)
-  const aiTasks = fileEntries.map(fileEntry => limit(async () => {
+  const aiLimit = pLimit(1)
+  const aiTasks = fileEntries.map(fileEntry => aiLimit(async () => {
     // TODO AI特征提取
     console.warn('AI特征提取:', fileEntry)
   }))
@@ -122,6 +120,7 @@ async function fileSelection(event: Event) {
         :key="file.id"
         v-model="file.photo"
         :file="file.file"
+        :compress-file="file.compressedFile"
         @update="upload"
       />
     </div>

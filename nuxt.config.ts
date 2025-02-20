@@ -26,4 +26,15 @@ export default defineNuxtConfig({
       },
     },
   },
+  build: {
+    transpile: [/@jsquash\//],
+  },
+  vite: {
+    optimizeDeps: {
+      exclude: ['@jsquash/avif', '@jsquash/jpeg', '@jsquash/resize', '@jsquash/webp'],
+    },
+    worker: {
+      format: 'es',
+    },
+  },
 })

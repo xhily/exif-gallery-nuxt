@@ -16,6 +16,10 @@
     "logs:preview": "wrangler pages deployment tail --environment preview"
   },
   "dependencies": {
+    "@jsquash/avif": "^2.0.0",
+    "@jsquash/jpeg": "^1.4.0",
+    "@jsquash/resize": "^2.1.0",
+    "@jsquash/webp": "^1.4.0",
     "@nuxt/eslint": "^0.7.5",
     "@nuxt/fonts": "^0.10.3",
     "@nuxt/ui": "^2.21.0",
@@ -31,6 +35,7 @@
     "nuxt-auth-utils": "^0.5.10",
     "p-limit": "^6.2.0",
     "v-calendar": "^3.1.2",
+    "viewerjs": "^1.11.7",
     "vue-advanced-cropper": "^2.8.9",
     "zod": "^3.24.1"
   },
