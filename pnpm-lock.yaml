@@ -23,6 +23,9 @@ importers:
       '@jsquash/jpeg':
         specifier: ^1.4.0
         version: 1.4.0
+      '@jsquash/png':
+        specifier: ^3.0.1
+        version: 3.0.1
       '@jsquash/resize':
         specifier: ^2.1.0
         version: 2.1.0
@@ -1202,6 +1205,9 @@ packages:
 
   '@jsquash/jpeg@1.4.0':
     resolution: {integrity: sha512-I/uGQ5Gk3qOEQNufUcR9boZ0qH+eoXW7cp0mW9eNInlgjRXwEhepvfbnutQ+RM1dNeuIHoOM5YVCEK1y/ATipQ==}
+
+  '@jsquash/png@3.0.1':
+    resolution: {integrity: sha512-Bnvv93Y5LL92cuk2r2gpV+9JKuDo2/w7bOODw1iPxk8VARknky0sS1tSDgMosUdhNb4CdMlcCm3TMzTaqa3zZw==}
 
   '@jsquash/resize@2.1.0':
     resolution: {integrity: sha512-UxF45pe5a84GrleHichsnGHyFAJhOu4Ms9L1UQYXhhmDifRm4U3pMEzgly+m3xDe+h4XZyDlpr9f8FBB1LZ+LA==}
@@ -6647,6 +6653,8 @@ snapshots:
       wasm-feature-detect: 1.8.0
 
   '@jsquash/jpeg@1.4.0': {}
+
+  '@jsquash/png@3.0.1': {}
 
   '@jsquash/resize@2.1.0': {}
 

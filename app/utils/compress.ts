@@ -1,12 +1,15 @@
 import CompressWorker from '~/workers/compress.worker.ts?worker'
 
-interface CompressionOptions {
-  quality?: number
-  width?: number
-  height?: number
-  generateThumbnail?: boolean
-  thumbnailSize?: number
-  format?: compressFormat
+export interface CompressionOptions {
+  quality?: {
+    jpeg?: number
+    webp?: number
+    avif?: number
+    thumbnail?: number
+  }
+  thumbnailWidth?: number
+  thumbnailHeight?: number
+  formats?: Partial<compressFormat>
 }
 
 export interface compressFiles {
@@ -24,13 +27,6 @@ export async function compressImage(
   file: File,
   options: CompressionOptions = {},
 ): Promise<compressFiles> {
-  const defaultOptions = {
-    quality: 0.8,
-    generateThumbnail: false,
-    thumbnailSize: 300,
-    format: 'webp-avif',
-  }
-
   const worker = new CompressWorker()
 
   return new Promise((resolve, reject) => {
@@ -38,57 +34,21 @@ export async function compressImage(
       worker.terminate()
       if (e.data.success) {
         resolve(e.data.result)
-      } else {
+      }
+      else {
         reject(new Error(e.data.error))
       }
     }
 
     worker.onerror = (error) => {
       worker.terminate()
+      console.error('Compression worker error:', error)
       reject(error)
     }
 
     worker.postMessage({
       file,
-      options: { ...defaultOptions, ...options },
+      options,
     })
   })
 }
-
-// /**
-//  * Compresses multiple images in parallel with a concurrency limit
-//  */
-// export async function compressImages(
-//   files: File[],
-//   options: CompressionOptions = {},
-//   concurrency = 2,
-// ): Promise<Map<string, CompressionResult>> {
-//   const results = new Map<string, CompressionResult>()
-//   const queue = [...files]
-//   const processing = new Set<Promise<void>>()
-
-//   while (queue.length > 0 || processing.size > 0) {
-//     if (queue.length > 0 && processing.size < concurrency) {
-//       const file = queue.shift()!
-//       let processPromise: Promise<void>
-//       processPromise = (async () => {
-//         try {
-//           const result = await compressImage(file, options)
-//           results.set(file.name, result)
-//         }
-//         catch (error) {
-//           console.error(`Failed to compress ${file.name}:`, error)
-//         }
-//         finally {
-//           processing.delete(processPromise)
-//         }
-//       })()
-//       processing.add(processPromise)
-//     }
-//     else {
-//       await Promise.race(processing)
-//     }
-//   }
-
-//   return results
-// }

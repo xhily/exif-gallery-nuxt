@@ -20,6 +20,7 @@
     "@ai-sdk/openai": "^1.1.13",
     "@jsquash/avif": "^2.0.0",
     "@jsquash/jpeg": "^1.4.0",
+    "@jsquash/png": "^3.0.1",
     "@jsquash/resize": "^2.1.0",
     "@jsquash/webp": "^1.4.0",
     "@nuxt/eslint": "^0.7.5",

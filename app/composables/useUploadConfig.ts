@@ -1,29 +1,29 @@
 import { useLocalStorage } from '@vueuse/core'
 
-export type compressFormat = 'compress-only' | 'webp' | 'avif' | 'webp-avif'
+export interface compressFormat {
+  jpeg: boolean
+  webp: boolean
+  avif: boolean
+  thumbnail: boolean
+}
 
 export interface UploadConfig {
   enableCompression: boolean
-  optimizationTarget: compressFormat
-  generateThumbnail: boolean
+  formats: compressFormat
 }
-
-export const optimizationTargets = [
-  { label: '仅压缩', value: 'compress-only' },
-  { label: 'WebP', value: 'webp' },
-  { label: 'AVIF', value: 'avif' },
-  { label: 'WebP + AVIF', value: 'webp-avif' },
-]
 
 export function useUploadConfig() {
   const config = useLocalStorage<UploadConfig>('upload-config', {
     enableCompression: false,
-    optimizationTarget: 'compress-only',
-    generateThumbnail: false,
+    formats: {
+      jpeg: true,
+      webp: true,
+      avif: false,
+      thumbnail: true,
+    },
   })
 
   return {
     config,
-    optimizationTargets,
   }
 }

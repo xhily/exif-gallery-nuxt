@@ -3,7 +3,7 @@ defineProps<{
   disabled?: boolean
 }>()
 
-const { config: uploadConfig, optimizationTargets } = useUploadConfig()
+const { config: uploadConfig } = useUploadConfig()
 const { config: aiConfig, providers } = useAIConfig()
 </script>
 
@@ -20,18 +20,29 @@ const { config: aiConfig, providers } = useAIConfig()
           />
         </UFormGroup>
         <template v-if="uploadConfig.enableCompression" #footer>
-          <UFormGroup label="优化目标">
-            <USelectMenu
-              v-model="uploadConfig.optimizationTarget"
-              :options="optimizationTargets"
-              value-attribute="value"
-              label-attribute="label"
-            />
-          </UFormGroup>
-          <UFormGroup label="生成缩略图">
-            <UCheckbox
-              v-model="uploadConfig.generateThumbnail"
-            />
+          <UFormGroup label="压缩目标">
+            <div class="space-y-2">
+              <UCheckbox
+                v-model="uploadConfig.formats.jpeg"
+                label="JPEG"
+                id="formats-jpeg"
+              />
+              <UCheckbox
+                v-model="uploadConfig.formats.webp"
+                label="WebP"
+                id="formats-webp"
+              />
+              <UCheckbox
+                v-model="uploadConfig.formats.avif"
+                label="AVIF"
+                id="formats-avif"
+              />
+              <UCheckbox
+                v-model="uploadConfig.formats.thumbnail"
+                label="缩略图"
+                id="formats-thumbnail"
+              />
+            </div>
           </UFormGroup>
         </template>
       </UCard>

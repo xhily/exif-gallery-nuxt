@@ -31,10 +31,7 @@ export default defineNuxtConfig({
   },
   vite: {
     optimizeDeps: {
-      exclude: ['@jsquash/avif', '@jsquash/jpeg', '@jsquash/resize', '@jsquash/webp'],
-    },
-    worker: {
-      format: 'es',
+      exclude: ['@jsquash/avif', '@jsquash/jpeg', '@jsquash/png', '@jsquash/resize', '@jsquash/webp'],
     },
   },
 })

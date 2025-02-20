@@ -51,8 +51,7 @@ async function processFiles(rawFiles: File[]) {
     const compressLimit = pLimit(4)
     const compressTasks = fileEntries.map(fileEntry => compressLimit(async () => {
       const compressedFile = await compressImage(fileEntry.file, {
-        // FIXME
-        // formats: uploadConfig.value.formats,
+        formats: toRaw(uploadConfig.value).formats,
       })
       fileEntry.compressedFile = compressedFile
       setFile(fileEntry)
