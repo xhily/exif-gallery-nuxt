@@ -27,3 +27,20 @@ export function formatFileSize(bytes: number, si = true, dp = 1) {
 
   return `${bytes.toFixed(dp)} ${units[u]}`
 }
+
+
+export async function getCompressedImageBase64(file: File): Promise<string> {
+  const compressedFiles = await compressImage(file, {
+    // FIXME
+    // formats: {
+    //   jpeg: true,
+    // }
+  })
+
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = () => resolve(reader.result as string)
+    reader.onerror = reject
+    reader.readAsDataURL(compressedFiles.jpeg || file)
+  })
+}

@@ -13,6 +13,9 @@ let fileId = 0
 const files = ref<FileEntry[]>([])
 const uploadingImg = ref(false)
 
+const { config: uploadConfig } = useUploadConfig()
+const { config: aiConfig } = useAIConfig()
+
 function setFile(fileEntry: FileEntry) {
   const index = files.value.findIndex(f => f.id === fileEntry.id)
   if (index !== -1) {
@@ -20,7 +23,7 @@ function setFile(fileEntry: FileEntry) {
   }
 }
 
-function processFiles(rawFiles: File[]) {
+async function processFiles(rawFiles: File[]) {
   const fileEntries = rawFiles.map((file) => {
     const fileEntry: FileEntry = {
       id: fileId,
@@ -42,22 +45,29 @@ function processFiles(rawFiles: File[]) {
     fileEntry.photo = { ...fileEntry.photo, ...photo }
     setFile(fileEntry)
   })
-  Promise.allSettled(exifTasks)
+  await Promise.allSettled(exifTasks)
 
-  const compressLimit = pLimit(4)
-  const compressTasks = fileEntries.map(fileEntry => compressLimit(async () => {
-    const compressedFile = await compressImage(fileEntry.file)
-    fileEntry.compressedFile = compressedFile
-    setFile(fileEntry)
-  }))
-  Promise.allSettled(compressTasks)
+  if (uploadConfig.value.enableCompression) {
+    const compressLimit = pLimit(4)
+    const compressTasks = fileEntries.map(fileEntry => compressLimit(async () => {
+      const compressedFile = await compressImage(fileEntry.file, {
+        // FIXME
+        // formats: uploadConfig.value.formats,
+      })
+      fileEntry.compressedFile = compressedFile
+      setFile(fileEntry)
+    }))
+    Promise.allSettled(compressTasks)
+  }
 
-  const aiLimit = pLimit(1)
-  const aiTasks = fileEntries.map(fileEntry => aiLimit(async () => {
+  if (aiConfig.value.enabled) {
+    const aiLimit = pLimit(1)
+    const aiTasks = fileEntries.map(fileEntry => aiLimit(async () => {
     // TODO AI特征提取
-    console.warn('AI特征提取:', fileEntry)
-  }))
-  Promise.allSettled(aiTasks)
+      console.warn('AI特征提取:', fileEntry)
+    }))
+    Promise.allSettled(aiTasks)
+  }
 }
 
 function upload(file: FileEntry) {

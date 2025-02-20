@@ -16,6 +16,8 @@
     "logs:preview": "wrangler pages deployment tail --environment preview"
   },
   "dependencies": {
+    "@ai-sdk/google": "^1.1.16",
+    "@ai-sdk/openai": "^1.1.13",
     "@jsquash/avif": "^2.0.0",
     "@jsquash/jpeg": "^1.4.0",
     "@jsquash/resize": "^2.1.0",
@@ -27,6 +29,7 @@
     "@paralleldrive/cuid2": "^2.2.2",
     "@vueuse/core": "^12.2.0",
     "@vueuse/nuxt": "^12.5.0",
+    "ai": "^4.1.44",
     "date-fns": "^4.1.0",
     "drizzle-orm": "^0.39.1",
     "exifr": "^7.1.3",
