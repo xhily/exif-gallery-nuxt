@@ -50,11 +50,28 @@ async function processFiles(rawFiles: File[]) {
   if (uploadConfig.value.enableCompression) {
     const compressLimit = pLimit(4)
     const compressTasks = fileEntries.map(fileEntry => compressLimit(async () => {
-      const compressedFile = await compressImage(fileEntry.file, {
-        formats: toRaw(uploadConfig.value).formats,
-      })
-      fileEntry.compressedFile = compressedFile
-      setFile(fileEntry)
+      const fileType = fileEntry.file.type
+      const formatsConfig = { ...toRaw(uploadConfig.value).formats }
+      if (fileType === 'webp') {
+        formatsConfig.jpeg = false
+        formatsConfig.webp = false
+      }
+      if (fileType === 'avif') {
+        formatsConfig.jpeg = false
+        formatsConfig.webp = false
+        formatsConfig.avif = false
+      }
+      await compressImageMultiResult(
+        fileEntry.file,
+        formatsConfig,
+        (type, file) => {
+          fileEntry.compressedFile = {
+            ...fileEntry.compressedFile,
+            [type]: file,
+          }
+          setFile(fileEntry)
+        },
+      )
     }))
     Promise.allSettled(compressTasks)
   }

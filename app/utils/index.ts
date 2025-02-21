@@ -31,15 +31,13 @@ export function formatFileSize(bytes: number, si = true, dp = 1) {
 
 export async function getCompressedImageBase64(file: File): Promise<string> {
   const compressedFiles = await compressImage(file, {
-    formats: {
-      jpeg: true,
-    }
+    target: 'jpeg'
   })
 
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
     reader.onload = () => resolve(reader.result as string)
     reader.onerror = reject
-    reader.readAsDataURL(compressedFiles.jpeg || file)
+    reader.readAsDataURL(compressedFiles || file)
   })
 }
