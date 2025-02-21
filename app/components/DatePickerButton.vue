@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { format as formatFn } from 'date-fns'
 
+defineOptions({
+  inheritAttrs: false,
+})
+
 const {
   format = 'yyyy-MM-dd HH:mm:ss',
 } = defineProps<{

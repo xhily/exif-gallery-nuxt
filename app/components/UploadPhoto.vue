@@ -116,54 +116,10 @@ onUnmounted(() => {
     </div>
 
     <div v-if="activeItemId === id">
-      {{ photo }}
-      <UForm
-        :state="photo"
-        class="p-4 space-y-4 rounded-lg shadow"
-        @submit="handleSubmit(photo)"
-      >
-        <div class="grid grid-cols-2 gap-4">
-          <UFormGroup label="标题" name="title">
-            <UInput v-model="photo.title" />
-          </UFormGroup>
-          <!-- FIXME -->
-          <!-- <UFormGroup label="拍摄时间" name="takenAt">
-            <DatePickerButton v-model="photo.takenAt" mode="datetime" />
-          </UFormGroup> -->
-
-          <UFormGroup label="相机型号" name="model">
-            <UInput v-model="photo.model" />
-          </UFormGroup>
-
-          <UFormGroup label="焦距" name="focalLength">
-            <UInput
-              v-model.number="photo.focalLength"
-              type="number"
-            />
-          </UFormGroup>
-
-          <UFormGroup label="光圈" name="fNumber">
-            <UInput
-              v-model.number="photo.fNumber"
-              type="number"
-              step="0.1"
-            />
-          </UFormGroup>
-
-          <UFormGroup label="ISO" name="iso">
-            <UInput
-              v-model.number="photo.iso"
-              type="number"
-            />
-          </UFormGroup>
-        </div>
-
-        <div class="flex justify-end gap-2">
-          <UButton type="submit">
-            保存
-          </UButton>
-        </div>
-      </UForm>
+      <UploadPhotoForm
+        v-model="photo"
+        @submit="handleSubmit"
+      />
     </div>
   </div>
 </template>
