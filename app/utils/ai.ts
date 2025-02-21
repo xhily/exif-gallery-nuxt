@@ -1,6 +1,6 @@
 import { createGoogleGenerativeAI } from '@ai-sdk/google'
 import { createOpenAI } from '@ai-sdk/openai'
-import { generateObject } from 'ai';
+import { generateObject } from 'ai'
 import { z } from 'zod'
 import { useAIConfig } from '../composables/useAIConfig'
 
@@ -34,19 +34,24 @@ function cleanUpAiTextResponse(text: string) {
 function initializeAIClient() {
   const { config } = useAIConfig()
 
-  if (!config.value.enabled || !config.value.baseUrl || !config.value.secretKey) {
+  if (!config.value.enabled) {
+    console.error('[DEV] AI is disabled. Please enable it in the settings.')
     return null
+  }
+
+  if (!config.value.secretKey) {
+    throw new Error('AI secret key is missing. Please provide it in the settings.')
   }
 
   if (config.value.provider === 'openai') {
     return createOpenAI({
-      baseURL: config.value.baseUrl,
+      baseURL: config.value.baseUrl || undefined,
       apiKey: config.value.secretKey,
     })
   }
   else if (config.value.provider === 'gemini') {
     return createGoogleGenerativeAI({
-      baseURL: config.value.baseUrl,
+      baseURL: config.value.baseUrl || undefined,
       apiKey: config.value.secretKey,
     })
   }
@@ -54,9 +59,19 @@ function initializeAIClient() {
   return null
 }
 
-export async function generateImageAnalysis(imageFile: File): Promise<ImageAnalysis> {
+export async function getAiImageAnalysis(imageFile: File): Promise<ImageAnalysis> {
   const client = initializeAIClient()
   const { config } = useAIConfig()
+
+  if (import.meta.env.DEV) {
+    // FIXME: For development purposes only
+    return {
+      title: 'AI Title',
+      caption: 'AI Caption',
+      tags: ['AI Tag 1', 'AI Tag 2', 'AI Tag 3'],
+      semanticDescription: 'AI Semantic Description',
+    }
+  }
 
   if (!client) {
     return {
@@ -70,17 +85,18 @@ export async function generateImageAnalysis(imageFile: File): Promise<ImageAnaly
   try {
     const base64 = await getCompressedImageBase64(imageFile)
     const { object } = await generateObject({
-      model: client(config.value.provider === 'openai' ? 'gpt-4o' : 'gemini-1.5-flash'),
+      model: client(config.value.provider === 'openai' ? 'gpt-4o' : 'gemini-2.0-flash'),
       schema: imageAnalysisSchema,
       messages: [{
-        'role': 'user',
-        'content': [
+        role: 'user',
+        content: [
           {
-            'type': 'text',
-            'text': AI_IMAGE_PROMPT,
-          }, {
-            'type': 'image',
-            'image': removeBase64Prefix(base64),
+            type: 'text',
+            text: AI_IMAGE_PROMPT,
+          },
+          {
+            type: 'image',
+            image: removeBase64Prefix(base64),
           },
         ],
       }],

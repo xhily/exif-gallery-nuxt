@@ -46,10 +46,8 @@ async function processFiles(rawFiles: File[]) {
     setFile(fileEntry)
   })
   await Promise.allSettled(exifTasks)
-
   if (uploadConfig.value.enableCompression) {
-    const compressLimit = pLimit(4)
-    const compressTasks = fileEntries.map(fileEntry => compressLimit(async () => {
+    const compressTasks = fileEntries.map(async (fileEntry) => {
       const fileType = fileEntry.file.type
       const formatsConfig = { ...toRaw(uploadConfig.value).formats }
       if (fileType === 'webp') {
@@ -72,15 +70,15 @@ async function processFiles(rawFiles: File[]) {
           setFile(fileEntry)
         },
       )
-    }))
+    })
     Promise.allSettled(compressTasks)
   }
-
   if (aiConfig.value.enabled) {
     const aiLimit = pLimit(1)
     const aiTasks = fileEntries.map(fileEntry => aiLimit(async () => {
-    // TODO AI特征提取
-      console.warn('AI特征提取:', fileEntry)
+      const aiData = await getAiImageAnalysis(fileEntry.file)
+      fileEntry.photo = { ...fileEntry.photo, ...aiData, tags: aiData.tags.join(',') }
+      setFile(fileEntry)
     }))
     Promise.allSettled(aiTasks)
   }
