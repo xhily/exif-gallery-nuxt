@@ -1,22 +1,12 @@
 <script setup lang="ts">
-const emit = defineEmits(['submit'])
-
 const photo = defineModel<IPhoto>({ required: true })
-
-function handleSubmit(item: IPhoto) {
-  emit('submit', item)
-}
 </script>
 
 <template>
-  <UForm
-    :state="photo"
-    class="p-4 space-y-4 rounded-lg shadow"
-    @submit="handleSubmit(photo)"
-  >
+  <UForm :state="photo" class="p-4 space-y-4 rounded-lg shadow">
     <div class="space-y-6">
       <!-- Basic Information -->
-      <h3 class="text-lg font-medium text-gray-900 mb-4">
+      <h3 class="text-lg font-medium mb-4">
         基本信息
       </h3>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -35,7 +25,7 @@ function handleSubmit(item: IPhoto) {
       </div>
 
       <!-- Camera Information -->
-      <h3 class="text-lg font-medium text-gray-900 mb-4">
+      <h3 class="text-lg font-medium mb-4">
         相机信息
       </h3>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -48,7 +38,7 @@ function handleSubmit(item: IPhoto) {
       </div>
 
       <!-- Lens Information -->
-      <h3 class="text-lg font-medium text-gray-900 mb-4">
+      <h3 class="text-lg font-medium mb-4">
         镜头信息
       </h3>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -59,55 +49,34 @@ function handleSubmit(item: IPhoto) {
           <UInput v-model="photo.lensModel" />
         </UFormGroup>
         <UFormGroup label="焦距" name="focalLength">
-          <UInput
-            v-model.number="photo.focalLength"
-            type="number"
-          />
+          <UInput v-model.number="photo.focalLength" type="number" />
         </UFormGroup>
         <UFormGroup label="等效35mm焦距" name="focalLengthIn35mmFormat">
-          <UInput
-            v-model.number="photo.focalLengthIn35mmFormat"
-            type="number"
-          />
+          <UInput v-model.number="photo.focalLengthIn35mmFormat" type="number" />
         </UFormGroup>
       </div>
 
       <!-- Exposure Settings -->
-      <h3 class="text-lg font-medium text-gray-900 mb-4">
+      <h3 class="text-lg font-medium mb-4">
         曝光设置
       </h3>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <UFormGroup label="光圈" name="fNumber">
-          <UInput
-            v-model.number="photo.fNumber"
-            type="number"
-            step="0.1"
-          />
+          <UInput v-model.number="photo.fNumber" type="number" step="0.1" />
         </UFormGroup>
         <UFormGroup label="ISO" name="iso">
-          <UInput
-            v-model.number="photo.iso"
-            type="number"
-          />
+          <UInput v-model.number="photo.iso" type="number" />
         </UFormGroup>
         <UFormGroup label="快门速度" name="exposureTime">
-          <UInput
-            v-model.number="photo.exposureTime"
-            type="number"
-            step="0.001"
-          />
+          <UInput v-model.number="photo.exposureTime" type="number" step="0.001" />
         </UFormGroup>
         <UFormGroup label="曝光补偿" name="exposureCompensation">
-          <UInput
-            v-model.number="photo.exposureCompensation"
-            type="number"
-            step="0.1"
-          />
+          <UInput v-model.number="photo.exposureCompensation" type="number" step="0.1" />
         </UFormGroup>
       </div>
 
       <!-- Location Information -->
-      <h3 class="text-lg font-medium text-gray-900 mb-4">
+      <h3 class="text-lg font-medium mb-4">
         位置信息
       </h3>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -115,18 +84,10 @@ function handleSubmit(item: IPhoto) {
           <UInput v-model="photo.locationName" />
         </UFormGroup>
         <UFormGroup label="纬度" name="latitude">
-          <UInput
-            v-model.number="photo.latitude"
-            type="number"
-            step="0.000001"
-          />
+          <UInput v-model.number="photo.latitude" type="number" step="0.000001" />
         </UFormGroup>
         <UFormGroup label="经度" name="longitude">
-          <UInput
-            v-model.number="photo.longitude"
-            type="number"
-            step="0.000001"
-          />
+          <UInput v-model.number="photo.longitude" type="number" step="0.000001" />
         </UFormGroup>
         <UFormGroup label="拍摄时间" name="takenAt">
           <DatePickerButton v-model="photo.takenAt" mode="datetime" />

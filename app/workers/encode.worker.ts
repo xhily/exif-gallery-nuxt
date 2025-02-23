@@ -12,9 +12,9 @@ globalThis.onmessage = async (e) => {
 
   function changeFileExtension(filename: string, suffix: string, maxLength = 255) {
     const baseName = filename.replace(/\.[^.]+$/, '')
-    suffix = suffix.startsWith('.') ? suffix : `.${suffix}`
+    suffix = suffix.includes('.') ? suffix : `.${suffix}`
     const maxBaseNameLength = maxLength - (suffix.length)
-    return `${baseName.slice(0, maxBaseNameLength)}.${suffix}`
+    return `${baseName.slice(0, maxBaseNameLength)}${suffix}`
   }
 
   try {
@@ -42,7 +42,7 @@ globalThis.onmessage = async (e) => {
       let thumbnailWidth = options.resizeOptions?.width
       let thumbnailHeight = options.resizeOptions?.height
       if (!thumbnailHeight && !thumbnailWidth) {
-        thumbnailHeight = 150
+        thumbnailHeight = 240
       }
       if (!thumbnailWidth && thumbnailHeight) {
         const imageRatio = imageData.width / imageData.height
@@ -53,8 +53,8 @@ globalThis.onmessage = async (e) => {
         thumbnailHeight = Math.round(thumbnailWidth / imageRatio)
       }
       const thumbnailData = await resize(imageData, {
-        width: thumbnailWidth || 200,
-        height: thumbnailHeight || 150,
+        width: thumbnailWidth || 320,
+        height: thumbnailHeight || 240,
         ...options.resizeOptions,
       })
       const thumbnail = await encodeJpeg(thumbnailData, options.encodeOptions)

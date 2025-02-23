@@ -5,14 +5,12 @@ export const photo = sqliteTable('photos', {
   id: text('id').primaryKey().$defaultFn(() => createCuid(8)),
   // fileInfo
   fileName: text('file_name').notNull(),
-  fileExtension: text('file_extension').notNull(),
-  fileSize: integer('file_size'),
   fileModified: integer('file_modified', { mode: 'timestamp' }),
   // R2
-  url: text('url'),
-  webpUrl: text('webpUrl'),
-  avifUrl: text('avifUrl'),
-  thumbnailUrl: text('thumbnail_url'),
+  jpeg: text('jpeg'),
+  webp: text('webp'),
+  avif: text('avif'),
+  thumbnail: text('thumbnail'),
   // desc
   title: text('title'),
   caption: text('caption'),

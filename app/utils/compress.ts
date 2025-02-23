@@ -33,10 +33,10 @@ export interface CompressMultiResultOption {
 }
 
 export interface compressFiles {
-  jpeg?: File
-  webp?: File
-  avif?: File
-  thumbnail?: File
+  jpeg?: File | 'loading'
+  webp?: File | 'loading'
+  avif?: File | 'loading'
+  thumbnail?: File | 'loading'
 }
 
 export type CompressKeys = keyof compressFiles

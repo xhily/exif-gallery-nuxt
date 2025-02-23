@@ -6,13 +6,16 @@ const props = defineProps<{
   id: number
   file: File
   compressFile?: compressFiles
+  aiLoading?: boolean
 }>()
 
-const emit = defineEmits(['update'])
+const emit = defineEmits<{
+  upload: []
+  generate: []
+}>()
 
 const photo = defineModel<IPhoto>({ required: true })
-
-const activeItemId = ref<number>()
+const activeId = defineModel<number>('activeId')
 
 let viewer: Viewer | undefined
 const viewerRef = ref<HTMLElement>()
@@ -44,12 +47,7 @@ function formatDate(timestamp?: number | Date | null): string {
 }
 
 function toggleItem(id: number) {
-  activeItemId.value = activeItemId.value === id ? undefined : id
-}
-
-function handleSubmit(item: IPhoto) {
-  emit('update', item)
-  activeItemId.value = undefined
+  activeId.value = activeId.value === id ? undefined : id
 }
 
 watch(() => [props.file, props.compressFile], async () => {
@@ -66,19 +64,48 @@ onUnmounted(() => {
 
 <template>
   <div class="w-full">
-    <div
-      class="w-full"
-      :class="{ 'mb-4': activeItemId === id }"
+    <UCard
+      :ui="{
+        background: 'hover:bg-gray-50',
+      }"
     >
-      <UCard
-        :ui="{
-          background: 'hover:bg-gray-50',
-          body: { base: 'flex justify-between items-center' },
-        }"
-      >
+      <div class="flex justify-between gap-2 relative">
+        <div class="absolute top-0 right-0 flex flex-col gap-2 items-end">
+          <UButton
+            color="gray"
+            variant="solid"
+            class="w-fit"
+            label="上传"
+            @click="emit('upload')"
+          />
+          <UButton
+            color="gray"
+            variant="solid"
+            class="w-full"
+            label="AI识图"
+            :loading="aiLoading"
+            @click="emit('generate')"
+          />
+        </div>
         <div class="flex flex-col gap-4">
-          <div class="font-medium text-lg mb-2">
-            {{ file.name }}
+          <div class="flex flex-wrap gap-2 items-center mr-10">
+            <div class="font-medium text-lg mr-2">
+              {{ file.name }}
+            </div>
+            <UBadge
+              v-for="tag in photo.tags?.split(',') || []"
+              :key="tag"
+              :label="tag"
+              color="gray"
+            />
+          </div>
+          <div class="flex flex-wrap gap-4 items-center mr-10">
+            <div class="text-lg">
+              {{ photo.title || '未命名' }}
+            </div>
+            <div class="">
+              {{ photo.caption }}
+            </div>
           </div>
           <div class="flex flex-wrap gap-6 items-start flex-1">
             <div ref="viewerRef" class="flex gap-4">
@@ -90,9 +117,6 @@ onUnmounted(() => {
             </div>
 
             <div class="flex flex-col gap-2 flex-1 min-w-[200px]">
-              <div class="text-lg">
-                {{ photo.title || '未命名' }}
-              </div>
               <div class="text-sm text-gray-600">
                 {{ photo.make }} {{ photo.model }}
               </div>
@@ -109,17 +133,13 @@ onUnmounted(() => {
           color="gray"
           variant="ghost"
           class="self-center"
-          :icon="activeItemId === id ? 'i-heroicons-chevron-up' : 'i-heroicons-chevron-down'"
+          :icon="activeId === id ? 'i-heroicons-chevron-up' : 'i-heroicons-chevron-down'"
           @click="toggleItem(id)"
         />
-      </UCard>
-    </div>
-
-    <div v-if="activeItemId === id">
-      <UploadPhotoForm
-        v-model="photo"
-        @submit="handleSubmit"
-      />
-    </div>
+      </div>
+      <div v-if="activeId === id">
+        <UploadPhotoForm v-model="photo" />
+      </div>
+    </UCard>
   </div>
 </template>

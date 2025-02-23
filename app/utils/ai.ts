@@ -65,10 +65,11 @@ export async function getAiImageAnalysis(imageFile: File): Promise<ImageAnalysis
 
   if (import.meta.env.DEV) {
     // FIXME: For development purposes only
+    await new Promise(resolve => setTimeout(resolve, 1000))
     return {
-      title: 'AI Title',
-      caption: 'AI Caption',
-      tags: ['AI Tag 1', 'AI Tag 2', 'AI Tag 3'],
+      title: `AI Title ${Math.round(Math.random() * 1000)}`,
+      caption: `AI Caption ${Math.round(Math.random() * 1000)}`,
+      tags: [`AI Tag ${Math.round(Math.random() * 10)}`, `AI Tag ${Math.round(Math.random() * 10)}`, `AI Tag ${Math.round(Math.random() * 10)}`],
       semanticDescription: 'AI Semantic Description',
     }
   }

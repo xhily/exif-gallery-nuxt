@@ -1,6 +1,6 @@
 <script setup lang="ts">
 defineProps<{
-  file?: File
+  file?: File | 'loading'
   type: string
 }>()
 
@@ -10,9 +10,10 @@ function getBlobUrl(file: File): string {
 </script>
 
 <template>
-  <div class="flex flex-col items-center gap-1 opacity-50">
+  <div class="flex flex-col items-center gap-1">
+    <USkeleton v-if="file === 'loading'" class="w-24 h-24 rounded" />
     <img
-      v-if="file"
+      v-else-if="file"
       :src="getBlobUrl(file)"
       :alt="file.name"
       class="w-24 h-24 object-cover rounded"
@@ -21,7 +22,7 @@ function getBlobUrl(file: File): string {
       <span class="text-sm text-gray-400">{{ type }}</span>
     </div>
     <span class="text-xs text-gray-500">{{ type }}</span>
-    <span v-if="file" class="text-xs text-gray-500">{{ formatFileSize(file.size) }}</span>
+    <span v-if="file && file !== 'loading'" class="text-xs text-gray-500">{{ formatFileSize(file.size) }}</span>
   </div>
 </template>
 
