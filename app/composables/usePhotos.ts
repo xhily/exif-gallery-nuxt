@@ -1,5 +1,4 @@
 export function usePhotos(query?: {
-  uploading?: boolean
   hidden?: boolean
 }) {
   const { data, error, status } = useFetch('/api/photos', {

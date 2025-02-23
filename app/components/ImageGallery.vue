@@ -6,18 +6,23 @@ const deletingImg = ref('')
 const disconnect = ref(false)
 
 const toast = useToast()
-const { photos } = usePhotos({
-  hidden: false,
-  uploading: false,
-})
+const { photos } = usePhotos({ hidden: false })
 const { loggedIn, clear } = useUserSession()
 
 const active = useState()
 
-async function deleteFile(pathname: string) {
-  deletingImg.value = pathname
+function getPhotoImg(photo: Photo) {
+  const path = photo.jpeg || photo.webp || photo.avif
+  if (!path)
+    throw new Error('Photo has no Image File')
+  return path
+}
 
-  await $fetch(`/api/photos/:pathname`, { method: 'DELETE' })
+
+async function deletePhoto(id: string) {
+  deletingImg.value = id
+
+  await $fetch(`/api/photos/${id}`, { method: 'DELETE' })
     .catch(() => toast.add({ title: 'An error occured', description: 'Please try again', color: 'red' }))
     .finally(() => deletingImg.value = '')
 }
@@ -117,27 +122,27 @@ async function clearSession() {
           <li
             v-for="photo in photos"
             ref="mansoryItem"
-            :key="photo.pathname"
+            :key="photo.id"
             class="relative w-full group masonry-item"
           >
             <UButton
               v-if="loggedIn"
-              :loading="deletingImg === photo.pathname"
+              :loading="deletingImg === photo.id"
               color="white"
               icon="i-heroicons-trash-20-solid"
               class="absolute top-4 right-4 z-[9999] opacity-0 group-hover:opacity-100"
-              @click="deleteFile(photo.pathname)"
+              @click="deletePhoto(photo.id)"
             />
             <NuxtLink
-              :to="`/detail/${photo.pathname.split('.')[0]}`"
-              @click="active = photo.pathname.split('.')[0]"
+              :to="`/detail/${getPhotoImg(photo).split('.')[0]}`"
+              @click="active = getPhotoImg(photo).split('.')[0]"
             >
               <img
                 v-if="photo"
                 width="527"
                 height="430"
-                :src="`/photos/${photo.pathname}`"
-                :class="{ imageEl: photo.pathname.split('.')[0] === active }"
+                :src="`/photos/${getPhotoImg(photo)}`"
+                :class="{ imageEl: getPhotoImg(photo).split('.')[0] === active }"
                 class="h-auto w-full max-h-[430px] rounded-md transition-all duration-200 border-image brightness-[.8] hover:brightness-100 will-change-[filter] object-cover"
               >
             </NuxtLink>
