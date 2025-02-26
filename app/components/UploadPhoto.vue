@@ -7,6 +7,7 @@ const props = defineProps<{
   file: File
   compressFile?: compressFiles
   aiLoading?: boolean
+  uploadLoading?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -14,8 +15,17 @@ const emit = defineEmits<{
   generate: []
 }>()
 
+const { config: uploadConfig } = useUploadConfig()
+
 const photo = defineModel<IPhoto>({ required: true })
 const activeId = defineModel<number>('activeId')
+
+const compressLoading = computed(() =>
+  props.compressFile?.jpeg === 'loading'
+  || props.compressFile?.webp === 'loading'
+  || props.compressFile?.avif === 'loading'
+  || props.compressFile?.thumbnail === 'loading',
+)
 
 let viewer: Viewer | undefined
 const viewerRef = ref<HTMLElement>()
@@ -76,12 +86,14 @@ onUnmounted(() => {
             variant="solid"
             class="w-fit"
             label="上传"
+            :disabled="aiLoading || compressLoading"
+            :loading="uploadLoading"
             @click="emit('upload')"
           />
           <UButton
             color="gray"
             variant="solid"
-            class="w-full"
+            class="w-fit"
             label="AI识图"
             :loading="aiLoading"
             @click="emit('generate')"
@@ -110,10 +122,10 @@ onUnmounted(() => {
           <div class="flex flex-wrap gap-6 items-start flex-1">
             <div ref="viewerRef" class="flex gap-4">
               <UploadPhotoImage type="original" :file="file" />
-              <UploadPhotoImage type="JPEG" :file="compressFile?.jpeg" />
-              <UploadPhotoImage type="WebP" :file="compressFile?.webp" />
-              <UploadPhotoImage type="AVIF" :file="compressFile?.avif" />
-              <UploadPhotoImage type="thumbnail" :file="compressFile?.thumbnail" />
+              <UploadPhotoImage v-if="uploadConfig.formats.jpeg" type="JPEG" :file="compressFile?.jpeg" />
+              <UploadPhotoImage v-if="uploadConfig.formats.webp" type="WebP" :file="compressFile?.webp" />
+              <UploadPhotoImage v-if="uploadConfig.formats.avif" type="AVIF" :file="compressFile?.avif" />
+              <UploadPhotoImage v-if="uploadConfig.formats.thumbnail" type="thumbnail" :file="compressFile?.thumbnail" />
             </div>
 
             <div class="flex flex-col gap-2 flex-1 min-w-[200px]">
