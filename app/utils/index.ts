@@ -1,3 +1,5 @@
+import type { SerializeObject } from 'nitropack'
+
 /**
  * Format bytes as human-readable text.
  *
@@ -39,5 +41,15 @@ export async function getCompressedImageBase64(file: File): Promise<string> {
     reader.onload = () => resolve(reader.result as string)
     reader.onerror = reject
     reader.readAsDataURL(compressedFiles || file)
+  })
+}
+
+export function deserializePhoto(p: SerializeObject<Photo>): Photo {
+  return ({
+    ...p,
+    fileModified: p.fileModified ? new Date(p.fileModified) : null,
+    takenAt: p.takenAt ? new Date(p.takenAt) : null,
+    createdAt: p.createdAt ? new Date(p.createdAt) : null,
+    updatedAt: p.updatedAt ? new Date(p.updatedAt) : null,
   })
 }

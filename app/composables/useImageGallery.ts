@@ -36,29 +36,7 @@ export function useImageGallery() {
     })
   }
 
-  const applyFilters = async (poster: HTMLImageElement, contrast: number, blur: number, invert: number, saturate: number, hueRotate: number, sepia: number) => {
-    const canvas: HTMLCanvasElement = document.createElement('canvas')
-    const context: CanvasRenderingContext2D | null = canvas.getContext('2d')
-
-    canvas.width = poster?.naturalWidth
-    canvas.height = poster?.naturalHeight
-
-    context!.filter = `contrast(${contrast}%) blur(${blur}px) invert(${invert}%)
-      saturate(${saturate}%) hue-rotate(${hueRotate}deg) sepia(${sepia}%)`
-
-    context!.drawImage(poster!, 0, 0, canvas.width, canvas.height)
-
-    const modifiedImage = new Image()
-
-    modifiedImage.src = canvas.toDataURL('image/png')
-    imageToDownload.value = modifiedImage
-
-    return imageToDownload as Ref<HTMLImageElement>
-  }
-
-  const downloadImage = async (filename: string, poster: HTMLImageElement, contrast: number, blur: number, invert: number, saturate: number, hueRotate: number, sepia: number) => {
-    await applyFilters(poster, contrast, blur, invert, saturate, hueRotate, sepia)
-
+  const downloadImage = async (filename: string) => {
     if (!imageToDownload.value) {
       return
     }
@@ -86,45 +64,9 @@ export function useImageGallery() {
 
     return convertedFile as File
   }
-
-  const magnifierImage = (e: MouseEvent, containerEl: HTMLElement, imageEl: HTMLImageElement, magnifierEl: HTMLElement, zoomFactor: number = 2) => {
-    if (magnifierEl.style.filter !== imageEl.style.filter)
-      magnifierEl.style.filter = imageEl.style.filter
-
-    const imageRect = imageEl.getBoundingClientRect()
-    const containerRect = containerEl.getBoundingClientRect()
-
-    const x = e.pageX - containerRect.left
-    const y = e.pageY - containerRect.top
-
-    const imgWidth = imageRect.width
-    const imgHeight = imageRect.height
-
-    const zoomedWidth = imgWidth * (zoomFactor === 1 ? 1.5 : zoomFactor)
-    const zoomedHeight = imgHeight * (zoomFactor === 1 ? 1.5 : zoomFactor)
-
-    let xperc = (x / imgWidth) * 100
-    let yperc = (y / imgHeight) * 100
-
-    if (x > 0.01 * imgWidth)
-      xperc += 0.15 * xperc
-
-    if (y >= 0.01 * imgHeight)
-      yperc += 0.15 * yperc
-
-    magnifierEl.style.backgroundSize = `${zoomedWidth}px ${zoomedHeight}px`
-    magnifierEl.style.backgroundPositionX = `${xperc - 9}%`
-    magnifierEl.style.backgroundPositionY = `${yperc - 9}%`
-    magnifierEl.style.left = `${x - 50}px`
-    magnifierEl.style.top = `${y - 50}px`
-    magnifierEl.style.zIndex = '9999'
-  }
-
   return {
     downloadImage,
-    applyFilters,
     convertBase64ToFile,
-    magnifierImage,
     initSwipe,
     currentIndex,
     isFirstImg,

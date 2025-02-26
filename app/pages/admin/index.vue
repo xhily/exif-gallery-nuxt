@@ -1,9 +1,25 @@
 <script setup lang="ts">
+definePageMeta({
+  layout: 'admin',
+})
+
 const disconnect = ref(false)
 
 const toast = useToast()
-const { photos } = usePhotos()
 const { loggedIn, clear } = useUserSession()
+
+const LIMIT = 36
+
+const { photos, hasMore, loadMore, loading, error } = usePhotosInfinite({
+  hidden: false,
+}, LIMIT)
+
+watch(error, (err) => {
+  if (err)
+    toast.add({ title: 'An error occurred', description: 'Failed to load photos', color: 'red' })
+})
+
+useInfiniteScroll(window, loadMore, { distance: 10, canLoadMore: () => hasMore.value })
 
 function getPhotoThumbnail(photo: Photo) {
   const path = photo.thumbnail || photo.jpeg || photo.webp || photo.avif
@@ -68,6 +84,11 @@ async function clearSession() {
               @click="deleteFile(getPhotoThumbnail(photo))"
             />
           </li>
+          <template v-if="loading">
+            <li v-for="i in LIMIT" :key="i">
+              <USkeleton class="aspect-[4/3] w-full max-h-[430px] rounded-md transition-all duration-200 border-image object-contain" />
+            </li>
+          </template>
         </ul>
       </div>
     </section>

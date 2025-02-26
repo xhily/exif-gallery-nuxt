@@ -1,15 +1,31 @@
 <script setup lang="ts">
-const isOpen = ref(false)
+definePageMeta({
+  layout: 'home',
+})
 
-const mansoryItem = ref<Array<HTMLElement>>([])
+const isOpen = ref(false)
 const deletingImg = ref('')
 const disconnect = ref(false)
 
 const toast = useToast()
-const { photos } = usePhotos({ hidden: false })
 const { loggedIn, clear } = useUserSession()
-
 const active = useState()
+
+const LIMIT = 36
+
+const { photos, hasMore, loadMore, loading, error } = usePhotosInfinite({
+  hidden: false,
+}, LIMIT)
+
+watch(error, (err) => {
+  if (err)
+    toast.add({ title: 'An error occurred', description: 'Failed to load photos', color: 'red' })
+})
+
+useInfiniteScroll(window, loadMore, { distance: 10, canLoadMore: () => hasMore.value })
+
+// Initial load
+onMounted(() => loadMore())
 
 function getPhotoImg(photo: Photo) {
   const path = photo.jpeg || photo.webp || photo.avif
@@ -18,6 +34,12 @@ function getPhotoImg(photo: Photo) {
   return path
 }
 
+function getPhotoThumbnail(photo: Photo) {
+  const path = photo.thumbnail || photo.jpeg || photo.webp || photo.avif
+  if (!path)
+    throw new Error('Photo has no Image File')
+  return path
+}
 
 async function deletePhoto(id: string) {
   deletingImg.value = id
@@ -38,7 +60,7 @@ async function clearSession() {
   <div>
     <section
       v-if="photos"
-      class="relative h-screen gap-[22px] p-4"
+      class="relative p-4"
     >
       <UModal
         v-model="isOpen"
@@ -101,7 +123,6 @@ async function clearSession() {
 
       <div
         class="w-full"
-        :class="{ 'masonry-container': photos && photos.length }"
       >
         <div
           v-if="!loggedIn"
@@ -117,13 +138,12 @@ async function clearSession() {
 
         <ul
           v-if="photos && photos.length"
-          class="grid grid-cols-1 gap-4 lg:block"
+          class="w-full h-full grid grid-cols-3 gap-1 md:grid-cols-4"
         >
           <li
             v-for="photo in photos"
-            ref="mansoryItem"
             :key="photo.id"
-            class="relative w-full group masonry-item"
+            class="relative w-full group"
           >
             <UButton
               v-if="loggedIn"
@@ -134,19 +154,22 @@ async function clearSession() {
               @click="deletePhoto(photo.id)"
             />
             <NuxtLink
-              :to="`/detail/${getPhotoImg(photo).split('.')[0]}`"
-              @click="active = getPhotoImg(photo).split('.')[0]"
+              :to="`/detail/${getPhotoImg(photo)}`"
+              @click="active = getPhotoImg"
             >
               <img
                 v-if="photo"
-                width="527"
-                height="430"
-                :src="`/photos/${getPhotoImg(photo)}`"
-                :class="{ imageEl: getPhotoImg(photo).split('.')[0] === active }"
-                class="h-auto w-full max-h-[430px] rounded-md transition-all duration-200 border-image brightness-[.8] hover:brightness-100 will-change-[filter] object-cover"
+                :src="`/photos/${getPhotoThumbnail(photo)}`"
+                :class="{ imageEl: getPhotoThumbnail(photo).split('.')[0] === active }"
+                class="aspect-[4/3] w-full max-h-[430px] rounded-md transition-all duration-200 border-image object-contain"
               >
             </NuxtLink>
           </li>
+          <template v-if="loading">
+            <li v-for="i in LIMIT" :key="i">
+              <USkeleton class="aspect-[4/3] w-full max-h-[430px] rounded-md transition-all duration-200 border-image object-contain" />
+            </li>
+          </template>
         </ul>
       </div>
     </section>
@@ -190,25 +213,6 @@ async function clearSession() {
   .border-image {
     border-width: 1.15px;
     border-color: rgba(255, 255, 255, 0.1)
-  }
-}
-
-@media screen and (min-width: 1024px) {
-  .masonry-container {
-    column-count: 3;
-    column-gap: 20px;
-    column-fill: balance;
-    margin: 20px auto 0;
-    padding: 2rem;
-  }
-
-  .masonry-item, .upload {
-    display: inline-block;
-    margin: 0 0 20px;
-    -webkit-column-break-inside: avoid;
-    page-break-inside: avoid;
-    break-inside: avoid;
-    width: 100%;
   }
 }
 </style>
