@@ -120,7 +120,8 @@ export default eventHandler(async (event) => {
         ...photoEntry,
         fileName,
       })
-    } catch (error) {
+    }
+    catch (error) {
       console.error('Failed to insert photo into database:', error)
       throw createError({
         statusCode: 500,

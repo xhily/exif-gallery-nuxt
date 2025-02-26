@@ -49,8 +49,8 @@ function onDayClick(_: any, event: MouseEvent): void {
   />
   <VCalendarDatePicker
     v-else
-    mode="datetime"
     v-model="date"
+    mode="datetime"
     v-bind="{ ...attrs, ...$attrs }"
     @dayclick="onDayClick"
   />

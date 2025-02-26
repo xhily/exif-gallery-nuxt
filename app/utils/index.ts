@@ -30,10 +30,9 @@ export function formatFileSize(bytes: number, si = true, dp = 1) {
   return `${bytes.toFixed(dp)} ${units[u]}`
 }
 
-
 export async function getCompressedImageBase64(file: File): Promise<string> {
   const compressedFiles = await compressImage(file, {
-    target: 'jpeg'
+    target: 'jpeg',
   })
 
   return new Promise((resolve, reject) => {
