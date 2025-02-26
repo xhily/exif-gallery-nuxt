@@ -122,23 +122,11 @@ async function clearSession() {
       </BottomMenu>
 
       <div
-        class="w-full"
+        class="w-full flex gap-4"
       >
-        <div
-          v-if="!loggedIn"
-          class="text-2xl text-white flex flex-col gap-y-4 items-center justify-center h-full w-full pb-8"
-        >
-          <h1 class="font-medium text-5xl">
-            Welcome to image gallery
-          </h1>
-          <p class="text-gray-400">
-            You must be logged in to manage photos
-          </p>
-        </div>
-
         <ul
           v-if="photos && photos.length"
-          class="w-full h-full grid grid-cols-3 gap-1 md:grid-cols-4"
+          class="flex-[3] grid grid-cols-3 gap-1 md:grid-cols-4"
         >
           <li
             v-for="photo in photos"
@@ -161,16 +149,19 @@ async function clearSession() {
                 v-if="photo"
                 :src="`/photos/${getPhotoThumbnail(photo)}`"
                 :class="{ imageEl: getPhotoThumbnail(photo).split('.')[0] === active }"
-                class="aspect-[4/3] w-full max-h-[430px] rounded-md transition-all duration-200 border-image object-contain"
+                class="aspect-[4/3] w-full rounded-md transition-all duration-200 border-image object-cover"
               >
             </NuxtLink>
           </li>
           <template v-if="loading">
             <li v-for="i in LIMIT" :key="i">
-              <USkeleton class="aspect-[4/3] w-full max-h-[430px] rounded-md transition-all duration-200 border-image object-contain" />
+              <USkeleton class="aspect-[4/3] w-full rounded-md transition-all duration-200 border-image object-contain" />
             </li>
           </template>
         </ul>
+        <div class="flex-[1] sticky top-16 h-fit">
+          tags
+        </div>
       </div>
     </section>
     <div

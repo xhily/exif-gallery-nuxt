@@ -111,30 +111,16 @@ async function clearSession() {
         </template>
       </BottomMenu>
 
-      <div
-        class="w-full"
+      <ul
+        v-if="photos && photos.length"
+        class="flex flex-col md:px-20"
       >
-        <div
-          v-if="!loggedIn"
-          class="text-2xl text-white flex flex-col gap-y-4 items-center justify-center h-full w-full pb-8"
+        <li
+          v-for="photo in photos"
+          :key="photo.id"
+          class="flex gap-4"
         >
-          <h1 class="font-medium text-5xl">
-            Welcome to image gallery
-          </h1>
-          <p class="text-gray-400">
-            You must be logged in to manage photos
-          </p>
-        </div>
-
-        <ul
-          v-if="photos && photos.length"
-          class="w-full h-full flex flex-col"
-        >
-          <li
-            v-for="photo in photos"
-            :key="photo.id"
-            class="relative w-full group"
-          >
+          <div class="relative group flex-[2]">
             <UButton
               v-if="loggedIn"
               :loading="deletingImg === photo.id"
@@ -151,17 +137,20 @@ async function clearSession() {
                 v-if="photo"
                 :src="`/photos/${getPhotoImg(photo)}`"
                 :class="{ imageEl: getPhotoImg(photo).split('.')[0] === active }"
-                class="aspect-[4/3] w-full max-h-[430px] rounded-md transition-all duration-200 border-image object-contain"
+                class="w-full h-auto rounded-md transition-all duration-200 border-image object-contain"
               >
             </NuxtLink>
+          </div>
+          <div class="flex-[1] sticky top-16 h-fit">
+            {{ photo.title }}
+          </div>
+        </li>
+        <template v-if="loading">
+          <li v-for="i in LIMIT" :key="i">
+            <USkeleton class="w-full h-auto rounded-md transition-all duration-200 border-image object-contain" />
           </li>
-          <template v-if="loading">
-            <li v-for="i in LIMIT" :key="i">
-              <USkeleton class="aspect-[4/3] w-full max-h-[430px] rounded-md transition-all duration-200 border-image object-contain" />
-            </li>
-          </template>
-        </ul>
-      </div>
+        </template>
+      </ul>
     </section>
     <div
       v-else

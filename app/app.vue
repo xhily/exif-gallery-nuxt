@@ -24,7 +24,7 @@ useSeoMeta({
 
 <template>
   <div
-    class="bg-black min-h-[100dvh] overflow-x-auto relative"
+    class="bg-black min-h-[100dvh] relative"
     :class="{ 'flex flex-col md:block': $router.currentRoute.value.fullPath !== '/' }"
   >
     <UNotifications />
