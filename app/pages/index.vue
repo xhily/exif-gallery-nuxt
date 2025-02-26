@@ -9,7 +9,6 @@ const disconnect = ref(false)
 
 const toast = useToast()
 const { loggedIn, clear } = useUserSession()
-const active = useState()
 
 const LIMIT = 12
 
@@ -131,12 +130,10 @@ async function clearSession() {
             />
             <NuxtLink
               :to="`/detail/${getPhotoImg(photo)}`"
-              @click="active = getPhotoImg"
             >
               <img
                 v-if="photo"
                 :src="`/photos/${getPhotoImg(photo)}`"
-                :class="{ imageEl: getPhotoImg(photo).split('.')[0] === active }"
                 class="w-full h-auto rounded-md transition-all duration-200 border-image object-contain"
               >
             </NuxtLink>

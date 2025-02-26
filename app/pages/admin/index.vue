@@ -27,8 +27,10 @@ function getPhotoThumbnail(photo: Photo) {
     throw new Error('Photo has no Image File')
   return path
 }
-async function deleteFile(pathname: string) {
-  await $fetch(`/api/photos/${pathname}`, { method: 'DELETE' })
+
+const deletingImg = ref<string>()
+async function deletePhoto(id: string) {
+  await $fetch(`/api/photos/${id}`, { method: 'DELETE' })
     .catch(() => toast.add({ title: 'An error occured', description: 'Please try again', color: 'red' }))
 }
 
@@ -57,36 +59,35 @@ async function clearSession() {
         />
       </div>
 
-      <div class="w-full">
-        <div class="text-8xl h-100 rd bg-gray">
-          Upload Photos
-        </div>
-
+      <div
+        class="w-full flex gap-4"
+      >
         <ul
           v-if="photos && photos.length"
-          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+          class="flex-[3] grid grid-cols-4 gap-1 md:grid-cols-6"
         >
           <li
             v-for="photo in photos"
-            :key="getPhotoThumbnail(photo)"
-            class="relative group"
+            :key="photo.id"
+            class="relative w-full group"
           >
-            <img
-              :src="`/photos/${getPhotoThumbnail(photo)}`"
-              class="w-full h-48 object-cover rounded-md"
-              alt=""
-            >
             <UButton
-              :loading="false"
+              v-if="loggedIn"
+              :loading="deletingImg === photo.id"
               color="white"
               icon="i-heroicons-trash-20-solid"
-              class="absolute top-2 right-2 opacity-0 group-hover:opacity-100"
-              @click="deleteFile(getPhotoThumbnail(photo))"
+              class="absolute top-4 right-4 z-[9999] opacity-0 group-hover:opacity-100"
+              @click="deletePhoto(photo.id)"
             />
+            <img
+              v-if="photo"
+              :src="`/photos/${getPhotoThumbnail(photo)}`"
+              class="aspect-[4/3] w-full rounded-md transition-all duration-200 border-image object-contain"
+            >
           </li>
           <template v-if="loading">
             <li v-for="i in LIMIT" :key="i">
-              <USkeleton class="aspect-[4/3] w-full max-h-[430px] rounded-md transition-all duration-200 border-image object-contain" />
+              <USkeleton class="aspect-[4/3] w-full rounded-md transition-all duration-200 border-image object-contain" />
             </li>
           </template>
         </ul>
