@@ -11,14 +11,14 @@ function getBlobUrl(file: File): string {
 
 <template>
   <div class="flex flex-col items-center gap-1">
-    <USkeleton v-if="file === 'loading'" class="w-24 h-24 rounded" />
+    <Skeleton v-if="file === 'loading'" class="h-24 w-24 rounded" />
     <img
       v-else-if="file"
       :src="getBlobUrl(file)"
       :alt="file.name"
-      class="w-24 h-24 object-cover rounded"
+      class="h-24 w-24 rounded object-cover"
     >
-    <div v-else class="w-24 h-24 bg-gray-100 rounded flex items-center justify-center">
+    <div v-else class="h-24 w-24 flex items-center justify-center rounded bg-gray-100">
       <span class="text-sm text-gray-400">{{ type }}</span>
     </div>
     <span class="text-xs text-gray-500">{{ type }}</span>

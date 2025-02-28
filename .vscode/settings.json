@@ -44,20 +44,16 @@
     "css",
     "less",
     "scss",
-    "pcss",
-    "tailwindcss"
+    "pcss"
   ],
 
-  "files.associations": {
-    "*.css": "tailwindcss"
-  },
   "editor.quickSuggestions": {
     "strings": true
   },
-  "tailwindCSS.experimental.configFile": "tailwind.config.ts",
 
   "typescript.tsdk": "node_modules/typescript/lib",
   "cSpell.words": [
-    "exif"
+    "exif",
+    "sonner"
   ]
 }

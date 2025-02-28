@@ -1,17 +1,13 @@
 <script setup lang="ts">
-import colors from 'tailwindcss/colors'
-
-const appConfig = useAppConfig()
+const { theme } = useTheme(true)
 const colorMode = useColorMode()
-
-const grayColors = (colors)[appConfig.ui.gray as keyof typeof colors] || colors.zinc
-
-const color = computed(() => colorMode.value === 'dark' ? grayColors[900] : 'white')
+const isDark = computed(() => colorMode.value === 'dark')
+const themeColor = computed(() => baseColors.find(c => c.name === theme.value)?.activeColor[isDark.value ? 'dark' : 'light'] || theme.value)
 
 useHead({
   meta: [
     { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-    { key: 'theme-color', name: 'theme-color', content: color },
+    { key: 'theme-color', name: 'theme-color', content: themeColor.value },
   ],
   link: [
     { rel: 'icon', type: 'image/svg+xml', href: '/icon.svg' },
@@ -45,11 +41,8 @@ useSeoMeta({
 </script>
 
 <template>
-  <div
-    class="min-h-[100dvh] relative"
-    :class="{ 'flex flex-col md:block': $router.currentRoute.value.fullPath !== '/' }"
-  >
-    <UNotifications />
+  <div class="relative min-h-[100dvh]">
+    <Sonner :visible-toasts="20" />
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>

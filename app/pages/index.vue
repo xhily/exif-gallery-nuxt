@@ -7,7 +7,6 @@ const isOpen = ref(false)
 const deletingImg = ref('')
 const disconnect = ref(false)
 
-const toast = useToast()
 const { loggedIn, clear } = useUserSession()
 
 const LIMIT = 12
@@ -18,7 +17,7 @@ const { photos, hasMore, loadMore, loading, error } = usePhotosInfinite({
 
 watch(error, (err) => {
   if (err)
-    toast.add({ title: 'An error occurred', description: 'Failed to load photos', color: 'red' })
+    toast({ title: 'An error occurred', description: 'Failed to load photos', color: 'red' })
 })
 
 useInfiniteScroll(window, loadMore, { distance: 10, canLoadMore: () => hasMore.value })
@@ -34,7 +33,7 @@ async function deletePhoto(id: string) {
   deletingImg.value = id
 
   await $fetch(`/api/photos/${id}`, { method: 'DELETE' })
-    .catch(() => toast.add({ title: 'An error occured', description: 'Please try again', color: 'red' }))
+    .catch(() => toast({ title: 'An error occured', description: 'Please try again', color: 'red' }))
     .finally(() => deletingImg.value = '')
 }
 
@@ -51,16 +50,14 @@ async function clearSession() {
       v-if="photos"
       class="relative p-4"
     >
-      <UModal
-        v-model="isOpen"
-        class="flex items-center justify-center relative"
-        side="left"
-      >
-        <LoginForm
-          class="z-50 bg-gray-800 rounded-md"
-          @close="isOpen = false"
-        />
-      </UModal>
+      <Dialog :open="isOpen">
+        <DialogContent>
+          <LoginForm
+            class="z-50 rounded-md bg-gray-800"
+            @close="isOpen = false"
+          />
+        </DialogContent>
+      </Dialog>
 
       <BottomMenu class="bottom-menu">
         <template #logo>
@@ -71,8 +68,8 @@ async function clearSession() {
           >
         </template>
         <template #description>
-          <div class="flex gap-x-4 items-center">
-            <p class="bottom-menu-description text-sm sm:text-base leading-tight sm:leading-normal">
+          <div class="flex items-center gap-x-4">
+            <p class="bottom-menu-description text-sm leading-tight sm:text-base sm:leading-normal">
               Media Gallery template
             </p>
             <NuxtLink
@@ -82,30 +79,32 @@ async function clearSession() {
             >
               <UIcon
                 name="i-simple-icons-github"
-                class="w-5 h-5"
+                class="h-5 w-5"
               />
             </NuxtLink>
           </div>
         </template>
         <template #buttons>
           <div class="flex gap-x-2">
-            <UButton
+            <Button
               v-if="loggedIn"
               :loading="disconnect"
               icon="i-heroicons-power-20-solid"
-              color="red"
+              class="c-red"
               variant="ghost"
               @click="clearSession"
-            />
-            <UButton
+            >
+              <div class="i-lucide-power" />
+            </Button>
+            <Button
               v-else
-              label="Sign in"
-              color="green"
               variant="ghost"
               aria-label="Sign in"
-              class="mr-4 sm:mr-0"
+              class="mr-4 c-green sm:mr-0"
               @click="isOpen = true"
-            />
+            >
+              <span>Sign in</span>
+            </Button>
           </div>
         </template>
       </BottomMenu>
@@ -119,47 +118,47 @@ async function clearSession() {
           :key="photo.id"
           class="flex gap-4"
         >
-          <div class="relative group flex-[2]">
-            <UButton
+          <div class="group relative flex-[2]">
+            <Button
               v-if="loggedIn"
               :loading="deletingImg === photo.id"
-              color="white"
-              icon="i-heroicons-trash-20-solid"
-              class="absolute top-4 right-4 z-[9999] opacity-0 group-hover:opacity-100"
+              class="absolute right-4 top-4 z-[9999] opacity-0 group-hover:opacity-100"
               @click="deletePhoto(photo.id)"
-            />
+            >
+              <div class="i-lucide-trash" />
+            </Button>
             <NuxtLink
               :to="`/detail/${getPhotoImg(photo)}`"
             >
               <img
                 v-if="photo"
                 :src="`/photos/${getPhotoImg(photo)}`"
-                class="w-full h-auto rounded-md transition-all duration-200 border-image object-contain"
+                class="border-image h-auto w-full rounded-md object-contain transition-all duration-200"
               >
             </NuxtLink>
           </div>
-          <div class="flex-[1] sticky top-16 h-fit">
+          <div class="sticky top-16 h-fit flex-[1]">
             {{ photo.title }}
           </div>
         </li>
         <template v-if="loading">
           <li v-for="i in LIMIT" :key="i">
-            <USkeleton class="w-full h-auto rounded-md transition-all duration-200 border-image object-contain" />
+            <Skeleton class="border-image h-auto w-full rounded-md object-contain transition-all duration-200" />
           </li>
         </template>
       </ul>
     </section>
     <div
       v-else
-      class="flex items-center space-x-4 z-10"
+      class="z-10 flex items-center space-x-4"
     >
-      <USkeleton
-        class="h-12 w-12 bg-primary-500"
+      <Skeleton
+        class="bg-primary-500 h-12 w-12"
         :ui="{ rounded: 'rounded-full' }"
       />
       <div class="space-y-2">
-        <USkeleton class="h-4 w-[250px] bg-primary-500" />
-        <USkeleton class="h-4 w-[200px] bg-primary-500" />
+        <Skeleton class="bg-primary-500 h-4 w-[250px]" />
+        <Skeleton class="bg-primary-500 h-4 w-[200px]" />
       </div>
     </div>
   </div>

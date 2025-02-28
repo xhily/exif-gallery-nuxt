@@ -24,8 +24,6 @@ const uploadLoading = ref(false)
 const { config: uploadConfig } = useUploadConfig()
 const { config: aiConfig } = useAIConfig()
 
-const toast = useToast()
-
 const dropZoneRef = ref<HTMLElement>()
 const fileInput = ref<HTMLInputElement>()
 function onDrop(files: File[] | null) {
@@ -105,20 +103,20 @@ async function upload(fileEntry: FileEntry) {
     }))
 
     if (response.success) {
-      toast.add({ title: `上传成功 ${fileEntry.photo.title || ''}`, description: fileEntry.file.name, color: 'green' })
+      toast({ title: `上传成功 ${fileEntry.photo.title || ''}`, description: fileEntry.file.name, color: 'green' })
       const index = files.value.findIndex(f => f.id === fileEntry.id)
       if (index !== -1) {
         files.value.splice(index, 1)
       }
     }
     else {
-      toast.add({ title: '上传失败', description: '请重试', color: 'red' })
+      toast({ title: '上传失败', description: '请重试', color: 'red' })
       fileEntry.uploadLoading = false
       setFile(fileEntry)
     }
   }
   catch (error: any) {
-    toast.add({
+    toast({
       title: '上传失败',
       description: error.data?.message || error.message || '请重试',
       color: 'red',
@@ -218,7 +216,7 @@ const activeId = ref<number>()
 </script>
 
 <template>
-  <div class="container mx-auto p-4">
+  <div class="mx-auto p-4 container">
     <UploadConfig :disabled="files.length > 0" />
 
     <section
@@ -242,15 +240,14 @@ const activeId = ref<number>()
     </section>
 
     <div class="space-y-4">
-      <UButton
+      <Button
         v-if="files.length"
-        color="gray"
-        variant="solid"
-        label="上传全部"
         :disabled="aiLoading || compressLoading"
         :loading="uploadLoading"
         @click="uploadAll()"
-      />
+      >
+        <span>上传全部</span>
+      </Button>
       <UploadPhoto
         v-for="file in files"
         :id="file.id"

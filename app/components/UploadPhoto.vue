@@ -74,44 +74,38 @@ onUnmounted(() => {
 
 <template>
   <div class="w-full">
-    <UCard
-      :ui="{
-        background: 'hover:bg-gray-50',
-      }"
-    >
-      <div class="flex justify-between gap-2 relative">
-        <div class="absolute top-0 right-0 flex flex-col gap-2 items-end">
-          <UButton
-            color="gray"
-            variant="solid"
+    <Card>
+      <div class="relative flex justify-between gap-2">
+        <div class="absolute right-0 top-0 flex flex-col items-end gap-2">
+          <Button
             class="w-fit"
-            label="上传"
             :disabled="aiLoading || compressLoading"
             :loading="uploadLoading"
             @click="emit('upload')"
-          />
-          <UButton
-            color="gray"
-            variant="solid"
+          >
+            <span>上传</span>
+          </Button>
+          <Button
             class="w-fit"
-            label="AI识图"
             :loading="aiLoading"
             @click="emit('generate')"
-          />
+          >
+            <span>AI识图</span>
+          </Button>
         </div>
         <div class="flex flex-col gap-4">
-          <div class="flex flex-wrap gap-2 items-center mr-10">
-            <div class="font-medium text-lg mr-2">
+          <div class="mr-10 flex flex-wrap items-center gap-2">
+            <div class="mr-2 text-lg font-medium">
               {{ file.name }}
             </div>
-            <UBadge
+            <Badge
               v-for="tag in photo.tags?.split(',') || []"
               :key="tag"
-              :label="tag"
-              color="gray"
-            />
+            >
+              <span>{{ tag }}</span>
+            </Badge>
           </div>
-          <div class="flex flex-wrap gap-4 items-center mr-10">
+          <div class="mr-10 flex flex-wrap items-center gap-4">
             <div class="text-lg">
               {{ photo.title || '未命名' }}
             </div>
@@ -119,7 +113,7 @@ onUnmounted(() => {
               {{ photo.caption }}
             </div>
           </div>
-          <div class="flex flex-wrap gap-6 items-start flex-1">
+          <div class="flex flex-1 flex-wrap items-start gap-6">
             <div ref="viewerRef" class="flex gap-4">
               <UploadPhotoImage type="original" :file="file" />
               <UploadPhotoImage v-if="uploadConfig.formats.jpeg" type="JPEG" :file="compressFile?.jpeg" />
@@ -128,7 +122,7 @@ onUnmounted(() => {
               <UploadPhotoImage v-if="uploadConfig.formats.thumbnail" type="thumbnail" :file="compressFile?.thumbnail" />
             </div>
 
-            <div class="flex flex-col gap-2 flex-1 min-w-[200px]">
+            <div class="min-w-[200px] flex flex-1 flex-col gap-2">
               <div class="text-sm text-gray-600">
                 {{ photo.make }} {{ photo.model }}
               </div>
@@ -141,17 +135,17 @@ onUnmounted(() => {
             </div>
           </div>
         </div>
-        <UButton
-          color="gray"
+        <Button
           variant="ghost"
           class="self-center"
-          :icon="activeId === id ? 'i-heroicons-chevron-up' : 'i-heroicons-chevron-down'"
           @click="toggleItem(id)"
-        />
+        >
+          <div :class="activeId === id ? 'i-lucide-chevron-up' : 'i-lucide-chevron-down'" />
+        </Button>
       </div>
       <div v-if="activeId === id">
         <UploadPhotoForm v-model="photo" />
       </div>
-    </UCard>
+    </Card>
   </div>
 </template>

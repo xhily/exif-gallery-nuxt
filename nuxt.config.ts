@@ -4,15 +4,35 @@ export default defineNuxtConfig({
   future: { compatibilityVersion: 4 },
   modules: [
     '@nuxthub/core',
+    '@nuxtjs/color-mode',
     '@nuxt/fonts',
-    '@nuxt/ui',
     '@nuxt/eslint',
     '@vueuse/nuxt',
+    '@unocss/nuxt',
     'nuxt-auth-utils',
   ],
   hub: {
     blob: true,
     database: true,
+  },
+  components: [
+    {
+      path: '~/components/ui',
+      prefix: '',
+      extensions: ['vue'],
+    },
+    '~/components',
+  ],
+  imports: {
+    presets: [
+      { from: 'vue-sonner', imports: ['toast'] },
+    ],
+  },
+  css: [
+    '@unocss/reset/tailwind.css',
+  ],
+  colorMode: {
+    classSuffix: '',
   },
   experimental: {
     viewTransition: true,
@@ -33,5 +53,17 @@ export default defineNuxtConfig({
     optimizeDeps: {
       exclude: ['@jsquash/avif', '@jsquash/jpeg', '@jsquash/png', '@jsquash/resize', '@jsquash/webp'],
     },
+    plugins: [
+      {
+        name: 'expose-theme',
+        transform(src, id) {
+          if (id.includes('unocss-preset-shadcn')) {
+            return {
+              code: `${src}\nexport { theme };\n`,
+            }
+          }
+        },
+      },
+    ],
   },
 })
