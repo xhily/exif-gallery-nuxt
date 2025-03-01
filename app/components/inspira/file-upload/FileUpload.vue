@@ -3,14 +3,15 @@ import type { HTMLAttributes } from 'vue'
 import { Motion } from 'motion-v'
 import { cn } from '~/lib/utils'
 
-interface FileUploadProps {
+const props = defineProps<{
   class?: HTMLAttributes['class']
-}
-
-defineProps<FileUploadProps>()
+  accept?: string
+  multiple?: boolean
+  showList?: boolean
+}>()
 
 const emit = defineEmits<{
-  (e: 'onChange', files: File[]): void
+  (e: 'change', files: File[]): void
 }>()
 
 const fileInputRef = ref<HTMLInputElement | null>(null)
@@ -18,8 +19,8 @@ const files = ref<File[]>([])
 const isActive = ref<boolean>(false)
 
 function handleFileChange(newFiles: File[]) {
+  emit('change', newFiles)
   files.value = [...files.value, ...newFiles]
-  emit('onChange', files.value)
 }
 
 function onFileChange(e: Event) {
@@ -65,6 +66,8 @@ function handleDrop(e: DragEvent) {
           ref="fileInputRef"
           type="file"
           class="hidden"
+          :accept="props.accept"
+          :multiple="props.multiple"
           @change="onFileChange"
         >
 
@@ -89,54 +92,55 @@ function handleDrop(e: DragEvent) {
           </p>
 
           <div class="relative mx-auto mt-10 max-w-xl w-full space-y-4">
-            <Motion
-              v-for="(file, idx) in files"
-              :key="`file-${idx}`"
-              :initial="{ opacity: 0, scaleX: 0 }"
-              :animate="{ opacity: 1, scaleX: 1 }"
-              class="relative z-40 mx-auto w-full flex flex-col items-start justify-start overflow-hidden rounded-md bg-white p-4 shadow-sm md:h-24 dark:bg-neutral-900"
-            >
-              <div class="w-full flex items-center justify-between gap-4">
-                <Motion
-                  as="p"
-                  :initial="{ opacity: 0 }"
-                  :animate="{ opacity: 1 }"
-                  class="max-w-xs truncate text-base text-neutral-700 dark:text-neutral-300"
-                >
-                  {{ file.name }}
-                </Motion>
-                <Motion
-                  as="p"
-                  :initial="{ opacity: 0 }"
-                  :animate="{ opacity: 1 }"
-                  class="w-fit shrink-0 rounded-lg px-2 py-1 text-sm text-neutral-600 shadow-input dark:bg-neutral-800 dark:text-white"
-                >
-                  {{ (file.size / (1024 * 1024)).toFixed(2) }} MB
-                </Motion>
-              </div>
-
-              <div
-                class="mt-2 w-full flex flex-col items-start justify-between text-sm text-neutral-600 md:flex-row md:items-center dark:text-neutral-400"
+            <template v-if="showList && files.length">
+              <Motion
+                v-for="(file, idx) in files"
+                :key="`file-${idx}`"
+                :initial="{ opacity: 0, scaleX: 0 }"
+                :animate="{ opacity: 1, scaleX: 1 }"
+                class="relative z-40 mx-auto w-full flex flex-col items-start justify-start overflow-hidden rounded-md bg-white p-4 shadow-sm md:h-24 dark:bg-neutral-900"
               >
-                <Motion
-                  as="p"
-                  :initial="{ opacity: 0 }"
-                  :animate="{ opacity: 1 }"
-                  class="rounded-md bg-gray-100 px-1.5 py-1 text-sm dark:bg-neutral-800"
-                >
-                  {{ file.type || "unknown type" }}
-                </Motion>
-                <Motion
-                  as="p"
-                  :initial="{ opacity: 0 }"
-                  :animate="{ opacity: 1 }"
-                >
-                  modified {{ new Date(file.lastModified).toLocaleDateString() }}
-                </Motion>
-              </div>
-            </Motion>
+                <div class="w-full flex items-center justify-between gap-4">
+                  <Motion
+                    as="p"
+                    :initial="{ opacity: 0 }"
+                    :animate="{ opacity: 1 }"
+                    class="max-w-xs truncate text-base text-neutral-700 dark:text-neutral-300"
+                  >
+                    {{ file.name }}
+                  </Motion>
+                  <Motion
+                    as="p"
+                    :initial="{ opacity: 0 }"
+                    :animate="{ opacity: 1 }"
+                    class="w-fit shrink-0 rounded-lg px-2 py-1 text-sm text-neutral-600 shadow-input dark:bg-neutral-800 dark:text-white"
+                  >
+                    {{ (file.size / (1024 * 1024)).toFixed(2) }} MB
+                  </Motion>
+                </div>
 
-            <template v-if="!files.length">
+                <div
+                  class="mt-2 w-full flex flex-col items-start justify-between text-sm text-neutral-600 md:flex-row md:items-center dark:text-neutral-400"
+                >
+                  <Motion
+                    as="p"
+                    :initial="{ opacity: 0 }"
+                    :animate="{ opacity: 1 }"
+                    class="rounded-md bg-gray-100 px-1.5 py-1 text-sm dark:bg-neutral-800"
+                  >
+                    {{ file.type || "unknown type" }}
+                  </Motion>
+                  <Motion
+                    as="p"
+                    :initial="{ opacity: 0 }"
+                    :animate="{ opacity: 1 }"
+                  >
+                    modified {{ new Date(file.lastModified).toLocaleDateString() }}
+                  </Motion>
+                </div>
+              </Motion>
+            </template>
+            <template v-if="!showList || !files.length">
               <Motion
                 as="div"
                 class="relative z-40 mx-auto mt-4 h-32 max-w-32 w-full flex items-center justify-center rounded-md bg-white shadow-[0px_10px_50px_rgba(0,0,0,0.1)] dark:bg-neutral-900 group-hover/file:shadow-2xl"
@@ -160,11 +164,7 @@ function handleDrop(e: DragEvent) {
                     : {}
                 "
               >
-                <Icon
-                  name="heroicons:arrow-up-tray-20-solid"
-                  class="text-neutral-600 dark:text-neutral-400"
-                  size="20"
-                />
+                <div class="i-lucide-upload text-20 text-neutral-600 dark:text-neutral-400" />
               </Motion>
 
               <div

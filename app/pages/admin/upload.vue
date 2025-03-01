@@ -24,27 +24,6 @@ const uploadLoading = ref(false)
 const { config: uploadConfig } = useUploadConfig()
 const { config: aiConfig } = useAIConfig()
 
-// const dropZoneRef = ref<HTMLElement>()
-// const fileInput = ref<HTMLInputElement>()
-// function onDrop(files: File[] | null) {
-//   if (files?.length) {
-//     processFiles(files)
-//   }
-// }
-
-// const { isOverDropZone } = useDropZone(dropZoneRef, onDrop)
-
-// function openFilePicker() {
-//   fileInput.value?.click()
-// }
-
-// async function fileSelection(event: Event) {
-//   const target = event.target as HTMLInputElement
-//   if (target.files?.length) {
-//     await processFiles(Array.from(target.files))
-//   }
-// }
-
 function setFile(fileEntry: FileEntry) {
   const index = files.value.findIndex(f => f.id === fileEntry.id)
   if (index !== -1) {
@@ -218,29 +197,11 @@ const activeId = ref<number>()
   <div class="mx-auto p-4 container">
     <UploadConfig :disabled="files.length > 0" />
 
-    <!-- <section
-      ref="dropZoneRef"
-      class="relative p-4"
-    >
-      <input
-        ref="fileInput"
-        class="hidden"
-        type="file"
-        accept="image/*"
-        multiple
-        @change="fileSelection"
-      >
-      <UploadButton
-        type="submit"
-        class="mb-6"
-        :is-over-drop-zone="isOverDropZone"
-        @click="openFilePicker"
-      />
-    </section> -->
-
     <div class="p-8 space-y-6 dark:bg-black">
       <FileUpload
         class="border border-neutral-200 rounded-lg border-dashed dark:border-neutral-800"
+        multiple
+        accept="image/*"
         @change="processFiles"
       >
         <FileUploadGrid />

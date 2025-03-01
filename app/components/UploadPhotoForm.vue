@@ -30,13 +30,13 @@ const photo = defineModel<IPhoto>({ required: true })
           <FormItem>
             <FormLabel>标签</FormLabel>
             <FormControl>
-              <TagsInput v-model="photo.tags">
+              <TagsInputString v-model="photo.tags">
                 <TagsInputItem v-for="tag in photo.tags?.split(',') || []" :key="tag" :value="tag">
                   <TagsInputItemText />
                   <TagsInputItemDelete />
                 </TagsInputItem>
                 <TagsInputInput placeholder="添加标签..." />
-              </TagsInput>
+              </TagsInputString>
             </FormControl>
           </FormItem>
         </FormField>
