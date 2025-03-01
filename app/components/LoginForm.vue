@@ -28,45 +28,53 @@ async function login() {
 </script>
 
 <template>
-  <form
-    class="relative min-w-[300px] flex flex-col items-center gap-4 p-4"
-    @submit.prevent="login"
-  >
-    <h1 class="text-lg text-gray-300 font-medium">
-      Login to upload images
-    </h1>
-
-    <div class="relative max-w-sm w-full items-center">
-      <Input
-        v-model="password"
-        type="password"
-        placeholder="Enter password"
-        class="w-full ps-10"
-      />
-      <span class="absolute start-0 inset-y-0 flex items-center justify-center px-2">
-        <div class="i-lucide-key size-6 text-muted-foreground" />
-      </span>
-    </div>
-
-    <Button
-      type="submit"
-      :disabled="!password || loading"
-      class="w-full"
-      variant="default"
-    >
-      <span v-if="loading" class="me-2">
-        <div class="i-lucide-loader-2 animate-spin" />
-      </span>
-      Login
-    </Button>
-
-    <Button
-      variant="ghost"
-      size="icon"
-      class="absolute right-2 top-2"
-      @click="$emit('close')"
-    >
-      <div class="i-lucide-x h-4 w-4" />
-    </Button>
-  </form>
+  <Card class="mx-auto lt-sm:w-full sm:min-w-sm">
+    <CardHeader>
+      <CardTitle class="text-2xl">
+        Login
+      </CardTitle>
+      <CardDescription>
+        Login to manage photos
+      </CardDescription>
+    </CardHeader>
+    <CardContent>
+      <form
+        @submit.prevent="login"
+      >
+        <div class="grid gap-4">
+          <div class="grid gap-2">
+            <div class="flex items-center">
+              <Label for="password">Password</Label>
+            </div>
+            <div class="relative max-w-sm w-full items-center">
+              <Input
+                v-model="password"
+                type="password"
+                autocomplete="on"
+                required
+                placeholder="Enter password"
+                class="w-full ps-10"
+              />
+              <span class="absolute start-0 inset-y-0 flex items-center justify-center px-2">
+                <div class="i-lucide-key text-6 text-muted-foreground" />
+              </span>
+            </div>
+          </div>
+          <Button
+            type="submit"
+            class="w-full"
+            :disabled="!password || loading"
+            :loading="loading"
+          >
+            Login
+          </Button>
+          <NuxtLink to="/">
+            <Button variant="outline" class="w-full">
+              Back to Gallery
+            </Button>
+          </NuxtLink>
+        </div>
+      </form>
+    </CardContent>
+  </Card>
 </template>

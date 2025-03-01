@@ -7,6 +7,7 @@
     <PopoverTrigger as-child>
       <Button
         variant="ghost"
+        size="icon"
       >
         <div class="i-lucide-paintbrush" />
       </Button>

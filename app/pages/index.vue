@@ -3,11 +3,9 @@ definePageMeta({
   layout: 'home',
 })
 
-const isOpen = ref(false)
 const deletingImg = ref('')
-const disconnect = ref(false)
 
-const { loggedIn, clear } = useUserSession()
+const { loggedIn } = useUserSession()
 
 const LIMIT = 12
 
@@ -37,11 +35,6 @@ async function deletePhoto(id: string) {
     .finally(() => deletingImg.value = '')
 }
 
-async function clearSession() {
-  disconnect.value = true
-
-  await clear().finally(() => disconnect.value = false)
-}
 </script>
 
 <template>
@@ -50,65 +43,6 @@ async function clearSession() {
       v-if="photos"
       class="relative p-4"
     >
-      <Dialog :open="isOpen">
-        <DialogContent>
-          <LoginForm
-            class="z-50 rounded-md bg-gray-800"
-            @close="isOpen = false"
-          />
-        </DialogContent>
-      </Dialog>
-
-      <BottomMenu class="bottom-menu">
-        <template #logo>
-          <img
-            src="/logo.svg"
-            width="29"
-            height="20"
-          >
-        </template>
-        <template #description>
-          <div class="flex items-center gap-x-4">
-            <p class="bottom-menu-description text-sm leading-tight sm:text-base sm:leading-normal">
-              Media Gallery template
-            </p>
-            <NuxtLink
-              to="https://github.com/Flosciante/nuxt-image-gallery"
-              target="blank"
-              class="flex items-center"
-            >
-              <UIcon
-                name="i-simple-icons-github"
-                class="h-5 w-5"
-              />
-            </NuxtLink>
-          </div>
-        </template>
-        <template #buttons>
-          <div class="flex gap-x-2">
-            <Button
-              v-if="loggedIn"
-              :loading="disconnect"
-              icon="i-heroicons-power-20-solid"
-              class="c-red"
-              variant="ghost"
-              @click="clearSession"
-            >
-              <div class="i-lucide-power" />
-            </Button>
-            <Button
-              v-else
-              variant="ghost"
-              aria-label="Sign in"
-              class="mr-4 c-green sm:mr-0"
-              @click="isOpen = true"
-            >
-              <span>Sign in</span>
-            </Button>
-          </div>
-        </template>
-      </BottomMenu>
-
       <ul
         v-if="photos && photos.length"
         class="flex flex-col md:px-20"

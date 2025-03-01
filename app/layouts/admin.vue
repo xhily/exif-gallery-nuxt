@@ -1,16 +1,20 @@
 <script setup lang="ts">
 const { path } = toRefs(useRoute())
 
-const links = [
-  {
-    icon: 'i-lucide-layout-grid',
-    to: '/admin',
-  },
-  {
-    icon: 'i-lucide-upload',
-    to: '/admin/upload',
-  },
-]
+const links = [{
+  icon: 'i-lucide-layout-grid',
+  to: '/admin',
+}, {
+  icon: 'i-lucide-upload',
+  to: '/admin/upload',
+}]
+const disconnect = ref(false)
+const { loggedIn, clear } = useUserSession()
+
+async function clearSession() {
+  disconnect.value = true
+  await clear().finally(() => disconnect.value = false)
+}
 </script>
 
 <template>
@@ -28,16 +32,27 @@ const links = [
         </NuxtLink>
       </div>
     </nav>
-    <div class="flex items-center gap-4">
+    <div class="flex items-center gap-1">
       <ThemePopover />
-      <ThemeColorMode />
+      <Button
+        v-if="loggedIn"
+        :loading="disconnect"
+        class="c-red"
+        variant="ghost"
+        size="icon"
+        @click="clearSession"
+      >
+        <div class="i-lucide-power" />
+      </Button>
       <NuxtLink to="/">
-        <div class="i-lucide-monitor" />
+        <div class="ms-1">
+          Logo
+        </div>
       </NuxtLink>
-      <div class="me-2">
-        Logo
-      </div>
     </div>
   </header>
-  <slot />
+  <div v-if="!loggedIn" class="h-80dvh flex items-center justify-center p-4">
+    <LoginForm />
+  </div>
+  <slot v-else />
 </template>

@@ -28,15 +28,21 @@ const links = [
         </NuxtLink>
       </div>
     </nav>
-    <div class="flex items-center gap-4">
+    <div class="flex items-center gap-1">
       <ThemePopover />
-      <ThemeColorMode />
       <NuxtLink to="/admin">
-        <div class="i-lucide-lock" />
+        <Button
+          variant="ghost"
+          size="icon"
+        >
+          <div class="i-lucide-lock" />
+        </Button>
       </NuxtLink>
-      <div class="me-2">
-        Logo
-      </div>
+      <NuxtLink to="/">
+        <div class="ms-1">
+          Logo
+        </div>
+      </NuxtLink>
     </div>
   </header>
   <slot />

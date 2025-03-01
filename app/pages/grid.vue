@@ -3,11 +3,9 @@ definePageMeta({
   layout: 'home',
 })
 
-const isOpen = ref(false)
 const deletingImg = ref('')
-const disconnect = ref(false)
 
-const { loggedIn, clear } = useUserSession()
+const { loggedIn } = useUserSession()
 
 const LIMIT = 36
 
@@ -46,12 +44,6 @@ async function deletePhoto(id: string) {
     .catch(() => toast({ title: 'An error occured', description: 'Please try again', color: 'red' }))
     .finally(() => deletingImg.value = '')
 }
-
-async function clearSession() {
-  disconnect.value = true
-
-  await clear().finally(() => disconnect.value = false)
-}
 </script>
 
 <template>
@@ -60,65 +52,6 @@ async function clearSession() {
       v-if="photos"
       class="relative p-4"
     >
-      <Dialog :open="isOpen">
-        <DialogContent>
-          <LoginForm
-            class="z-50 rounded-md bg-gray-800"
-            @close="isOpen = false"
-          />
-        </DialogContent>
-      </Dialog>
-
-      <BottomMenu class="bottom-menu">
-        <template #logo>
-          <img
-            src="/logo.svg"
-            width="29"
-            height="20"
-          >
-        </template>
-        <template #description>
-          <div class="flex items-center gap-x-4">
-            <p class="bottom-menu-description text-sm leading-tight sm:text-base sm:leading-normal">
-              Media Gallery template
-            </p>
-            <NuxtLink
-              to="https://github.com/Flosciante/nuxt-image-gallery"
-              target="blank"
-              class="flex items-center"
-            >
-              <UIcon
-                name="i-simple-icons-github"
-                class="h-5 w-5"
-              />
-            </NuxtLink>
-          </div>
-        </template>
-        <template #buttons>
-          <div class="flex gap-x-2">
-            <Button
-              v-if="loggedIn"
-              :loading="disconnect"
-              icon="i-heroicons-power-20-solid"
-              class="c-red"
-              variant="ghost"
-              @click="clearSession"
-            >
-              <div class="i-lucide-power" />
-            </Button>
-            <Button
-              v-else
-              variant="ghost"
-              aria-label="Sign in"
-              class="mr-4 c-green sm:mr-0"
-              @click="isOpen = true"
-            >
-              <span>Sign in</span>
-            </Button>
-          </div>
-        </template>
-      </BottomMenu>
-
       <div
         class="w-full flex gap-4"
       >
@@ -131,14 +64,14 @@ async function clearSession() {
             :key="photo.id"
             class="group relative w-full"
           >
-            <UButton
+            <Button
               v-if="loggedIn"
               :loading="deletingImg === photo.id"
-              color="white"
-              icon="i-heroicons-trash-20-solid"
               class="absolute right-4 top-4 z-[9999] opacity-0 group-hover:opacity-100"
               @click="deletePhoto(photo.id)"
-            />
+            >
+              <div class="i-lucide-trash" />
+            </Button>
             <NuxtLink
               :to="`/detail/${getPhotoImg(photo)}`"
             >
@@ -151,7 +84,7 @@ async function clearSession() {
           </li>
           <template v-if="loading">
             <li v-for="i in LIMIT" :key="i">
-              <USkeleton class="border-image aspect-[4/3] w-full rounded-md object-contain transition-all duration-200" />
+              <Skeleton class="border-image aspect-[4/3] w-full rounded-md object-contain transition-all duration-200" />
             </li>
           </template>
         </ul>
