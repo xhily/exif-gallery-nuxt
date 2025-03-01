@@ -13,7 +13,7 @@ const { photos, hasMore, loadMore, loading, error } = usePhotosInfinite({
 
 watch(error, (err) => {
   if (err)
-    toast({ title: 'An error occurred', description: 'Failed to load photos', color: 'red' })
+    toast.error('An error occurred', { description: 'Failed to load photos' })
 })
 
 useInfiniteScroll(window, loadMore, { distance: 10, canLoadMore: () => hasMore.value })
@@ -28,7 +28,7 @@ function getPhotoThumbnail(photo: Photo) {
 const deletingImg = ref<string>()
 async function deletePhoto(id: string) {
   await $fetch(`/api/photos/${id}`, { method: 'DELETE' })
-    .catch(() => toast({ title: 'An error occured', description: 'Please try again', color: 'red' }))
+  toast.error('An error occurred', { description: 'Please try again' })
 }
 </script>
 

@@ -24,26 +24,26 @@ const uploadLoading = ref(false)
 const { config: uploadConfig } = useUploadConfig()
 const { config: aiConfig } = useAIConfig()
 
-const dropZoneRef = ref<HTMLElement>()
-const fileInput = ref<HTMLInputElement>()
-function onDrop(files: File[] | null) {
-  if (files?.length) {
-    processFiles(files)
-  }
-}
+// const dropZoneRef = ref<HTMLElement>()
+// const fileInput = ref<HTMLInputElement>()
+// function onDrop(files: File[] | null) {
+//   if (files?.length) {
+//     processFiles(files)
+//   }
+// }
 
-const { isOverDropZone } = useDropZone(dropZoneRef, onDrop)
+// const { isOverDropZone } = useDropZone(dropZoneRef, onDrop)
 
-function openFilePicker() {
-  fileInput.value?.click()
-}
+// function openFilePicker() {
+//   fileInput.value?.click()
+// }
 
-async function fileSelection(event: Event) {
-  const target = event.target as HTMLInputElement
-  if (target.files?.length) {
-    await processFiles(Array.from(target.files))
-  }
-}
+// async function fileSelection(event: Event) {
+//   const target = event.target as HTMLInputElement
+//   if (target.files?.length) {
+//     await processFiles(Array.from(target.files))
+//   }
+// }
 
 function setFile(fileEntry: FileEntry) {
   const index = files.value.findIndex(f => f.id === fileEntry.id)
@@ -103,23 +103,22 @@ async function upload(fileEntry: FileEntry) {
     }))
 
     if (response.success) {
-      toast({ title: `上传成功 ${fileEntry.photo.title || ''}`, description: fileEntry.file.name, color: 'green' })
+      toast.success(`上传成功 ${fileEntry.photo.title || ''}`, { description: fileEntry.file.name })
       const index = files.value.findIndex(f => f.id === fileEntry.id)
       if (index !== -1) {
         files.value.splice(index, 1)
       }
     }
     else {
-      toast({ title: '上传失败', description: '请重试', color: 'red' })
+      toast.error('上传失败', { description: '请重试' })
       fileEntry.uploadLoading = false
       setFile(fileEntry)
     }
   }
   catch (error: any) {
-    toast({
-      title: '上传失败',
-      description: error.data?.message || error.message || '请重试',
-      color: 'red',
+    console.error(error)
+    toast.error('上传失败', {
+      description: error?.message || '上传失败',
     })
     fileEntry.uploadLoading = false
     setFile(fileEntry)
@@ -219,7 +218,7 @@ const activeId = ref<number>()
   <div class="mx-auto p-4 container">
     <UploadConfig :disabled="files.length > 0" />
 
-    <section
+    <!-- <section
       ref="dropZoneRef"
       class="relative p-4"
     >
@@ -237,7 +236,16 @@ const activeId = ref<number>()
         :is-over-drop-zone="isOverDropZone"
         @click="openFilePicker"
       />
-    </section>
+    </section> -->
+
+    <div class="p-8 space-y-6 dark:bg-black">
+      <FileUpload
+        class="border border-neutral-200 rounded-lg border-dashed dark:border-neutral-800"
+        @change="processFiles"
+      >
+        <FileUploadGrid />
+      </FileUpload>
+    </div>
 
     <div class="space-y-4">
       <Button

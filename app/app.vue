@@ -10,19 +10,13 @@ useHead({
     { key: 'theme-color', name: 'theme-color', content: themeColor.value },
   ],
   link: [
-    { rel: 'icon', type: 'image/svg+xml', href: '/icon.svg' },
+    { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
   ],
   htmlAttrs: {
     lang: 'en',
   },
-})
-
-useHead({
-  link: [
-    { rel: 'icon', href: '/favicon.ico' },
-  ],
-  htmlAttrs: {
-    lang: 'en',
+  bodyAttrs: {
+    class: 'theme-zinc',
   },
 })
 

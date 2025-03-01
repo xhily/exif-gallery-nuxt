@@ -21,6 +21,11 @@ export default defineNuxtConfig({
       prefix: '',
       extensions: ['vue'],
     },
+    {
+      path: '~/components/inspira',
+      prefix: '',
+      extensions: ['vue'],
+    },
     '~/components',
   ],
   imports: {
@@ -30,6 +35,7 @@ export default defineNuxtConfig({
   },
   css: [
     '@unocss/reset/tailwind.css',
+    '~/styles/themes.css',
   ],
   colorMode: {
     classSuffix: '',

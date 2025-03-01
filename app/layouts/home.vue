@@ -3,7 +3,7 @@ const { path } = toRefs(useRoute())
 
 const links = [
   {
-    icon: 'i-lucide-monitor',
+    icon: 'i-lucide-gallery-vertical',
     to: '/',
   },
   {
@@ -29,15 +29,15 @@ const links = [
       </div>
     </nav>
     <div class="flex items-center gap-1">
-      <ThemePopover />
       <NuxtLink to="/admin">
         <Button
           variant="ghost"
           size="icon"
         >
-          <div class="i-lucide-lock" />
+          <div class="i-lucide-server-cog op-50" />
         </Button>
       </NuxtLink>
+      <ThemePopover />
       <NuxtLink to="/">
         <div class="ms-1">
           Logo

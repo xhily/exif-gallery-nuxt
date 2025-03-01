@@ -17,10 +17,8 @@ async function login() {
       emit('close')
     })
     .catch((err) => {
-      toast({
-        title: `Error ${err.statusCode}`,
+      toast.error(`Error ${err.statusCode}`, {
         description: `${err.data?.message || err.message}. Please try again`,
-        color: 'red',
       })
     })
   loading.value = false
@@ -47,29 +45,28 @@ async function login() {
               <Label for="password">Password</Label>
             </div>
             <div class="relative max-w-sm w-full items-center">
-              <Input
+              <IInput
                 v-model="password"
                 type="password"
                 autocomplete="on"
                 required
                 placeholder="Enter password"
-                class="w-full ps-10"
+                class="w-full ps-8"
               />
               <span class="absolute start-0 inset-y-0 flex items-center justify-center px-2">
-                <div class="i-lucide-key text-6 text-muted-foreground" />
+                <div class="i-lucide-lock-keyhole text-muted-foreground" />
               </span>
             </div>
           </div>
-          <Button
-            type="submit"
+          <InteractiveHoverButton
+            text="Login"
             class="w-full"
             :disabled="!password || loading"
             :loading="loading"
-          >
-            Login
-          </Button>
+            left="38%"
+          />
           <NuxtLink to="/">
-            <Button variant="outline" class="w-full">
+            <Button variant="ghost" class="w-full">
               Back to Gallery
             </Button>
           </NuxtLink>

@@ -8,7 +8,9 @@ export default defineConfig({
     presetWind3(),
     presetAnimations(),
     presetShadcn(builtinColors.map(color => ({ color }))),
-    presetIcons(),
+    presetIcons({
+      scale: 1.2,
+    }),
   ],
   shortcuts: {
     'border-grid': 'border-border/30 dark:border-border border-dashed',
