@@ -216,6 +216,7 @@ const activeId = ref<number>()
     >
       <span>上传全部</span>
     </Button>
+
     <UploadPhoto
       v-for="file in files"
       :id="file.id"

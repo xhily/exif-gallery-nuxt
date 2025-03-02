@@ -79,10 +79,10 @@ onClickOutside(aiCardRef, () => {
           </div>
           <div class="flex items-center space-x-2">
             <Checkbox
-              id="enable-compression"
+              id="formats-thumbnail"
               v-model:checked="uploadConfig.formats.thumbnail"
             />
-            <Label for="enable-compression">生成缩略图</Label>
+            <Label for="formats-thumbnail">生成缩略图</Label>
           </div>
         </div>
       </ClientOnly>
