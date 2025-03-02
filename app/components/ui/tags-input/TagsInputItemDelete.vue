@@ -2,7 +2,6 @@
 import type { TagsInputItemDeleteProps } from 'radix-vue'
 import type { HTMLAttributes } from 'vue'
 import { cn } from '@/lib/utils'
-import { X } from 'lucide-vue-next'
 import { TagsInputItemDelete, useForwardProps } from 'radix-vue'
 import { computed } from 'vue'
 
@@ -21,6 +20,7 @@ const forwardedProps = useForwardProps(delegatedProps)
   <TagsInputItemDelete v-bind="forwardedProps" :class="cn('flex rounded bg-transparent mr-1', props.class)">
     <slot>
       <X class="w-4 h-4" />
+      <div class="size-4 i-lucide-x"></div>
     </slot>
   </TagsInputItemDelete>
 </template>
