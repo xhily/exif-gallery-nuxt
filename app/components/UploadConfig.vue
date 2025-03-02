@@ -26,13 +26,13 @@ onClickOutside(aiCardRef, () => {
   >
     <Card
       ref="compressCardRef"
-      class="relative overflow-hidden p-4"
+      class="group relative overflow-hidden p-4"
       :class="{ 'cursor-pointer': !compressConfiguring }"
       @click="compressConfiguring = true"
     >
       <ClientOnly>
         <div v-if="!compressConfiguring" class="flex flex-wrap gap-2">
-          <div class="i-lucide-cog pointer-events-none absolute bottom--4 right--2 text-6xl op-20" />
+          <div class="i-lucide-cog pointer-events-none absolute bottom--4 right--2 text-6xl op-20 group-hover:animate-spin animate-duration-2000!" />
           <ItemStatus label="压缩优化" :checked="uploadConfig.enableCompression" />
           <Card v-if="uploadConfig.enableCompression" class="flex flex-wrap gap-2 px-2">
             <ItemStatus label="Jpeg" :checked="uploadConfig.formats.jpeg" />
@@ -90,13 +90,13 @@ onClickOutside(aiCardRef, () => {
 
     <Card
       ref="aiCardRef"
-      class="relative overflow-hidden p-4"
+      class="group relative overflow-hidden p-4"
       :class="{ 'cursor-pointer': !aiConfiguring }"
       @click="aiConfiguring = true"
     >
       <ClientOnly>
         <div v-if="!aiConfiguring" class="flex flex-wrap gap-2">
-          <div class="i-lucide-cog pointer-events-none absolute bottom--4 right--2 text-6xl op-20" />
+          <div class="i-lucide-cog pointer-events-none absolute bottom--4 right--2 text-6xl op-20 group-hover:animate-spin animate-duration-2000!" />
           <ItemStatus label="压缩优化" :checked="aiConfig.enabled">
             <span>AI特征提取</span>
             <Badge v-if="aiConfig.enabled" variant="outline" class="ml-2 rounded-lg">
