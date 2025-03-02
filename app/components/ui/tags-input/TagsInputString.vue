@@ -8,7 +8,7 @@ import { computed } from 'vue'
 const props = defineProps<Omit<TagsInputRootProps, 'modelValue'> & { class?: HTMLAttributes['class'] }>()
 const emits = defineEmits<TagsInputRootEmits>()
 
-const model = defineModel<string>()
+const model = defineModel<string | undefined>()
 const value = computed({
   get: () => model.value?.split(',') || [],
   set: (value) => {

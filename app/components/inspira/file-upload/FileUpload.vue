@@ -168,7 +168,7 @@ function handleDrop(e: DragEvent) {
               </Motion>
 
               <div
-                class="absolute inset-0 z-30 mx-auto mt-4 h-32 max-w-32 w-full flex items-center justify-center border border-sky-400 rounded-md border-dashed bg-transparent transition-opacity"
+                class="absolute inset-0 z-30 mx-auto mt-4 h-32 max-w-32 w-full flex items-center justify-center border border-primary rounded-md border-dashed bg-transparent transition-opacity"
                 :class="{ 'opacity-100': isActive, 'opacity-0': !isActive }"
               />
             </template>

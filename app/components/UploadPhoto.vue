@@ -20,6 +20,11 @@ const { config: uploadConfig } = useUploadConfig()
 const photo = defineModel<IPhoto>({ required: true })
 const activeId = defineModel<number>('activeId')
 
+const isOpen = computed({
+  get: () => activeId.value === props.id,
+  set: value => value ? activeId.value = props.id : activeId.value = undefined,
+})
+
 const compressLoading = computed(() =>
   props.compressFile?.jpeg === 'loading'
   || props.compressFile?.webp === 'loading'
@@ -56,10 +61,6 @@ function formatDate(timestamp?: number | Date | null): string {
   return new Date(timestamp).toLocaleDateString()
 }
 
-function toggleItem(id: number) {
-  activeId.value = activeId.value === id ? undefined : id
-}
-
 watch(() => [props.file, props.compressFile], async () => {
   await nextTick()
   if (viewer)
@@ -73,45 +74,24 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="w-full">
-    <Card>
-      <div class="relative flex justify-between gap-2">
-        <div class="absolute right-0 top-0 flex flex-col items-end gap-2">
-          <Button
-            class="w-fit"
-            :disabled="aiLoading || compressLoading"
-            :loading="uploadLoading"
-            @click="emit('upload')"
-          >
-            <span>上传</span>
-          </Button>
-          <Button
-            class="w-fit"
-            :loading="aiLoading"
-            @click="emit('generate')"
-          >
-            <span>AI识图</span>
-          </Button>
-        </div>
-        <div class="flex flex-col gap-4">
-          <div class="mr-10 flex flex-wrap items-center gap-2">
-            <div class="mr-2 text-lg font-medium">
-              {{ file.name }}
-            </div>
+  <Card class="relative p4">
+    <Collapsible v-model:open="isOpen" class="space-y-4">
+      <div class="flex justify-between gap-2">
+        <div class="flex flex-col gap-2">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="mr-2">{{ file.name }}</span>
             <Badge
               v-for="tag in photo.tags?.split(',') || []"
               :key="tag"
+              variant="secondary"
+              class="rounded-lg"
             >
               <span>{{ tag }}</span>
             </Badge>
           </div>
-          <div class="mr-10 flex flex-wrap items-center gap-4">
-            <div class="text-lg">
-              {{ photo.title || '未命名' }}
-            </div>
-            <div class="">
-              {{ photo.caption }}
-            </div>
+          <div class="flex flex-wrap items-center gap-4">
+            <span class="text-lg font-medium">{{ photo.title || '未命名' }}</span>
+            <span class="text-sm text-muted-foreground">{{ photo.caption }}</span>
           </div>
           <div class="flex flex-1 flex-wrap items-start gap-6">
             <div ref="viewerRef" class="flex gap-4">
@@ -135,17 +115,38 @@ onUnmounted(() => {
             </div>
           </div>
         </div>
-        <Button
-          variant="ghost"
-          class="self-center"
-          @click="toggleItem(id)"
-        >
-          <div :class="activeId === id ? 'i-lucide-chevron-up' : 'i-lucide-chevron-down'" />
-        </Button>
+        <div class="flex flex-col items-end justify-center gap-2">
+          <Button
+            variant="outline"
+            class="w-fit"
+            :disabled="aiLoading || compressLoading"
+            :loading="uploadLoading"
+            @click="emit('upload')"
+          >
+            <span>上传</span>
+          </Button>
+          <Button
+            variant="outline"
+            class="w-fit"
+            :loading="aiLoading"
+            @click="emit('generate')"
+          >
+            <span>AI识图</span>
+          </Button>
+        </div>
       </div>
-      <div v-if="activeId === id">
-        <UploadPhotoForm v-model="photo" />
-      </div>
-    </Card>
-  </div>
+      <CollapsibleContent>
+        <Card class="p4">
+          <UploadPhotoForm v-model="photo" />
+        </Card>
+      </CollapsibleContent>
+    </Collapsible>
+    <Button
+      variant="outline"
+      class="absolute bottom-0 left-50% h-6 w-12 translate-x--50% translate-y-50% p-0"
+      @click="isOpen = !isOpen"
+    >
+      <div :class="isOpen ? 'i-lucide-chevron-up' : 'i-lucide-chevron-down'" />
+    </Button>
+  </Card>
 </template>

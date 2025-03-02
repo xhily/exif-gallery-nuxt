@@ -194,43 +194,40 @@ const activeId = ref<number>()
 </script>
 
 <template>
-  <div class="mx-auto p-4 container">
+  <div class="mx-auto flex flex-col gap-4 p-4 container">
     <UploadConfig :disabled="files.length > 0" />
 
-    <div class="p-8 space-y-6 dark:bg-black">
-      <FileUpload
-        class="border border-neutral-200 rounded-lg border-dashed dark:border-neutral-800"
-        multiple
-        accept="image/*"
-        @change="processFiles"
-      >
-        <FileUploadGrid />
-      </FileUpload>
-    </div>
+    <FileUpload
+      class="border border-neutral-200 rounded-lg border-dashed dark:border-neutral-800"
+      multiple
+      accept="image/*"
+      @change="processFiles"
+    >
+      <FileUploadGrid />
+    </FileUpload>
 
-    <div class="space-y-4">
-      <Button
-        v-if="files.length"
-        :disabled="aiLoading || compressLoading"
-        :loading="uploadLoading"
-        @click="uploadAll()"
-      >
-        <span>上传全部</span>
-      </Button>
-      <UploadPhoto
-        v-for="file in files"
-        :id="file.id"
-        :key="file.id"
-        v-model:active-id="activeId"
-        v-model="file.photo"
-        :file="file.file"
-        :compress-file="file.compressedFile"
-        :ai-loading="file.aiLoading"
-        :upload-loading="file.uploadLoading"
-        @upload="upload(file)"
-        @generate="processFileAiDescription(file)"
-      />
-    </div>
+    <Button
+      v-if="files.length"
+      :disabled="aiLoading || compressLoading"
+      :loading="uploadLoading"
+      class="ml-auto"
+      @click="uploadAll()"
+    >
+      <span>上传全部</span>
+    </Button>
+    <UploadPhoto
+      v-for="file in files"
+      :id="file.id"
+      :key="file.id"
+      v-model:active-id="activeId"
+      v-model="file.photo"
+      :file="file.file"
+      :compress-file="file.compressedFile"
+      :ai-loading="file.aiLoading"
+      :upload-loading="file.uploadLoading"
+      @upload="upload(file)"
+      @generate="processFileAiDescription(file)"
+    />
   </div>
 </template>
 
