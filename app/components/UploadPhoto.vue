@@ -76,7 +76,7 @@ onUnmounted(() => {
 <template>
   <Card class="relative p4">
     <Collapsible v-model:open="isOpen" class="space-y-4">
-      <div class="flex justify-between gap-2">
+      <div class="flex lt-md:flex-col justify-between gap-2">
         <div class="flex flex-col gap-2">
           <div class="flex flex-wrap items-center gap-2">
             <span class="mr-2">{{ file.name }}</span>
@@ -94,7 +94,7 @@ onUnmounted(() => {
             <span class="text-sm text-muted-foreground">{{ photo.caption }}</span>
           </div>
           <div class="flex flex-1 flex-wrap items-start gap-6">
-            <div ref="viewerRef" class="flex gap-4">
+            <div ref="viewerRef" class="flex gap-4 flex-wrap">
               <UploadPhotoImage type="original" :file="file" />
               <UploadPhotoImage v-if="uploadConfig.formats.jpeg" type="JPEG" :file="compressFile?.jpeg" />
               <UploadPhotoImage v-if="uploadConfig.formats.webp" type="WebP" :file="compressFile?.webp" />
@@ -115,7 +115,7 @@ onUnmounted(() => {
             </div>
           </div>
         </div>
-        <div class="flex flex-col items-end justify-center gap-2">
+        <div class="flex md:flex-col items-end justify-center gap-2">
           <Button
             variant="outline"
             class="w-fit"

@@ -68,10 +68,7 @@ const colorModeValues = [{
             <span
               class="h-5 w-5 flex shrink-0 items-center justify-center rounded-full bg-[--theme-primary]"
             >
-              <Check
-                v-if="color.name === theme"
-                class="h-3 w-3 text-white"
-              />
+              <div v-if="color.name === theme" class="i-lucide-check h-3 w-3 text-white" />
             </span>
             <span class="ml-2 text-xs capitalize">
               {{ color.name }}

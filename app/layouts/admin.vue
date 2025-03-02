@@ -19,7 +19,7 @@ async function clearSession() {
 </script>
 
 <template>
-  <header class="sticky top-0 z-50 h-14 w-full flex items-center justify-between gap-4 border-b bg-background/60 px-4 backdrop-blur border-grid">
+  <header class="sticky top-0 z-50 h-12 w-full flex items-center justify-between border-b bg-background/60 px-4 backdrop-blur border-grid">
     <nav div class="flex items-center gap-4">
       <div class="flex items-center">
         <NuxtLink
@@ -33,8 +33,16 @@ async function clearSession() {
         </NuxtLink>
       </div>
     </nav>
-    <div class="flex items-center gap-1">
-      <ThemePopover />
+    <nav class="min-w-0 flex flex-auto items-center">
+      <NuxtLink to="https://github.com/wiidede/exif-gallery-nuxt" target="_blank" class="ml-auto">
+        <Button
+          variant="ghost"
+          size="icon"
+        >
+          <div class="i-lucide-github op-50" />
+        </Button>
+      </NuxtLink>
+      <ThemePopover class="flex-shrink-0" />
       <Button
         v-if="loggedIn"
         :loading="disconnect"
@@ -45,13 +53,10 @@ async function clearSession() {
       >
         <div class="i-lucide-power" />
       </Button>
-      <NuxtLink to="/">
-        <div class="ms-1">
-          Logo
-        </div>
+      <NuxtLink to="/" class="ms-1 min-w-0 truncate">
+        Wiidede Gallery
       </NuxtLink>
-    </div>
+    </nav>
   </header>
-
   <slot />
 </template>

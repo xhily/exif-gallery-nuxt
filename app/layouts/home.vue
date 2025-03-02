@@ -14,7 +14,7 @@ const links = [
 </script>
 
 <template>
-  <header class="sticky top-0 z-50 h-14 w-full flex items-center justify-between gap-4 border-b bg-background/60 px-4 backdrop-blur border-grid">
+  <header class="sticky top-0 z-50 h-12 w-full flex items-center justify-between border-b bg-background/60 px-4 backdrop-blur border-grid">
     <nav div class="flex items-center gap-4">
       <div class="flex items-center">
         <NuxtLink
@@ -28,7 +28,15 @@ const links = [
         </NuxtLink>
       </div>
     </nav>
-    <div class="flex items-center gap-1">
+    <nav class="min-w-0 flex flex-auto items-center">
+      <NuxtLink to="https://github.com/wiidede/exif-gallery-nuxt" target="_blank" class="ml-auto">
+        <Button
+          variant="ghost"
+          size="icon"
+        >
+          <div class="i-lucide-github op-50" />
+        </Button>
+      </NuxtLink>
       <NuxtLink to="/admin">
         <Button
           variant="ghost"
@@ -37,13 +45,11 @@ const links = [
           <div class="i-lucide-server-cog op-50" />
         </Button>
       </NuxtLink>
-      <ThemePopover />
-      <NuxtLink to="/">
-        <div class="ms-1">
-          Logo
-        </div>
+      <ThemePopover class="flex-shrink-0" />
+      <NuxtLink to="/" class="ms-1 min-w-0 truncate">
+        Wiidede Gallery
       </NuxtLink>
-    </div>
+    </nav>
   </header>
   <slot />
 </template>

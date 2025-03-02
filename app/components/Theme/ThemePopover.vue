@@ -1,5 +1,9 @@
 <script setup lang="ts">
+defineOptions({
+  inheritAttrs: false,
+})
 
+const attrs = useAttrs()
 </script>
 
 <template>
@@ -8,6 +12,7 @@
       <Button
         variant="ghost"
         size="icon"
+        v-bind="attrs"
       >
         <div class="i-lucide-paintbrush" />
       </Button>
