@@ -14,6 +14,7 @@ const { loggedIn, clear } = useUserSession()
 async function clearSession() {
   disconnect.value = true
   await clear().finally(() => disconnect.value = false)
+  navigateTo('/admin/login')
 }
 </script>
 
@@ -51,8 +52,6 @@ async function clearSession() {
       </NuxtLink>
     </div>
   </header>
-  <div v-if="!loggedIn" class="h-80dvh flex items-center justify-center p-4">
-    <LoginForm />
-  </div>
-  <slot v-else />
+
+  <slot />
 </template>

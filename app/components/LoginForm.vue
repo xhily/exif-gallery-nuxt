@@ -1,5 +1,7 @@
 <script setup lang="ts">
-const emit = defineEmits(['close'])
+const emit = defineEmits<{
+  loggedIn: []
+}>()
 const { fetch: refreshSession } = useUserSession()
 const password = ref('')
 const loading = ref(false)
@@ -14,7 +16,7 @@ async function login() {
   })
     .then(async () => {
       await refreshSession()
-      emit('close')
+      emit('loggedIn')
     })
     .catch((err) => {
       toast.error(`Error ${err.statusCode}`, {
@@ -46,6 +48,7 @@ async function login() {
             </div>
             <div class="relative max-w-sm w-full items-center">
               <IInput
+                id="password"
                 v-model="password"
                 type="password"
                 autocomplete="on"

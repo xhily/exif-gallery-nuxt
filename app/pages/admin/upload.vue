@@ -3,6 +3,7 @@ import pLimit from 'p-limit'
 
 definePageMeta({
   layout: 'admin',
+  middleware: 'auth',
 })
 
 interface FileEntry {
