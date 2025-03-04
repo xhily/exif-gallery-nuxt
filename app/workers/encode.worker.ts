@@ -42,7 +42,10 @@ globalThis.onmessage = async (e) => {
       let thumbnailWidth = options.resizeOptions?.width
       let thumbnailHeight = options.resizeOptions?.height
       if (!thumbnailHeight && !thumbnailWidth) {
-        thumbnailHeight = 240
+        if (imageData.width > imageData.height)
+          thumbnailHeight = 240
+        else
+          thumbnailWidth = 320
       }
       if (!thumbnailWidth && thumbnailHeight) {
         const imageRatio = imageData.width / imageData.height
