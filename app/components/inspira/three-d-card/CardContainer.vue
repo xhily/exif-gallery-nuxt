@@ -36,7 +36,7 @@ function handleMouseLeave() {
 
 <template>
   <div
-    class="flex items-center justify-center p-2" :class="[containerClass]"
+    class="flex items-center justify-center" :class="[containerClass]"
     style="perspective: 1000px"
   >
     <div
