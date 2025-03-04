@@ -31,7 +31,6 @@ useInfiniteScroll(window, loadMore, { distance: 10, canLoadMore: () => hasMore.v
       <PhotoItemFeed
         v-for="photo in photos"
         :key="photo.id"
-        as="li"
         :photo="photo"
         :logged-in="loggedIn"
       />
