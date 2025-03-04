@@ -19,7 +19,6 @@ const { config: uploadConfig } = useUploadConfig()
 
 const photo = defineModel<IPhoto>({ required: true })
 const activeId = defineModel<number>('activeId')
-
 const isOpen = computed({
   get: () => activeId.value === props.id,
   set: value => value ? activeId.value = props.id : activeId.value = undefined,
@@ -51,16 +50,6 @@ onMounted(() => {
   })
 })
 
-function formatExposure(meta: IPhoto): string {
-  return `ƒ/${meta.fNumber} • ${meta.exposureTime}s • ISO ${meta.iso}`
-}
-
-function formatDate(timestamp?: number | Date | null): string {
-  if (!timestamp)
-    return ''
-  return new Date(timestamp).toLocaleDateString()
-}
-
 watch(() => [props.file, props.compressFile], async () => {
   await nextTick()
   if (viewer)
@@ -76,25 +65,22 @@ onUnmounted(() => {
 <template>
   <Card class="relative p4">
     <Collapsible v-model:open="isOpen" class="space-y-4">
-      <div class="flex lt-md:flex-col justify-between gap-2">
+      <div class="flex justify-between gap-2 lt-md:flex-col">
         <div class="flex flex-col gap-2">
           <div class="flex flex-wrap items-center gap-2">
             <span class="mr-2">{{ file.name }}</span>
-            <Badge
+            <Tag
               v-for="tag in photo.tags?.split(',') || []"
               :key="tag"
-              variant="secondary"
-              class="rounded-lg"
-            >
-              <span>{{ tag }}</span>
-            </Badge>
+              :label="tag"
+            />
           </div>
           <div class="flex flex-wrap items-center gap-4">
             <span class="text-lg font-medium">{{ photo.title || '未命名' }}</span>
             <span class="text-sm text-muted-foreground">{{ photo.caption }}</span>
           </div>
           <div class="flex flex-1 flex-wrap items-start gap-6">
-            <div ref="viewerRef" class="flex gap-4 flex-wrap">
+            <div ref="viewerRef" class="flex flex-wrap gap-4">
               <UploadPhotoImage type="original" :file="file" />
               <UploadPhotoImage v-if="uploadConfig.formats.jpeg" type="JPEG" :file="compressFile?.jpeg" />
               <UploadPhotoImage v-if="uploadConfig.formats.webp" type="WebP" :file="compressFile?.webp" />
@@ -107,7 +93,7 @@ onUnmounted(() => {
                 {{ photo.make }} {{ photo.model }}
               </div>
               <div class="text-sm text-gray-600">
-                {{ formatExposure(photo) }}
+                {{ formatExposure(photo).join(' • ') }}
               </div>
               <div class="text-sm text-gray-600">
                 {{ formatDate(photo.takenAt) }}
@@ -115,7 +101,7 @@ onUnmounted(() => {
             </div>
           </div>
         </div>
-        <div class="flex md:flex-col items-end justify-center gap-2">
+        <div class="flex items-end justify-center gap-2 md:flex-col">
           <Button
             variant="outline"
             class="w-fit"

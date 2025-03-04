@@ -1,3 +1,5 @@
+// FIXME too large
+
 type Color =
   | 'zinc'
   | 'slate'

@@ -30,6 +30,30 @@ export function formatFileSize(bytes: number, si = true, dp = 1) {
   return `${bytes.toFixed(dp)} ${units[u]}`
 }
 
+export const toFixed = (num: number, n = 4) => Number(num.toFixed(n)).toString()
+
+export function formatExposureTime(exposureTime: number) {
+  return exposureTime < 1
+    ? `1/${Math.floor(1 / exposureTime)}`
+    : `${exposureTime}`
+}
+
+export function formatExposure(p: IPhoto | Photo): string[] {
+  return [
+    `ƒ/${p.fNumber || '--'}`,
+    `${p.exposureTime ? formatExposureTime(p.exposureTime) : '--'}s`,
+    `ISO ${p.iso || '--'}`,
+  ]
+}
+
+export function formatCameraText(p: IPhoto | Photo) {
+  // Remove 'Corporation' from makes like 'Nikon Corporation'
+  const make = p.make?.replace(/ Corporation/i, '')
+  // Remove potential duplicate make from model
+  const model = p.model?.replace(`${make} `, '')
+  return [make, model].filter(Boolean).join(' ') || '--'
+}
+
 export async function getCompressedImageBase64(file: File): Promise<string> {
   const compressedFiles = await compressImage(file, {
     target: 'jpeg',

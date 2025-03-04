@@ -28,8 +28,12 @@ function getPhotoThumbnail(photo: Photo) {
 
 const deletingImg = ref<string>()
 async function deletePhoto(id: string) {
-  await $fetch(`/api/photos/${id}`, { method: 'DELETE' })
-  toast.error('An error occurred', { description: 'Please try again' })
+  const result = await $fetch(`/api/photos/${id}`, { method: 'DELETE' })
+  if ((result as { success: boolean }).success) {
+    photos.value = photos.value.filter(photo => photo.id !== id)
+  } else {
+    toast.error('An error occurred', { description: 'Please try again' })
+  }
 }
 </script>
 
