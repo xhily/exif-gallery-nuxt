@@ -3,6 +3,8 @@ definePageMeta({
   layout: 'home',
 })
 
+const currentPhoto = useState<string>('currentPhoto', () => ref(''))
+
 const { loggedIn } = useUserSession()
 
 const LIMIT = 12
@@ -24,49 +26,45 @@ useInfiniteScroll(window, loadMore, { distance: 10, canLoadMore: () => hasMore.v
     v-if="photos"
     class="relative p-4"
   >
-    <ul
+    <div
       v-if="photos && photos.length"
       class="flex flex-col gap-4 xl:px-20"
     >
-      <PhotoItemFeed
+      <PhotoItem
         v-for="photo in photos"
         :key="photo.id"
         :photo="photo"
         :logged-in="loggedIn"
-      />
+        :image-class="{ 'current-image': currentPhoto === photo.id }"
+      >
+        <template #action-button>
+          <NuxtLink
+            :to="`/detail/${photo.id}`"
+          >
+            <Button
+              v-if="loggedIn"
+              size="icon"
+              variant="ghost"
+              title="Image detail"
+              class="text-muted-foreground"
+              @click="currentPhoto = photo.id"
+            >
+              <div class="i-lucide-image-upscale" />
+            </Button>
+          </NuxtLink>
+        </template>
+      </PhotoItem>
       <template v-if="loading">
         <li v-for="i in LIMIT" :key="i">
-          <Skeleton class="border-image h-auto w-full rounded-md object-contain transition-all duration-200" />
+          <Skeleton class="aspect-[4/3] h-auto w-full rounded-lg" />
         </li>
       </template>
-    </ul>
+    </div>
   </section>
 </template>
 
 <style scoped>
-@media (min-width: 768px) {
-  .imageEl {
-    view-transition-name: vtn-image;
-  }
-
-  .bottom-menu-description {
-    view-transition-name: vtn-bottom-menu-description;
-  }
-
-  .bottom-menu-button {
-    view-transition-name: vtn-bottom-menu-button;
-  }
-
-  .container-image {
-    background-color: rgba(255, 255, 255, 0.1)
-  }
-  .container-image:hover {
-    background-color: transparent;
-  }
-
-  .border-image {
-    border-width: 1.15px;
-    border-color: rgba(255, 255, 255, 0.1)
-  }
+.current-image {
+  view-transition-name: vtn-image;
 }
 </style>

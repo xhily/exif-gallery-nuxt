@@ -1,9 +1,12 @@
 <script setup lang="ts">
+import type { HTMLAttributes } from 'vue'
+
 const {
   photo,
 } = defineProps<{
   photo: Photo
   loggedIn?: boolean
+  imageClass?: HTMLAttributes['class']
 }>()
 
 const deletingImg = ref('')
@@ -19,40 +22,24 @@ async function deletePhoto(id: string) {
 
 <template>
   <div class="flex gap-1 lt-md:flex-col lg:gap-8 md:gap-4">
-    <ThreeDCardContainer container-class="md:flex-[2] xl:flex-[3] relative z-48 hover:z-49">
-      <ThreeDCardBody>
-        <ThreeDCardItem :translate-z="100">
-          <picture>
-            <source v-if="photo.avif" :srcset="`/photos/${photo.avif}`" type="image/avif">
-            <source v-if="photo.webp" :srcset="`/photos/${photo.webp}`" type="image/webp">
-            <img
-              :src="`/photos/${photo.jpeg || photo.webp || photo.avif}`"
-              class="h-auto w-full rounded-lg object-contain transition-all duration-200"
-            >
-          </picture>
-        </ThreeDCardItem>
-      </ThreeDCardBody>
-    </ThreeDCardContainer>
+    <PhotoItemCard :photo="photo" class="md:flex-[2] xl:flex-[3]" :image-class="imageClass" />
 
     <div class="relative sticky top-16 z-1 h-fit md:flex-[1]">
-      <div class="mb-2 flex md:flex-col lt-md:justify-between md:gap-2">
+      <div class="flex lt-md:mb-2 md:flex-col lt-md:justify-between">
         <div>
           <h3> {{ photo.title }}</h3>
           <p class="text-sm text-muted-foreground">
             {{ photo.caption }}
           </p>
         </div>
-        <div class="flex items-center gap-2">
-          <NuxtLink
-            :to="`/detail/${photo.id}`"
-          >
-            detail
-          </NuxtLink>
+        <div class="ml--2.4 flex items-center">
+          <slot name="action-button" />
           <Button
             v-if="loggedIn"
             size="icon"
-            variant="secondary"
+            variant="ghost"
             :loading="deletingImg === photo.id"
+            class="text-muted-foreground"
             @click="deletePhoto(photo.id)"
           >
             <div class="i-lucide-trash" />
@@ -83,7 +70,7 @@ async function deletePhoto(id: string) {
             v-for="meta, idx in formatExposure(photo)"
             :key="idx"
           >{{ meta }}</span>
-          <li>{{ photo.exposureCompensation ? `${photo.exposureCompensation > 0 ? '+' : ''}${photo.exposureCompensation.toFixed(1)}ev` : '0ev' }}</li>
+          <span>{{ photo.exposureCompensation ? `${photo.exposureCompensation > 0 ? '+' : ''}${photo.exposureCompensation.toFixed(1)}ev` : '0ev' }}</span>
         </div>
       </div>
     </div>

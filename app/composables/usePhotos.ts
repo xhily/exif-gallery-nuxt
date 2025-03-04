@@ -72,3 +72,40 @@ export function usePhotosInfinite(params?: {
     error,
   }
 }
+
+export function usePhoto(id: MaybeRef<string>) {
+  const photo = ref<Photo | null>(null)
+  const loading = ref(false)
+  const error = ref<unknown>()
+
+  async function fetchPhoto() {
+    if (loading.value || !toValue(id))
+      return
+
+    error.value = undefined
+
+    try {
+      loading.value = true
+      const response = await $fetch(`/api/photos/${toValue(id)}`)
+      photo.value = deserializePhoto(response)
+    }
+    catch (err) {
+      console.error(err)
+      error.value = err
+    }
+    finally {
+      loading.value = false
+    }
+  }
+
+  watch(() => toValue(id), () => {
+    fetchPhoto()
+  }, { immediate: true })
+
+  return {
+    photo,
+    loading,
+    error,
+    refresh: fetchPhoto,
+  }
+}
