@@ -15,21 +15,22 @@ const links = [
 
 <template>
   <header class="sticky top-0 z-50 h-12 w-full flex items-center justify-between border-b bg-background/60 px-4 backdrop-blur border-grid">
-    <nav div class="flex items-center gap-4">
-      <div class="flex items-center">
-        <NuxtLink
-          v-for="link in links"
-          :key="link.to"
-          :to="link.to"
-          class="h-7 flex items-center justify-center rounded-full px-4 text-center text-sm text-muted-foreground font-medium transition-colors data-[active=true]:bg-muted data-[active=true]:text-primary hover:text-primary"
-          :data-active="path === link.to"
-        >
-          <div :class="link.icon" />
-        </NuxtLink>
-      </div>
+    <nav div class="min-w-0 flex flex-auto items-center justify-items-start">
+      <NuxtLink to="/" class="me-2 min-w-0 flex-[0_1_auto] truncate">
+        Wiidede Gallery
+      </NuxtLink>
+      <NuxtLink
+        v-for="link in links"
+        :key="link.to"
+        :to="link.to"
+        class="h-7 flex items-center justify-center rounded-full px-4 text-center text-sm text-muted-foreground font-medium transition-colors data-[active=true]:bg-muted data-[active=true]:text-primary hover:text-primary"
+        :data-active="path === link.to"
+      >
+        <div :class="link.icon" />
+      </NuxtLink>
     </nav>
-    <nav class="min-w-0 flex flex-auto items-center">
-      <NuxtLink to="https://github.com/wiidede/exif-gallery-nuxt" target="_blank" class="ml-auto">
+    <nav class="flex items-center">
+      <NuxtLink to="https://github.com/wiidede/exif-gallery-nuxt" target="_blank">
         <Button
           variant="ghost"
           size="icon"
@@ -46,9 +47,6 @@ const links = [
         </Button>
       </NuxtLink>
       <ThemePopover class="flex-shrink-0" />
-      <NuxtLink to="/" class="ms-1 min-w-0 truncate">
-        Wiidede Gallery
-      </NuxtLink>
     </nav>
   </header>
   <slot />
