@@ -42,7 +42,6 @@ useInfiniteScroll(window, loadMore, { distance: 10, canLoadMore: () => hasMore.v
             :to="`/detail/${photo.id}`"
           >
             <Button
-              v-if="loggedIn"
               size="icon"
               variant="ghost"
               title="Image detail"
