@@ -36,18 +36,25 @@ export default defineEventHandler(async (event) => {
 
   try {
     const photo = tables.photo
-    const result = await db.update(photo)
-      .set({
-        ...body,
-        takenAt: body.takenAt ? new Date(body.takenAt) : undefined,
-      })
-      .where(eq(photo.id, id))
-      .returning()
 
-    if (!result.length)
-      throw createError({ statusCode: 404, message: 'photo not found' })
+    const result = await db.transaction(async (tx) => {
+      const updatedPhoto = await tx.update(photo)
+        .set({
+          ...body,
+          takenAt: body.takenAt ? new Date(body.takenAt) : undefined,
+        })
+        .where(eq(photo.id, id))
+        .returning()
 
-    return result[0]
+      if (!updatedPhoto.length)
+        throw createError({ statusCode: 404, message: 'photo not found' })
+
+      await processPhotoTags(tx, id, body.tags)
+
+      return updatedPhoto[0]
+    })
+
+    return result
   }
   catch (error) {
     throw createError({

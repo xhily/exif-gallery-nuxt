@@ -1,5 +1,5 @@
 import { sql } from 'drizzle-orm'
-import { integer, real, sqliteTable, text } from 'drizzle-orm/sqlite-core'
+import { integer, primaryKey, real, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 
 export const photo = sqliteTable('photos', {
   id: text('id').primaryKey().$defaultFn(() => createCuid(8)),
@@ -40,3 +40,23 @@ export const photo = sqliteTable('photos', {
   updatedAt: integer('updated_at', { mode: 'timestamp' }).default(sql`CURRENT_TIMESTAMP`),
   createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`CURRENT_TIMESTAMP`),
 })
+
+// New tag table for storing unique tags
+export const tag = sqliteTable('tags', {
+  id: text('id').primaryKey().$defaultFn(() => createCuid(8)),
+  name: text('name').notNull().unique(),
+  createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`CURRENT_TIMESTAMP`),
+})
+
+// Junction table for many-to-many relationship between photos and tags
+export const photoTag = sqliteTable('photo_tags', {
+  photoId: text('photo_id')
+    .notNull()
+    .references(() => photo.id, { onDelete: 'cascade' }),
+  tagId: text('tag_id')
+    .notNull()
+    .references(() => tag.id, { onDelete: 'cascade' }),
+  createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`CURRENT_TIMESTAMP`),
+}, table => [
+  primaryKey({ columns: [table.photoId, table.tagId] }),
+])

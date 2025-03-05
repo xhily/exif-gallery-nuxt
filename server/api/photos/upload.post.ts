@@ -115,10 +115,20 @@ export default eventHandler(async (event) => {
     }
 
     try {
-      // Insert into database
-      await db.insert(tables.photo).values({
-        ...photoEntry,
-        fileName,
+      await db.transaction(async (tx) => {
+        const newPhoto = await tx.insert(tables.photo)
+          .values({
+            ...photoEntry,
+            fileName,
+          })
+          .returning()
+
+        if (!newPhoto.length) {
+          throw new Error('Failed to insert photo')
+        }
+
+        const photoId = newPhoto[0].id
+        await processPhotoTags(tx, photoId, photoEntry.tags)
       })
     }
     catch (error) {
