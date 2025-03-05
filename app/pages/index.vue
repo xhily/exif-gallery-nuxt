@@ -8,15 +8,9 @@ const currentPhoto = useState<string>('currentPhoto', () => ref(''))
 const { loggedIn } = useUserSession()
 
 const LIMIT = 12
-
-const { photos, hasMore, loadMore, loading, error } = usePhotosInfinite({
+const { photos, hasMore, loadMore, loading } = usePhotosInfinite({
   hidden: false,
 }, LIMIT)
-
-watch(error, (err) => {
-  if (err)
-    toast.error('An error occurred', { description: 'Failed to load photos' })
-})
 
 useInfiniteScroll(window, loadMore, { distance: 10, canLoadMore: () => hasMore.value })
 </script>
@@ -36,6 +30,7 @@ useInfiniteScroll(window, loadMore, { distance: 10, canLoadMore: () => hasMore.v
         :photo="photo"
         :logged-in="loggedIn"
         :image-class="{ 'current-image': currentPhoto === photo.id }"
+        @deleted="photos = photos.filter(p => p.id !== $event)"
       >
         <template #action-button>
           <NuxtLink

@@ -13,7 +13,6 @@ export function usePhotosInfinite(params?: {
     hasMore: Ref<boolean>
     loadMore: () => Promise<void>
     loading: Ref<boolean>
-    error: Ref<unknown>
   } {
   const photosStore = useState<Map<string, InfiniteState>>(
     'infiniteData',
@@ -55,9 +54,9 @@ export function usePhotosInfinite(params?: {
 
       state.photos.value.push(...response.data.map(deserializePhoto))
     }
-    catch (err) {
+    catch (err: any) {
       console.error(err)
-      error.value = err
+      toast.error('An error occurred', { description: err?.data?.message || err?.message || 'Failed to get photos' })
     }
     finally {
       state.loading.value = false
@@ -69,29 +68,26 @@ export function usePhotosInfinite(params?: {
     hasMore: state.hasMore,
     loadMore,
     loading: state.loading,
-    error,
   }
 }
 
 export function usePhoto(id: MaybeRef<string>) {
   const photo = ref<Photo | null>(null)
   const loading = ref(false)
-  const error = ref<unknown>()
 
   async function fetchPhoto() {
     if (loading.value || !toValue(id))
       return
-
-    error.value = undefined
-
     try {
       loading.value = true
-      const response = await $fetch(`/api/photos/${toValue(id)}`)
+      const response = await $fetch(`/api/photos/${toValue(id) as ':id'}`, {
+        method: 'get',
+      })
       photo.value = deserializePhoto(response)
     }
-    catch (err) {
+    catch (err: any) {
       console.error(err)
-      error.value = err
+      toast.error('An error occurred', { description: err?.data?.message || err?.message || 'Failed to get photo' })
     }
     finally {
       loading.value = false
@@ -105,7 +101,19 @@ export function usePhoto(id: MaybeRef<string>) {
   return {
     photo,
     loading,
-    error,
     refresh: fetchPhoto,
   }
+}
+
+export function useDeletePhoto() {
+  const deletingPhoto = ref<string>()
+  async function deletePhoto(id: string) {
+    deletingPhoto.value = id
+    await $fetch(`/api/photos/${id}`, { method: 'DELETE' }).catch((e) => {
+      toast.error('An error occurred', { description: e.message || 'Please try again' })
+    }).finally(() => {
+      deletingPhoto.value = ''
+    })
+  }
+  return { deletingPhoto, deletePhoto }
 }

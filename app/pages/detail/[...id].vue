@@ -1,4 +1,8 @@
 <script setup lang="ts">
+definePageMeta({
+  layout: 'home',
+})
+
 const route = useRoute()
 const router = useRouter()
 
@@ -22,6 +26,7 @@ const { photo } = usePhoto(id)
       :photo="photo"
       :logged-in="loggedIn"
       image-class="current-image"
+      @deleted="$router.push('/')"
     />
   </section>
   <section v-else>

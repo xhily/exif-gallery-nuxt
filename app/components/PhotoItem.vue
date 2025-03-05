@@ -9,14 +9,13 @@ const {
   imageClass?: HTMLAttributes['class']
 }>()
 
-const deletingImg = ref('')
+const emit = defineEmits<{
+  deleted: [id: string]
+}>()
 
-async function deletePhoto(id: string) {
-  deletingImg.value = id
-
-  await $fetch(`/api/photos/${id}`, { method: 'DELETE' })
-    .catch(() => toast.error('An error occured', { description: 'Please try again' }))
-    .finally(() => deletingImg.value = '')
+const { deletingPhoto, deletePhoto: _deletePhoto } = useDeletePhoto()
+function deletePhoto(id: string) {
+  _deletePhoto(id).then(() => emit('deleted', id))
 }
 </script>
 
@@ -38,7 +37,7 @@ async function deletePhoto(id: string) {
             v-if="loggedIn"
             size="icon"
             variant="ghost"
-            :loading="deletingImg === photo.id"
+            :loading="deletingPhoto === photo.id"
             class="text-muted-foreground"
             @click="deletePhoto(photo.id)"
           >

@@ -7,15 +7,9 @@ definePageMeta({
 const { loggedIn } = useUserSession()
 
 const LIMIT = 36
-
-const { photos, hasMore, loadMore, loading, error } = usePhotosInfinite({
+const { photos, hasMore, loadMore, loading } = usePhotosInfinite({
   hidden: false,
 }, LIMIT)
-
-watch(error, (err) => {
-  if (err)
-    toast.error('An error occurred', { description: 'Failed to load photos' })
-})
 
 useInfiniteScroll(window, loadMore, { distance: 10, canLoadMore: () => hasMore.value })
 
@@ -26,14 +20,11 @@ function getPhotoThumbnail(photo: Photo) {
   return path
 }
 
-const deletingImg = ref<string>()
-async function deletePhoto(id: string) {
-  const result = await $fetch(`/api/photos/${id}`, { method: 'DELETE' })
-  if ((result as { success: boolean }).success) {
-    photos.value = photos.value.filter(photo => photo.id !== id)
-  } else {
-    toast.error('An error occurred', { description: 'Please try again' })
-  }
+const { deletingPhoto, deletePhoto: _deletePhoto } = useDeletePhoto()
+function deletePhoto(id: string) {
+  _deletePhoto(id).then(() =>
+    photos.value = photos.value.filter(photo => photo.id !== id),
+  )
 }
 </script>
 
@@ -52,7 +43,7 @@ async function deletePhoto(id: string) {
       >
         <Button
           v-if="loggedIn"
-          :loading="deletingImg === photo.id"
+          :loading="deletingPhoto === photo.id"
           class="absolute right-4 top-4 z-[9999] opacity-0 group-hover:opacity-100"
           @click="deletePhoto(photo.id)"
         >

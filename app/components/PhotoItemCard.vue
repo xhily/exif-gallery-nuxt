@@ -22,7 +22,7 @@ const {
             <source v-if="photo.webp" :srcset="`/photos/${photo.webp}`" type="image/webp">
             <img
               :src="`/photos/${photo.jpeg || photo.webp || photo.avif}`"
-              :class="cn('h-auto w-full rounded-lg object-contain', imageClass)"
+              :class="cn('h-auto w-full rounded-lg object-contain max-h-[calc(100vh-5rem)]', imageClass)"
             >
           </picture>
         </slot>
