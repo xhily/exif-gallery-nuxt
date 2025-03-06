@@ -1,3 +1,5 @@
+import process from 'node:process'
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2024-07-30',
@@ -41,6 +43,11 @@ export default defineNuxtConfig({
   },
   experimental: {
     viewTransition: true,
+  },
+  runtimeConfig: {
+    public: {
+      projectName: process.env.NUXT_PUBLIC_PROJECT_NAME,
+    },
   },
   devtools: { enabled: true },
   eslint: {

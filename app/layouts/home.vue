@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const config = useRuntimeConfig()
 const { path } = toRefs(useRoute())
 
 const links = [
@@ -17,7 +18,7 @@ const links = [
   <header class="sticky top-0 z-50 h-12 w-full flex items-center justify-between border-b bg-background/60 px-4 backdrop-blur border-grid">
     <nav div class="min-w-0 flex flex-auto items-center justify-items-start">
       <NuxtLink to="/" class="me-2 min-w-0 flex-[0_1_auto] truncate font-medium">
-        Wiidede Gallery
+        {{ config.public.projectName || 'Exif Gallery Nuxt' }}
       </NuxtLink>
       <NuxtLink
         v-for="link in links"
