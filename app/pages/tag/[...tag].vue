@@ -63,7 +63,7 @@ function getPhotoThumbnail(photo: Photo) {
       >
         <div class="group relative">
           <NuxtLink
-            :to="`/detail/${photo.id}`"
+            :to="`/p/${photo.id}`"
           >
             <img
               v-if="photo"

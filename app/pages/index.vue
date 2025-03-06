@@ -41,7 +41,7 @@ useInfiniteScroll(window, loadMore, { distance: 10, canLoadMore: () => hasMore.v
       >
         <template #action-button>
           <NuxtLink
-            :to="`/detail/${photo.id}`"
+            :to="`/p/${photo.id}`"
           >
             <Button
               size="icon"

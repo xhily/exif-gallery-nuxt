@@ -45,7 +45,7 @@ function getPhotoThumbnail(photo: Photo) {
           :image-class="{ 'current-image': currentPhoto === photo.id }"
         >
           <NuxtLink
-            :to="`/detail/${photo.id}`"
+            :to="`/p/${photo.id}`"
           >
             <img
               v-if="photo"
