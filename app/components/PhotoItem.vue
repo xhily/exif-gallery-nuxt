@@ -22,7 +22,6 @@ function deletePhoto(id: string) {
 <template>
   <div class="flex gap-1 lt-md:flex-col lg:gap-8 md:gap-4">
     <PhotoItemCard :photo="photo" class="md:flex-[2] xl:flex-[3]" :image-class="imageClass" />
-
     <div class="relative sticky top-16 z-1 h-fit md:flex-[1]">
       <div class="flex lt-md:mb-2 md:flex-col lt-md:justify-between">
         <div>
@@ -47,14 +46,17 @@ function deletePhoto(id: string) {
       </div>
 
       <div class="flex text-sm text-muted-foreground md:flex-col lt-md:justify-between md:gap-2">
-        <div class="flex flex-col space-y-1">
+        <div class="flex flex-col gap-1">
           <span>{{ formatDate(photo.takenAt) }}</span>
           <span>{{ formatCameraText(photo) }}</span>
-          <Tag
+          <NuxtLink
             v-for="tag in photo.tags?.split(',') || []"
             :key="tag"
-            :label="tag"
-          />
+            :to="`/tag/${tag}`"
+            class="m--1 w-fit rounded-lg p-1 transition-colors hover:bg-muted"
+          >
+            <Tag :label="tag" />
+          </NuxtLink>
         </div>
         <div class="flex flex-col text-sm text-muted-foreground">
           <div class="flex gap-2">

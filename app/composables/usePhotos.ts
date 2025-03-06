@@ -8,6 +8,7 @@ export function usePhotosInfinite(params?: {
   hidden?: boolean
   orderBy?: string
   order?: string
+  tag?: string
 }, limit = 12): {
     photos: Ref<Photo[]>
     hasMore: Ref<boolean>

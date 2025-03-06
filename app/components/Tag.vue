@@ -10,9 +10,9 @@ const {
 
 <template>
   <div class="flex items-center">
-    <div v-if="icon" :class="icon" class="me-1 size-1em" />
+    <div :class="icon" class="me-1 size-1em" />
     <slot>
-      {{ label }}
+      <span>{{ label }}</span>
     </slot>
   </div>
 </template>

@@ -38,7 +38,7 @@ watch(mouseState.isMouseEntered, handleAnimation, { immediate: true })
   <component
     :is="as"
     ref="refElement"
-    :class="cn('w-fit transition duration-500 ease-in-out', $props.class)"
+    :class="cn('transition duration-500 ease-in-out', $props.class)"
   >
     <slot />
   </component>

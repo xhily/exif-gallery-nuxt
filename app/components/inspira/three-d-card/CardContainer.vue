@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { provide, ref } from 'vue'
+import { provide } from 'vue'
 import { useMouseState } from '~/composables/useMouseState'
 
 defineProps({
@@ -7,18 +7,19 @@ defineProps({
   containerClass: String,
 })
 
-const containerRef = ref<HTMLElement | null>(null)
+const containerRef = useTemplateRef('containerRef')
+const innerRef = useTemplateRef('innerRef')
 
 const mouseState = useMouseState() // Use the composable
 provide('use3DCardMouseState', mouseState)
 
 function handleMouseMove(e: MouseEvent) {
-  if (!containerRef.value)
+  if (!containerRef.value || !innerRef.value)
     return
   const { left, top, width, height } = containerRef.value.getBoundingClientRect()
-  const x = (e.clientX - left - width / 2) / 25
-  const y = (e.clientY - top - height / 2) / 25
-  containerRef.value.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`
+  const x = (e.clientX - left - width / 2) / (width / 2) * 15
+  const y = (e.clientY - top - height / 2) / (height / 2) * 15
+  innerRef.value.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`
 }
 
 function handleMouseEnter() {
@@ -26,28 +27,29 @@ function handleMouseEnter() {
 }
 
 function handleMouseLeave() {
-  if (!containerRef.value)
+  if (!innerRef.value)
     return
 
   mouseState.setMouseEntered(false)
-  containerRef.value.style.transform = `rotateY(0deg) rotateX(0deg)`
+  innerRef.value.style.transform = `rotateY(0deg) rotateX(0deg)`
 }
 </script>
 
 <template>
   <div
-    class="flex items-center justify-center" :class="[containerClass]"
+    ref="containerRef"
+    :class="[containerClass]"
     style="perspective: 1000px"
+    @mouseenter="handleMouseEnter"
+    @mousemove="handleMouseMove"
+    @mouseleave="handleMouseLeave"
   >
     <div
-      ref="containerRef"
-      class="relative flex items-center justify-center transition-all duration-200 ease-linear" :class="[
+      ref="innerRef"
+      class="relative transition-all duration-200 ease-linear" :class="[
         $props.class,
       ]"
       style="transform-style: preserve-3d"
-      @mouseenter="handleMouseEnter"
-      @mousemove="handleMouseMove"
-      @mouseleave="handleMouseLeave"
     >
       <slot />
     </div>

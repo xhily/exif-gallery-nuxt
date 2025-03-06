@@ -1,3 +1,5 @@
+import { eq, inArray, notInArray } from 'drizzle-orm'
+
 export default eventHandler(async (event) => {
   await requireUserSession(event)
   const { id } = event.context.params || {}
@@ -39,9 +41,26 @@ export default eventHandler(async (event) => {
 
   await Promise.allSettled(deletePromises)
 
-  // Delete from database
+  // Delete from database and cleanup orphaned tags
   try {
     await db.delete(tables.photo).where(eq(tables.photo.id, id))
+
+    // Find and delete orphaned tags
+    const usedTagIds = await db
+      .select({ tagId: tables.photoTag.tagId })
+      .from(tables.photoTag)
+
+    const orphanedTags = await db.query.tag.findMany({
+      where: notInArray(
+        tables.tag.id,
+        usedTagIds.map(t => t.tagId),
+      ),
+    })
+
+    if (orphanedTags.length > 0) {
+      await db.delete(tables.tag)
+        .where(inArray(tables.tag.id, orphanedTags.map(tag => tag.id)))
+    }
   }
   catch (error) {
     console.error('Failed to delete photo from database:', error)

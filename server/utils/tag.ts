@@ -1,38 +1,55 @@
-import { eq } from 'drizzle-orm'
+import type { DBType } from './drizzle'
+import { eq, inArray } from 'drizzle-orm'
 import { tables } from './drizzle'
 
-export async function processPhotoTags(tx: DBTransaction, photoId: string, tags: string | null | undefined) {
+export async function processPhotoTags(db: DBType, photoId: string, tags: string | null | undefined) {
   if (tags === undefined || tags === null)
     return
 
-  const tagNames = tags.split(',').filter(t => t.trim()).map(t => t.trim())
+  const tagNames = tags.split(',').map(t => t.trim()).filter(Boolean)
+  if (tagNames.length === 0)
+    return
 
-  await tx.delete(tables.photoTag)
+  // First, find all existing tags in one query
+  const existingTags = await db.query.tag.findMany({
+    where: inArray(tables.tag.name, tagNames),
+  })
+
+  // Create a map of tag names to their IDs for quick lookup
+  const tagMap = new Map(existingTags.map(tag => [tag.name, tag.id]))
+
+  // Prepare operations for new tags
+  const newTagOperations = tagNames
+    .filter(name => !tagMap.has(name))
+    .map(name => ({
+      name,
+    }))
+
+  // Insert new tags if any
+  let newTags = []
+  if (newTagOperations.length > 0) {
+    newTags = await db.insert(tables.tag)
+      .values(newTagOperations)
+      .returning()
+
+    // Add new tags to the map
+    newTags.forEach(tag => tagMap.set(tag.name, tag.id))
+  }
+
+  // Delete existing photo-tag relationships
+  await db.delete(tables.photoTag)
     .where(eq(tables.photoTag.photoId, photoId))
 
-  for (const tagName of tagNames) {
-    if (!tagName)
-      continue
+  // Create new photo-tag relationships
+  const photoTagOperations = tagNames
+    .map(name => ({
+      photoId,
+      tagId: tagMap.get(name)!,
+    }))
 
-    let tagRecord = await tx.query.tag.findFirst({
-      where: eq(tables.tag.name, tagName),
-    })
-
-    if (!tagRecord) {
-      const newTags = await tx.insert(tables.tag)
-        .values({
-          name: tagName,
-        })
-        .returning()
-
-      tagRecord = newTags[0]
-    }
-
-    await tx.insert(tables.photoTag)
-      .values({
-        photoId,
-        tagId: tagRecord.id,
-      })
+  if (photoTagOperations.length > 0) {
+    await db.insert(tables.photoTag)
+      .values(photoTagOperations)
       .onConflictDoNothing()
   }
 }

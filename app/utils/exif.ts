@@ -1,5 +1,15 @@
 import exifr from 'exifr'
 
+async function getImageAspectRatio(file: File) {
+  return createImageBitmap(file).then((bitmap) => {
+    const aspectRatio = bitmap.width / bitmap.height
+    bitmap.close()
+    return aspectRatio
+  }).catch(() => {
+    return undefined
+  })
+}
+
 export async function getExifData(file: File) {
   let photo: IPhoto = {}
 
@@ -21,8 +31,9 @@ export async function getExifData(file: File) {
     latitude: exifData?.Latitude,
     longitude: exifData?.Longitude,
     takenAt: exifData?.DateTimeOriginal,
-    aspectRatio: exifData?.ImageHeight ? exifData.ImageWidth / exifData.ImageHeight : 1.5,
   }
+
+  photo.aspectRatio = await getImageAspectRatio(file)
 
   return photo
 }

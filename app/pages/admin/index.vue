@@ -29,17 +29,15 @@ function deletePhoto(id: string) {
 </script>
 
 <template>
-  <div
-    class="w-full flex gap-4 p-4"
-  >
-    <ul
+  <div class="w-full flex gap-4 p-4">
+    <div
       v-if="photos && photos.length"
       class="grid grid-cols-4 flex-[3] gap-1 md:grid-cols-6"
     >
-      <li
+      <div
         v-for="photo in photos"
         :key="photo.id"
-        class="group relative w-full"
+        class="group relative aspect-[4/3] h-auto w-full flex"
       >
         <Button
           v-if="loggedIn"
@@ -47,19 +45,20 @@ function deletePhoto(id: string) {
           class="absolute right-4 top-4 z-[9999] opacity-0 group-hover:opacity-100"
           @click="deletePhoto(photo.id)"
         >
-          <div class="i-lucide-trash" />
+          <div class="i-lucide-trash" /> {{ photo.aspectRatio }}
         </Button>
         <img
           v-if="photo"
           :src="`/photos/${getPhotoThumbnail(photo)}`"
-          class="border-image aspect-[4/3] w-full rounded-md object-contain transition-all duration-200"
+          class="m-auto rounded-lg object-contain"
+          :class="photo.aspectRatio ? photo.aspectRatio > (4 / 3) ? 'w-full h-auto' : 'h-full w-auto' : 'h-full w-full'"
         >
-      </li>
+      </div>
       <template v-if="loading">
         <li v-for="i in LIMIT" :key="i">
-          <Skeleton class="border-image aspect-[4/3] w-full rounded-md object-contain transition-all duration-200" />
+          <Skeleton class="aspect-[4/3] w-full rounded-lg" />
         </li>
       </template>
-    </ul>
+    </div>
   </div>
 </template>

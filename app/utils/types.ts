@@ -1,5 +1,3 @@
-export type RemoveNull<T> = {
-  [K in keyof T]: Exclude<T[K], null>;
-}
+import type { SetNonNullable } from 'type-fest'
 
-export type IPhoto = Partial<RemoveNull<Photo>>
+export type IPhoto = Partial<SetNonNullable<Photo>>

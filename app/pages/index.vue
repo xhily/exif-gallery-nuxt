@@ -8,22 +8,29 @@ const currentPhoto = useState<string>('currentPhoto', () => ref(''))
 const { loggedIn } = useUserSession()
 
 const LIMIT = 12
-const { photos, hasMore, loadMore, loading } = usePhotosInfinite({
+const params = {
   hidden: false,
-}, LIMIT)
+}
+const { photos, hasMore, loadMore, loading } = usePhotosInfinite(params, LIMIT)
+const { data: initPhotos } = await useFetch('/api/photos', {
+  params: {
+    ...params,
+    limit: LIMIT,
+    offset: photos.value.length,
+  },
+})
+if (initPhotos.value) {
+  if (initPhotos.value.data.length < LIMIT)
+    hasMore.value = false
+  photos.value.push(...initPhotos.value.data.map(deserializePhoto))
+}
 
 useInfiniteScroll(window, loadMore, { distance: 10, canLoadMore: () => hasMore.value })
 </script>
 
 <template>
-  <section
-    v-if="photos"
-    class="relative p-4"
-  >
-    <div
-      v-if="photos && photos.length"
-      class="flex flex-col gap-4 xl:px-20"
-    >
+  <section class="relative p-4">
+    <div class="flex flex-col gap-4 xl:px-20">
       <PhotoItem
         v-for="photo in photos"
         :key="photo.id"
@@ -48,10 +55,13 @@ useInfiniteScroll(window, loadMore, { distance: 10, canLoadMore: () => hasMore.v
           </NuxtLink>
         </template>
       </PhotoItem>
+      {{ loading }}
       <template v-if="loading">
-        <li v-for="i in LIMIT" :key="i">
-          <Skeleton class="aspect-[4/3] h-auto w-full rounded-lg" />
-        </li>
+        <Skeleton
+          v-for="i in LIMIT"
+          :key="i"
+          class="aspect-[4/3] w-full rounded-lg"
+        />
       </template>
     </div>
   </section>

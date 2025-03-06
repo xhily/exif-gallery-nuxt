@@ -21,14 +21,14 @@ async function clearSession() {
 <template>
   <header class="sticky top-0 z-50 h-12 w-full flex items-center justify-between border-b bg-background/60 px-4 backdrop-blur border-grid">
     <nav div class="min-w-0 flex flex-auto items-center justify-items-start">
-      <NuxtLink to="/" class="me-2 min-w-0 flex-[0_1_auto] truncate">
+      <NuxtLink to="/" class="me-2 min-w-0 flex-[0_1_auto] truncate font-medium">
         Wiidede Gallery
       </NuxtLink>
       <NuxtLink
         v-for="link in links"
         :key="link.to"
         :to="link.to"
-        class="h-7 flex items-center justify-center rounded-full px-4 text-center text-sm text-muted-foreground font-medium transition-colors data-[active=true]:bg-muted data-[active=true]:text-primary hover:text-primary"
+        class="h-7 flex items-center justify-center rounded-full px-4 text-center text-sm font-medium transition-colors data-[active=true]:bg-muted data-[active=true]:text-primary hover:text-primary"
         :data-active="path === link.to"
       >
         <div :class="link.icon" />

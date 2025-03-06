@@ -32,7 +32,7 @@ export const photo = sqliteTable('photos', {
   longitude: real('longitude'),
   takenAt: integer('taken_at', { mode: 'timestamp' }),
   // photo info
-  aspectRatio: real('aspect_ratio').default(1.5),
+  aspectRatio: real('aspect_ratio'),
   // photo config
   priorityOrder: real('priority_order'),
   hidden: integer('hidden', { mode: 'boolean' }).default(false),

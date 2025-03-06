@@ -3,6 +3,15 @@ definePageMeta({
   layout: 'home',
 })
 
+const route = useRoute()
+const router = useRouter()
+
+const tag = route.params.tag?.[0]
+if (!tag) {
+  router.push('/')
+  throw new Error('id is required')
+}
+
 const currentPhoto = useState<string>('currentPhoto', () => ref(''))
 
 const { loggedIn } = useUserSession()
@@ -10,6 +19,7 @@ const { loggedIn } = useUserSession()
 const LIMIT = 36
 const params = {
   hidden: false,
+  tag,
 }
 const { photos, hasMore, loadMore, loading } = usePhotosInfinite(params, LIMIT)
 const { data: initPhotos } = await useFetch('/api/photos', {
@@ -27,6 +37,9 @@ if (initPhotos.value) {
 
 useInfiniteScroll(window, loadMore, { distance: 10, canLoadMore: () => hasMore.value })
 
+// Initial load
+onMounted(() => loadMore())
+
 function getPhotoThumbnail(photo: Photo) {
   const path = photo.thumbnail || photo.jpeg || photo.webp || photo.avif
   if (!path)
@@ -43,13 +56,18 @@ function deletePhoto(id: string) {
 </script>
 
 <template>
-  <section class="relative flex gap-4 p-4 md:gap-8">
-    <div class="grid grid-cols-3 flex-auto gap-1 2xl:grid-cols-8 lg:grid-cols-5 sm:grid-cols-4 xl:grid-cols-6">
+  <section class="relative p-4">
+    <h3 class="mb-2 text-xl font-medium">
+      {{ tag }}
+    </h3>
+    <div
+      v-if="photos && photos.length"
+      class="grid grid-cols-3 flex-[3] gap-1 md:grid-cols-4"
+    >
       <PhotoItemCard
         v-for="photo in photos"
         :key="photo.id"
         :photo="photo"
-        :translate-z="66"
         :logged-in="loggedIn"
         :image-class="{ 'current-image': currentPhoto === photo.id }"
       >
@@ -82,9 +100,6 @@ function deletePhoto(id: string) {
           class="aspect-[4/3] w-full rounded-lg"
         />
       </template>
-    </div>
-    <div class="sticky top-16 h-fit flex-shrink-0 md:pr-10">
-      <Tags />
     </div>
   </section>
 </template>
