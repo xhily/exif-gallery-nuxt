@@ -2,51 +2,45 @@
 const { theme, radius } = useTheme()
 const colorMode = useColorMode()
 const isDark = computed(() => colorMode.value === 'dark')
+const switchLocalePath = useSwitchLocalePath()
+const { locale } = useI18n()
 
-function reset() {
-  theme.value = 'zinc'
-  radius.value = '0.5'
-}
+const colorModeValues = [
+  { value: 'light', icon: 'i-lucide-sun' },
+  { value: 'dark', icon: 'i-lucide-moon' },
+  { value: 'system', icon: 'i-lucide-monitor' },
+]
 
-const colorModeValues = [{
-  value: 'light',
-  icon: 'i-lucide-sun',
-  label: 'Light',
-}, {
-  value: 'dark',
-  icon: 'i-lucide-moon',
-  label: 'Dark',
-}, {
-  value: 'system',
-  icon: 'i-lucide-moon',
-  label: 'System',
-}]
+const languageValues = [
+  { value: 'en', label: 'English' },
+  { value: 'zh', label: '中文' },
+] as const
 </script>
 
 <template>
   <div class="flex flex-col space-y-4 md:space-y-6">
-    <div class="flex items-start pt-4 md:pt-0">
-      <div class="pr-2 space-y-1">
-        <div class="font-semibold leading-none tracking-tight">
-          Theme Customizer
-        </div>
-        <div class="text-xs text-muted-foreground">
-          Customize your components colors.
-        </div>
-      </div>
-      <Button
-        variant="ghost"
-        size="icon"
-        class="ml-auto rounded-[0.5rem]"
-        @click="reset()"
-      >
-        <div class="i-lucide-repeat" />
-        <span class="sr-only">Reset</span>
-      </Button>
-    </div>
     <div class="flex flex-1 flex-col space-y-4 md:space-y-6">
       <div class="space-y-1.5">
-        <Label for="color" class="text-xs"> Color </Label>
+        <Label for="language" class="text-xs"> {{ $t('theme.language') }} </Label>
+
+        <div class="flex space-x-2">
+          <NuxtLink
+            v-for="(langValue, index) in languageValues"
+            :key="index"
+            :to="switchLocalePath(langValue.value)"
+          >
+            <Button
+              variant="outline"
+              class="h-8"
+              :class="{ 'border-2 border-foreground': locale === langValue.value }"
+            >
+              <span class="text-xs">{{ langValue.label }}</span>
+            </Button>
+          </NuxtLink>
+        </div>
+      </div>
+      <div class="space-y-1.5">
+        <Label for="color" class="text-xs"> {{ $t('theme.color') }} </Label>
         <div class="grid grid-cols-3 gap-2">
           <Button
             v-for="(color, index) in baseColors"
@@ -77,7 +71,7 @@ const colorModeValues = [{
         </div>
       </div>
       <div class="space-y-1.5">
-        <Label for="radius" class="text-xs"> Radius </Label>
+        <Label for="radius" class="text-xs"> {{ $t('theme.radius') }} </Label>
         <div class="grid grid-cols-5 gap-2">
           <Button
             v-for="(r, index) in RADII"
@@ -98,7 +92,7 @@ const colorModeValues = [{
         </div>
       </div>
       <div class="space-y-1.5">
-        <Label for="theme" class="text-xs"> Theme </Label>
+        <Label for="theme" class="text-xs"> {{ $t('theme.mode') }} </Label>
 
         <div class="flex space-x-2">
           <Button
@@ -110,7 +104,7 @@ const colorModeValues = [{
             @click="colorMode.preference = colorModeValue.value"
           >
             <div class="mr-2" :class="colorModeValue.icon" />
-            <span class="text-xs">{{ colorModeValue.label }}</span>
+            <span class="text-xs">{{ $t(`theme.${colorModeValue.value}`) }}</span>
           </Button>
         </div>
       </div>

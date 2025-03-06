@@ -9,6 +9,7 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     '@nuxt/fonts',
     '@nuxt/eslint',
+    '@nuxtjs/i18n',
     '@vueuse/nuxt',
     '@unocss/nuxt',
     'nuxt-auth-utils',
@@ -48,6 +49,14 @@ export default defineNuxtConfig({
     public: {
       projectName: process.env.NUXT_PUBLIC_PROJECT_NAME,
     },
+  },
+  i18n: {
+    langDir: '../locales',
+    locales: [
+      { code: 'en', iso: 'en-US', file: 'en.yml' },
+      { code: 'zh', iso: 'zh-CN', file: 'zh.yml' },
+    ],
+    defaultLocale: 'en',
   },
   devtools: { enabled: true },
   eslint: {
