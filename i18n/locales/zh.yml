@@ -72,3 +72,13 @@ location:
   latitude: 纬度
   longitude: 经度
   taken_at: 拍摄时间
+ai:
+  title_desc: 为图片生成一个不超过20个字的简洁标题
+  caption_desc: 用不超过6个词描述图片要点，无需标点符号
+  tags_desc: 最多3个关键词标签，用于描述图片主要元素，避免使用形容词和副词
+  semantic_desc: 简要描述图片内容，直接描述要点，无需引导性语句
+  question: 请分析这张图片并以JSON格式提供以下信息：
+  title: 一个不超过不超过20个字的简洁标题
+  caption: 用不超过6个词描述图片要点，无需标点符号
+  tags: 最多3个关键词标签，用于描述主要元素（避免形容词和副词）
+  semantic: 简要直接地描述图片内容，无需引导性语句

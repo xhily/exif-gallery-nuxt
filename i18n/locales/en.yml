@@ -72,3 +72,13 @@ location:
   latitude: Latitude
   longitude: Longitude
   taken_at: Taken At
+ai:
+  title_desc: Generate a concise title for the image within 20 characters
+  caption_desc: Describe key points of the image in no more than 6 words, without punctuation
+  tags_desc: Up to 3 keyword tags to describe main elements, avoid adjectives and adverbs
+  semantic_desc: Briefly describe the image content, directly state key points without leading phrases
+  question: 'Please analyze this image and provide the following information in JSON format: '
+  title: Generate a concise title within 20 characters
+  caption: Describe key points in no more than 6 words without punctuation
+  tags: Up to 3 keyword tags for main elements (avoid adjectives and adverbs)
+  semantic: Briefly describe the image content directly without leading phrases

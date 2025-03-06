@@ -4,22 +4,6 @@ import { generateObject } from 'ai'
 import { z } from 'zod'
 import { useAIConfig } from '../composables/useAIConfig'
 
-export const imageAnalysisSchema = z.object({
-  title: z.string().max(20).describe('为图片生成一个不超过20个字的简洁标题'),
-  caption: z.string().max(30).describe('用不超过6个词描述图片要点，无需标点符号'),
-  tags: z.array(z.string()).max(4).describe('最多3个关键词标签，用于描述图片主要元素，避免使用形容词和副词'),
-  semanticDescription: z.string().describe('简要描述图片内容，直接描述要点，无需引导性语句'),
-})
-
-export type ImageAnalysis = z.infer<typeof imageAnalysisSchema>
-
-// Prompt template for image analysis
-export const AI_IMAGE_PROMPT = '请分析这张图片并以JSON格式提供以下信息：\n'
-  + '- 一个不超过不超过20个字的简洁标题\n'
-  + '- 用不超过6个词描述图片要点，无需标点符号\n'
-  + '- 最多3个关键词标签，用于描述主要元素（避免形容词和副词）\n'
-  + '- 简要直接地描述图片内容，无需引导性语句'
-
 // Helper function to remove base64 prefix
 function removeBase64Prefix(base64: string) {
   return base64.replace(/^data:image\/(png|jpeg|jpg|webp);base64,/, '')
@@ -59,20 +43,36 @@ function initializeAIClient() {
   return null
 }
 
-export async function getAiImageAnalysis(imageFile: File): Promise<ImageAnalysis> {
+export async function getAiImageAnalysis(imageFile: File) {
   const client = initializeAIClient()
   const { config } = useAIConfig()
+  const { t } = useNuxtApp().$i18n
 
-  if (import.meta.env.DEV) {
-    // FIXME: For development purposes only
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    return {
-      title: `AI Title ${Math.round(Math.random() * 1000)}`,
-      caption: `AI Caption ${Math.round(Math.random() * 1000)}`,
-      tags: [`AI Tag ${Math.round(Math.random() * 10)}`, `AI Tag ${Math.round(Math.random() * 10)}`, `AI Tag ${Math.round(Math.random() * 10)}`],
-      semanticDescription: 'AI Semantic Description',
-    }
-  }
+  const imageAnalysisSchema = z.object({
+    title: z.string().max(20).describe(t('ai.title_desc')),
+    caption: z.string().max(30).describe(t('ai.caption_desc')),
+    tags: z.array(z.string()).max(4).describe(t('ai.tags_desc')),
+    semanticDescription: z.string().describe(t('ai.semantic_desc')),
+  })
+
+  type ImageAnalysis = z.infer<typeof imageAnalysisSchema>
+
+  const AI_IMAGE_PROMPT = `${t('ai.question')}\n`
+    + `- ${t('ai.title')}\n`
+    + `- ${t('ai.caption')}\n`
+    + `- ${t('ai.tags')}\n`
+    + `- ${t('ai.semantic')}`
+
+  // if (import.meta.env.DEV) {
+  //   // FIXME: For development purposes only
+  //   await new Promise(resolve => setTimeout(resolve, 1000))
+  //   return {
+  //     title: `AI Title ${Math.round(Math.random() * 1000)}`,
+  //     caption: `AI Caption ${Math.round(Math.random() * 1000)}`,
+  //     tags: [`AI Tag ${Math.round(Math.random() * 10)}`, `AI Tag ${Math.round(Math.random() * 10)}`, `AI Tag ${Math.round(Math.random() * 10)}`],
+  //     semanticDescription: 'AI Semantic Description',
+  //   }
+  // }
 
   if (!client) {
     return {
@@ -103,12 +103,14 @@ export async function getAiImageAnalysis(imageFile: File): Promise<ImageAnalysis
       }],
     })
 
-    return {
+    const result: ImageAnalysis = {
       title: cleanUpAiTextResponse(object.title || ''),
       caption: cleanUpAiTextResponse(object.caption || ''),
       tags: (object.tags || []).map((tag: string) => cleanUpAiTextResponse(tag)),
       semanticDescription: cleanUpAiTextResponse(object.semanticDescription || ''),
     }
+
+    return result
   }
   catch (error) {
     console.error('Error generating image analysis:', error)

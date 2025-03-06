@@ -5,23 +5,23 @@ import type { EncodeOptions as WebpOption } from '@jsquash/webp/meta'
 
 interface Jpeg {
   target: 'jpeg'
-  encodeOptions?: JpegOption
+  encodeOptions?: Partial<JpegOption>
 }
 
 interface Webp {
   target: 'webp'
-  encodeOptions?: WebpOption
+  encodeOptions?: Partial<WebpOption>
 }
 
 interface Avif {
   target: 'avif'
-  encodeOptions?: AvifOption
+  encodeOptions?: Partial<AvifOption>
 }
 
 interface Thumbnail {
   target: 'thumbnail'
-  encodeOptions?: JpegOption
-  resizeOptions?: ResizeOption
+  encodeOptions?: Partial<JpegOption>
+  resizeOptions?: Partial<ResizeOption> & { width: number, height: number }
 }
 
 export type CompressOptions = Jpeg | Webp | Avif | Thumbnail

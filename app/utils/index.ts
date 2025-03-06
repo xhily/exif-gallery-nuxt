@@ -56,7 +56,7 @@ export function formatCameraText(p: IPhoto | Photo) {
 
 export async function getCompressedImageBase64(file: File): Promise<string> {
   const compressedFiles = await compressImage(file, {
-    target: 'jpeg',
+    target: 'thumbnail',
   })
 
   return new Promise((resolve, reject) => {
