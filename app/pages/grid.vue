@@ -5,8 +5,6 @@ definePageMeta({
 
 const currentPhoto = useState<string>('currentPhoto', () => ref(''))
 
-const { loggedIn } = useUserSession()
-
 const LIMIT = 36
 const params = {
   hidden: false,
@@ -33,13 +31,6 @@ function getPhotoThumbnail(photo: Photo) {
     throw new Error('Photo has no Image File')
   return path
 }
-
-const { deletingPhoto, deletePhoto: _deletePhoto } = useDeletePhoto()
-function deletePhoto(id: string) {
-  _deletePhoto(id).then(() =>
-    photos.value = photos.value.filter(photo => photo.id !== id),
-  )
-}
 </script>
 
 <template>
@@ -51,30 +42,19 @@ function deletePhoto(id: string) {
           :key="photo.id"
           :photo="photo"
           :translate-z="66"
-          :logged-in="loggedIn"
           :image-class="{ 'current-image': currentPhoto === photo.id }"
         >
-          <div class="group relative">
-            <NuxtLink
-              :to="`/detail/${photo.id}`"
+          <NuxtLink
+            :to="`/detail/${photo.id}`"
+          >
+            <img
+              v-if="photo"
+              :src="`/photos/${getPhotoThumbnail(photo)}`"
+              :class="{ 'current-image': currentPhoto === photo.id }"
+              class="aspect-[4/3] w-full rounded-lg object-cover"
+              @click="currentPhoto = photo.id"
             >
-              <img
-                v-if="photo"
-                :src="`/photos/${getPhotoThumbnail(photo)}`"
-                :class="{ 'current-image': currentPhoto === photo.id }"
-                class="aspect-[4/3] w-full rounded-lg object-cover"
-                @click="currentPhoto = photo.id"
-              >
-            </NuxtLink>
-            <Button
-              v-if="loggedIn"
-              :loading="deletingPhoto === photo.id"
-              class="absolute right-4 top-4 z-[9999] opacity-0 group-hover:opacity-100"
-              @click="deletePhoto(photo.id)"
-            >
-              <div class="i-lucide-trash" />
-            </Button>
-          </div>
+          </NuxtLink>
         </PhotoItemCard>
         <template v-if="loading">
           <Skeleton

@@ -14,8 +14,6 @@ if (!tag) {
 
 const currentPhoto = useState<string>('currentPhoto', () => ref(''))
 
-const { loggedIn } = useUserSession()
-
 const LIMIT = 36
 const params = {
   hidden: false,
@@ -46,13 +44,6 @@ function getPhotoThumbnail(photo: Photo) {
     throw new Error('Photo has no Image File')
   return path
 }
-
-const { deletingPhoto, deletePhoto: _deletePhoto } = useDeletePhoto()
-function deletePhoto(id: string) {
-  _deletePhoto(id).then(() =>
-    photos.value = photos.value.filter(photo => photo.id !== id),
-  )
-}
 </script>
 
 <template>
@@ -62,13 +53,12 @@ function deletePhoto(id: string) {
     </h3>
     <div
       v-if="photos && photos.length"
-      class="grid grid-cols-3 flex-[3] gap-1 md:grid-cols-4"
+      class="grid grid-cols-3 flex-[3] gap-1 2xl:grid-cols-8 lg:grid-cols-5 sm:grid-cols-4 xl:grid-cols-6"
     >
       <PhotoItemCard
         v-for="photo in photos"
         :key="photo.id"
         :photo="photo"
-        :logged-in="loggedIn"
         :image-class="{ 'current-image': currentPhoto === photo.id }"
       >
         <div class="group relative">
@@ -83,14 +73,6 @@ function deletePhoto(id: string) {
               @click="currentPhoto = photo.id"
             >
           </NuxtLink>
-          <Button
-            v-if="loggedIn"
-            :loading="deletingPhoto === photo.id"
-            class="absolute right-4 top-4 z-[9999] opacity-0 group-hover:opacity-100"
-            @click="deletePhoto(photo.id)"
-          >
-            <div class="i-lucide-trash" />
-          </Button>
         </div>
       </PhotoItemCard>
       <template v-if="loading">

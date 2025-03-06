@@ -30,7 +30,7 @@ function deletePhoto(id: string) {
             {{ photo.caption }}
           </p>
         </div>
-        <div class="ml--2.4 flex items-center">
+        <div class="ml--2.4 min-h-2 flex items-center">
           <slot name="action-button" />
           <Button
             v-if="loggedIn"
