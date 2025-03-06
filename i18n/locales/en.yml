@@ -1,0 +1,74 @@
+title: Exif Gallery Nuxt
+description: A Nuxt.js image gallery template with Exif data support
+no_photos: No Photos
+go_to_admin: Go To Admin Panel
+image_detail: Image detail
+go_to_upload: Go To Upload Photos
+theme:
+  color: Color
+  radius: Radius
+  mode: Theme
+  light: Light
+  dark: Dark
+  system: System
+  language: Language
+login_form:
+  title: Login
+  description: Login to manage photos
+  password: Password
+  password_placeholder: Enter password
+  login_button: Login
+  back_to_gallery: Back to Gallery
+compression_config:
+  title: Image Compression
+  enable: Enable image compression
+  formats: Compression formats
+  jpeg: JPEG
+  webp: WebP
+  avif: AVIF
+  thumbnail: Generate thumbnail
+ai_config:
+  title: AI Features
+  enable: Enable AI feature extraction
+  provider: AI Provider
+  secret_key: Secret Key
+  secret_key_placeholder: Please enter API key
+  base_url: API URL
+  base_url_placeholder: Enter API URL, leave empty for default
+file_upload:
+  title: Upload file
+  description: Drag or drop your files here or click to upload
+  type: unknown type
+  modified: modified
+upload_photo:
+  untitled: Untitled
+  upload_button: Upload
+  ai_button: AI Recognition
+  upload_all: Upload All
+basic_info:
+  title: Basic Information
+  photo_title: Title
+  description: Description
+  tags: Tags
+  tags_placeholder: Add tags...
+  semantic_description: Semantic Description
+camera_lens:
+  title: Camera & Lens
+  camera_make: Camera Make
+  camera_model: Camera Model
+  lens_make: Lens Make
+  lens_model: Lens Model
+  focal_length: Focal Length
+  focal_length_35mm: 35mm Equivalent Focal Length
+exposure:
+  title: Exposure Settings
+  aperture: Aperture
+  iso: ISO
+  shutter_speed: Shutter Speed
+  exposure_compensation: Exposure Compensation
+location:
+  title: Location Information
+  location_name: Location Name
+  latitude: Latitude
+  longitude: Longitude
+  taken_at: Taken At

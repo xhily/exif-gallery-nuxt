@@ -31,10 +31,10 @@ async function login() {
   <Card class="mx-auto lt-sm:w-full sm:min-w-sm">
     <CardHeader>
       <CardTitle class="text-2xl">
-        Login
+        {{ $t('login_form.title') }}
       </CardTitle>
       <CardDescription>
-        Login to manage photos
+        {{ $t('login_form.description') }}
       </CardDescription>
     </CardHeader>
     <CardContent>
@@ -44,7 +44,7 @@ async function login() {
         <div class="grid gap-4">
           <div class="grid gap-2">
             <div class="flex items-center">
-              <Label for="password">Password</Label>
+              <Label for="password">{{ $t('login_form.password') }}</Label>
             </div>
             <div class="relative max-w-sm w-full items-center">
               <IInput
@@ -53,7 +53,7 @@ async function login() {
                 type="password"
                 autocomplete="on"
                 required
-                placeholder="Enter password"
+                :placeholder="$t('login_form.password_placeholder')"
                 class="w-full ps-8"
               />
               <span class="absolute start-0 inset-y-0 flex items-center justify-center px-2">
@@ -62,18 +62,18 @@ async function login() {
             </div>
           </div>
           <InteractiveHoverButton
-            text="Login"
+            :text="$t('login_form.login_button')"
             class="w-full"
             :disabled="!password || loading"
             :loading="loading"
             left="38%"
           />
-          <NuxtLink to="/">
+          <NuxtLinkLocale to="/">
             <Button variant="ghost" class="group w-full">
               <div class="i-lucide-chevron-left transition-transform group-hover:translate-x--2" />
-              <span>Back to Gallery</span>
+              <span>{{ $t('login_form.back_to_gallery') }}</span>
             </Button>
-          </NuxtLink>
+          </NuxtLinkLocale>
         </div>
       </form>
     </CardContent>

@@ -1,9 +1,0 @@
-welcome: Welcome
-theme:
-  color: Color
-  radius: Radius
-  mode: Theme
-  light: Light
-  dark: Dark
-  system: System
-  language: Language

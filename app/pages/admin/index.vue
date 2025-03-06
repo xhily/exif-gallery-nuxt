@@ -30,10 +30,10 @@ function deletePhoto(id: string) {
 
 <template>
   <div class="p-4 space-y-4">
-    <NuxtLink to="/admin/upload">
+    <NuxtLinkLocale to="/admin/upload">
       <div class="group relative w-full flex flex-col items-center justify-center overflow-hidden border border-muted rounded-lg bg-background p-4 md:shadow-xl">
         <span class="pointer-events-none my-8 whitespace-pre-wrap from-black to-gray-300/80 bg-gradient-to-b bg-clip-text text-center text-5xl text-transparent font-semibold leading-none dark:from-white dark:to-slate-900/10">
-          Go To Upload Photos
+          {{ $t('go_to_upload') }}
         </span>
         <BorderBeam
           color-from="hsl(var(--primary))"
@@ -42,7 +42,7 @@ function deletePhoto(id: string) {
           :border-width="4"
         />
       </div>
-    </NuxtLink>
+    </NuxtLinkLocale>
     <div
       v-if="photos && photos.length"
       class="grid grid-cols-4 flex-[3] gap-1 md:grid-cols-6"

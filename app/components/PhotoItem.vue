@@ -49,21 +49,21 @@ function deletePhoto(id: string) {
         <div class="flex flex-col gap-1">
           <span>{{ formatDate(photo.takenAt) }}</span>
           <span>{{ formatCameraText(photo) }}</span>
-          <NuxtLink
+          <NuxtLinkLocale
             v-for="tag in photo.tags?.split(',') || []"
             :key="tag"
             :to="`/tag/${tag}`"
             class="m--1 w-fit rounded-lg p-1 transition-colors hover:bg-muted"
           >
             <Tag :label="tag" />
-          </NuxtLink>
+          </NuxtLinkLocale>
         </div>
         <div class="flex flex-col text-sm text-muted-foreground">
           <div class="flex gap-2">
             <span>{{ photo.focalLength ? toFixed(photo.focalLength, 1) : '--' }}mm</span>
             <span
               v-if="photo.focalLengthIn35mmFormat"
-              title="35mm equivalent"
+              :title="$t('camera_lens.focal_length_35mm')"
               class="op-50"
             >{{ photo.focalLengthIn35mmFormat }}mm</span>
           </div>

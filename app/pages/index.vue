@@ -40,19 +40,19 @@ useInfiniteScroll(window, loadMore, { distance: 10, canLoadMore: () => hasMore.v
         @deleted="photos = photos.filter(p => p.id !== $event)"
       >
         <template #action-button>
-          <NuxtLink
+          <NuxtLinkLocale
             :to="`/p/${photo.id}`"
           >
             <Button
               size="icon"
               variant="ghost"
-              title="Image detail"
+              :title="$t('image_detail')"
               class="text-muted-foreground"
               @click="currentPhoto = photo.id"
             >
               <div class="i-lucide-image-upscale" />
             </Button>
-          </NuxtLink>
+          </NuxtLinkLocale>
         </template>
       </PhotoItem>
       <template v-if="loading">
@@ -63,10 +63,10 @@ useInfiniteScroll(window, loadMore, { distance: 10, canLoadMore: () => hasMore.v
         />
       </template>
       <div v-if="!loading && !photos?.length" class="m-auto h-66vh flex flex-col items-center justify-center gap4">
-        <h2>No Photos</h2>
-        <NuxtLink to="/admin">
-          <Button>Go To Admin Panel</Button>
-        </NuxtLink>
+        <h2>{{ $t('no_photos') }}</h2>
+        <NuxtLinkLocale to="/admin">
+          <Button>{{ $t('go_to_admin') }}</Button>
+        </NuxtLinkLocale>
       </div>
     </div>
   </section>

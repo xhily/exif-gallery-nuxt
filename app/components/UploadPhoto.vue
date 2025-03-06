@@ -76,7 +76,7 @@ onUnmounted(() => {
             />
           </div>
           <div class="flex flex-wrap items-center gap-4">
-            <span class="text-lg font-medium">{{ photo.title || '未命名' }}</span>
+            <span class="text-lg font-medium">{{ photo.title || $t('upload_photo.untitled') }}</span>
             <span class="text-sm text-muted-foreground">{{ photo.caption }}</span>
           </div>
           <div class="flex flex-1 flex-wrap items-start gap-6">
@@ -88,16 +88,15 @@ onUnmounted(() => {
               <UploadPhotoImage v-if="uploadConfig.formats.thumbnail" type="thumbnail" :file="compressFile?.thumbnail" />
             </div>
 
-            <div class="min-w-[200px] flex flex-1 flex-col gap-2">
-              <div class="text-sm text-gray-600">
-                {{ photo.make }} {{ photo.model }}
-              </div>
-              <div class="text-sm text-gray-600">
-                {{ formatExposure(photo).join(' • ') }}
-              </div>
-              <div class="text-sm text-gray-600">
-                {{ formatDate(photo.takenAt) }}
-              </div>
+            <div class="min-w-[200px] flex flex-1 flex-col gap-2 text-sm text-muted-foreground">
+              <span>{{ formatCameraText(photo) }}</span>
+              <span>{{ formatExposure(photo).join(' • ') }}</span>
+              <span>{{ photo.focalLength ? toFixed(photo.focalLength, 1) : '--' }}mm <span
+                v-if="photo.focalLengthIn35mmFormat"
+                :title="$t('camera_lens.focal_length_35mm')"
+                class="op-50"
+              >{{ photo.focalLengthIn35mmFormat }}mm</span> • {{ photo.exposureCompensation ? `${photo.exposureCompensation > 0 ? '+' : ''}${photo.exposureCompensation.toFixed(1)}ev` : '0ev' }}</span>
+              <span>{{ formatDate(photo.takenAt) }}</span>
             </div>
           </div>
         </div>
@@ -109,7 +108,7 @@ onUnmounted(() => {
             :loading="uploadLoading"
             @click="emit('upload')"
           >
-            <span>上传</span>
+            <span>{{ $t('upload_photo.upload_button') }}</span>
           </Button>
           <Button
             variant="outline"
@@ -117,7 +116,7 @@ onUnmounted(() => {
             :loading="aiLoading"
             @click="emit('generate')"
           >
-            <span>AI识图</span>
+            <span>{{ $t('upload_photo.ai_button') }}</span>
           </Button>
         </div>
       </div>

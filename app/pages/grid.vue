@@ -44,7 +44,7 @@ function getPhotoThumbnail(photo: Photo) {
           :translate-z="66"
           :image-class="{ 'current-image': currentPhoto === photo.id }"
         >
-          <NuxtLink
+          <NuxtLinkLocale
             :to="`/p/${photo.id}`"
           >
             <img
@@ -54,7 +54,7 @@ function getPhotoThumbnail(photo: Photo) {
               class="aspect-[4/3] w-full rounded-lg object-cover"
               @click="currentPhoto = photo.id"
             >
-          </NuxtLink>
+          </NuxtLinkLocale>
         </PhotoItemCard>
         <template v-if="loading">
           <Skeleton
@@ -69,10 +69,10 @@ function getPhotoThumbnail(photo: Photo) {
       </div>
     </div>
     <div v-if="!loading && !photos?.length" class="m-auto h-66vh flex flex-col items-center justify-center gap4 p4">
-      <h2>No Photos</h2>
-      <NuxtLink to="/admin">
-        <Button>Go To Admin Panel</Button>
-      </NuxtLink>
+      <h2>{{ $t('no_photos') }}</h2>
+      <NuxtLinkLocale to="/admin">
+        <Button>{{ $t('go_to_admin') }}</Button>
+      </NuxtLinkLocale>
     </div>
   </section>
 </template>

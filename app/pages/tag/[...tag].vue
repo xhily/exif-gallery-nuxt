@@ -4,11 +4,11 @@ definePageMeta({
 })
 
 const route = useRoute()
-const router = useRouter()
+const localePath = useLocalePath()
 
 const tag = route.params.tag?.[0]
 if (!tag) {
-  router.push('/')
+  navigateTo(localePath('/'))
   throw new Error('id is required')
 }
 
@@ -62,7 +62,7 @@ function getPhotoThumbnail(photo: Photo) {
         :image-class="{ 'current-image': currentPhoto === photo.id }"
       >
         <div class="group relative">
-          <NuxtLink
+          <NuxtLinkLocale
             :to="`/p/${photo.id}`"
           >
             <img
@@ -72,7 +72,7 @@ function getPhotoThumbnail(photo: Photo) {
               class="aspect-[4/3] w-full rounded-lg object-cover"
               @click="currentPhoto = photo.id"
             >
-          </NuxtLink>
+          </NuxtLinkLocale>
         </div>
       </PhotoItemCard>
       <template v-if="loading">

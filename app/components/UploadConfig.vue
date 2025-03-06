@@ -14,13 +14,13 @@ const { config: aiConfig, providers } = useAIConfig()
   >
     <UploadConfigCard>
       <template #status>
-        <ItemStatus label="压缩优化" :checked="uploadConfig.enableCompression" />
+        <ItemStatus :label="$t('compression_config.title')" :checked="uploadConfig.enableCompression" />
         <Card v-if="uploadConfig.enableCompression" class="flex flex-wrap gap-2 px-2">
-          <ItemStatus label="Jpeg" :checked="uploadConfig.formats.jpeg" />
-          <ItemStatus label="Webp" :checked="uploadConfig.formats.webp" />
-          <ItemStatus label="Avif" :checked="uploadConfig.formats.avif" />
+          <ItemStatus :label="$t('compression_config.jpeg')" :checked="uploadConfig.formats.jpeg" />
+          <ItemStatus :label="$t('compression_config.webp')" :checked="uploadConfig.formats.webp" />
+          <ItemStatus :label="$t('compression_config.avif')" :checked="uploadConfig.formats.avif" />
         </Card>
-        <ItemStatus label="缩略图" :checked="uploadConfig.formats.thumbnail" />
+        <ItemStatus :label="$t('compression_config.thumbnail')" :checked="uploadConfig.formats.thumbnail" />
       </template>
       <template #config>
         <Collapsible :open="uploadConfig.enableCompression">
@@ -29,32 +29,32 @@ const { config: aiConfig, providers } = useAIConfig()
               id="enable-compression"
               v-model:checked="uploadConfig.enableCompression"
             />
-            <Label for="enable-compression">启用图片压缩优化</Label>
+            <Label for="enable-compression">{{ $t('compression_config.enable') }}</Label>
           </div>
           <CollapsibleContent>
             <div class="pl-6">
-              <Label class="text-muted-foreground font-medium">压缩目标</Label>
+              <Label class="text-muted-foreground font-medium">{{ $t('compression_config.formats') }}</Label>
               <div class="flex flex-wrap gap-2">
                 <div class="flex items-center space-x-2">
                   <Checkbox
                     id="formats-jpeg"
                     v-model:checked="uploadConfig.formats.jpeg"
                   />
-                  <Label for="formats-jpeg">JPEG</Label>
+                  <Label for="formats-jpeg">{{ $t('compression_config.jpeg') }}</Label>
                 </div>
                 <div class="flex items-center space-x-2">
                   <Checkbox
                     id="formats-webp"
                     v-model:checked="uploadConfig.formats.webp"
                   />
-                  <Label for="formats-webp">WebP</Label>
+                  <Label for="formats-webp">{{ $t('compression_config.webp') }}</Label>
                 </div>
                 <div class="flex items-center space-x-2">
                   <Checkbox
                     id="formats-avif"
                     v-model:checked="uploadConfig.formats.avif"
                   />
-                  <Label for="formats-avif">AVIF</Label>
+                  <Label for="formats-avif">{{ $t('compression_config.avif') }}</Label>
                 </div>
               </div>
             </div>
@@ -65,15 +65,15 @@ const { config: aiConfig, providers } = useAIConfig()
             id="formats-thumbnail"
             v-model:checked="uploadConfig.formats.thumbnail"
           />
-          <Label for="formats-thumbnail">生成缩略图</Label>
+          <Label for="formats-thumbnail">{{ $t('compression_config.thumbnail') }}</Label>
         </div>
       </template>
     </UploadConfigCard>
 
     <UploadConfigCard>
       <template #status>
-        <ItemStatus label="压缩优化" :checked="aiConfig.enabled">
-          <span>AI特征提取</span>
+        <ItemStatus :label="$t('ai_config.title')" :checked="aiConfig.enabled">
+          <span>{{ $t('ai_config.title') }}</span>
           <Badge v-if="aiConfig.enabled" variant="outline" class="ml-2 rounded-lg">
             {{ aiConfig.provider }}
           </Badge>
@@ -86,12 +86,12 @@ const { config: aiConfig, providers } = useAIConfig()
               id="enable-ai"
               v-model:checked="aiConfig.enabled"
             />
-            <Label for="enable-ai">启用AI特征提取</Label>
+            <Label for="enable-ai">{{ $t('ai_config.enable') }}</Label>
           </div>
           <CollapsibleContent>
             <div class="ml-6 space-y-2">
               <div>
-                <Label for="ai-provider">AI服务商</Label>
+                <Label for="ai-provider">{{ $t('ai_config.provider') }}</Label>
                 <Select id="ai-provider" v-model="aiConfig.provider">
                   <SelectTrigger class="h-8 py-1">
                     <SelectValue />
@@ -108,22 +108,22 @@ const { config: aiConfig, providers } = useAIConfig()
                 </Select>
               </div>
               <div>
-                <Label for="secret-key">密钥</Label>
+                <Label for="secret-key">{{ $t('ai_config.secret_key') }}</Label>
                 <Input
                   id="secret-key"
                   v-model="aiConfig.secretKey"
                   type="password"
                   class="h-8 py-1"
-                  placeholder="请输入API密钥"
+                  :placeholder="$t('ai_config.secret_key_placeholder')"
                 />
               </div>
               <div>
-                <Label for="base-url">API地址</Label>
+                <Label for="base-url">{{ $t('ai_config.base_url') }}</Label>
                 <Input
                   id="base-url"
                   v-model="aiConfig.baseUrl"
                   class="h-8 py-1"
-                  placeholder="请输入API地址，空则使用默认地址"
+                  :placeholder="$t('ai_config.base_url_placeholder')"
                 />
               </div>
             </div>

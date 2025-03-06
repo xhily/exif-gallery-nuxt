@@ -1,9 +1,10 @@
 export default defineNuxtRouteMiddleware((to) => {
   const { loggedIn } = useUserSession()
+  const localePath = useLocalePath()
   if (!loggedIn.value) {
     return navigateTo({
-      path: '/admin/login',
-      query: { redirect: to.fullPath === '/admin/login' ? '/admin' : to.fullPath },
+      path: localePath('/admin/login'),
+      query: { redirect: to.fullPath === localePath('/admin/login') ? localePath('/admin') : to.fullPath },
     },
     )
   }

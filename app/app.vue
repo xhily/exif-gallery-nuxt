@@ -29,16 +29,18 @@ useHead({
     class: 'theme-zinc',
   },
 })
-
-const title = 'NuxtHub Image Gallery Starter'
-const description = 'A Nuxt template to build your full-stack image gallery application on the edge.'
+const config = useRuntimeConfig()
+const { t } = useI18n()
+const title = config.public.title || t('title')
+const description = config.public.description || t('description')
 
 useSeoMeta({
   title,
   ogTitle: title,
   description,
   ogDescription: description,
-  ogSiteName: 'NuxtHub image gallery template',
+  ogSiteName: title,
+  // FIXME: use another image
   ogImage: 'https://image-gallery.nuxt.dev/social-card.png',
   twitterCard: 'summary_large_image',
 })

@@ -4,17 +4,24 @@ definePageMeta({
 })
 
 const route = useRoute()
-const router = useRouter()
+const localePath = useLocalePath()
 
 const id = route.params.id?.[0]
 if (!id) {
-  router.push('/')
+  navigateTo(localePath('/'))
   throw new Error('id is required')
 }
 
 const { loggedIn } = useUserSession()
 
 const { photo } = usePhoto(id)
+
+const photosStore = useState<Map<string, any>>('infiniteData', () => shallowRef(new Map()))
+
+function onDeleted() {
+  navigateTo(localePath('/'))
+  photosStore.value = shallowRef(new Map()).value
+}
 </script>
 
 <template>
@@ -26,7 +33,7 @@ const { photo } = usePhoto(id)
       :photo="photo"
       :logged-in="loggedIn"
       image-class="current-image"
-      @deleted="$router.push('/')"
+      @deleted="onDeleted()"
     />
   </section>
   <section v-else>

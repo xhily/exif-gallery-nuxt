@@ -12,6 +12,9 @@ export default defineConfig({
       scale: 1.2,
     }),
   ],
+  preflights: [{
+    getCSS: () => '*, ::before, ::after { --un-default-border-color: hsl(var(--border)); }',
+  }],
   shortcuts: {
     'border-grid': 'border-border/30 dark:border-border border-dashed',
   },

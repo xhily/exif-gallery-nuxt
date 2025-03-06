@@ -1,0 +1,74 @@
+title: Exif 图库 Nuxt
+description: 一个支持 Exif 数据的 Nuxt.js 图片画廊模板
+no_photos: 暂无照片
+go_to_admin: 前往管理面板
+image_detail: 图片详情
+go_to_upload: 前往上传照片
+theme:
+  color: 颜色
+  radius: 圆角
+  mode: 主题模式
+  light: 浅色
+  dark: 深色
+  system: 系统
+  language: 语言
+login_form:
+  title: 登录
+  description: 登录以管理照片
+  password: 密码
+  password_placeholder: 请输入密码
+  login_button: 登录
+  back_to_gallery: 返回图库
+compression_config:
+  title: 图片压缩
+  enable: 启用图片压缩
+  formats: 压缩格式
+  jpeg: JPEG
+  webp: WebP
+  avif: AVIF
+  thumbnail: 生成缩略图
+ai_config:
+  title: AI 功能
+  enable: 启用 AI 特征提取
+  provider: AI 服务商
+  secret_key: 密钥
+  secret_key_placeholder: 请输入 API 密钥
+  base_url: API 地址
+  base_url_placeholder: 请输入 API 地址，空则使用默认地址
+file_upload:
+  title: 上传文件
+  description: 拖拽或点击此处上传文件
+  type: 未知类型
+  modified: 修改于
+upload_photo:
+  untitled: 未命名
+  upload_button: 上传
+  ai_button: AI 识图
+  upload_all: 上传全部
+basic_info:
+  title: 基本信息
+  photo_title: 标题
+  description: 描述
+  tags: 标签
+  tags_placeholder: 添加标签...
+  semantic_description: 语义描述
+camera_lens:
+  title: 相机镜头
+  camera_make: 相机品牌
+  camera_model: 相机型号
+  lens_make: 镜头品牌
+  lens_model: 镜头型号
+  focal_length: 焦距
+  focal_length_35mm: 等效35mm焦距
+exposure:
+  title: 曝光设置
+  aperture: 光圈
+  iso: ISO
+  shutter_speed: 快门速度
+  exposure_compensation: 曝光补偿
+location:
+  title: 位置信息
+  location_name: 地点名称
+  latitude: 纬度
+  longitude: 经度
+  taken_at: 拍摄时间

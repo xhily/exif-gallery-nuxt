@@ -47,11 +47,11 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      projectName: process.env.NUXT_PUBLIC_PROJECT_NAME,
+      title: process.env.NUXT_PUBLIC_TITLE,
+      description: process.env.NUXT_PUBLIC_DESCRIPTION,
     },
   },
   i18n: {
-    langDir: '../locales',
     locales: [
       { code: 'en', iso: 'en-US', file: 'en.yml' },
       { code: 'zh', iso: 'zh-CN', file: 'zh.yml' },
