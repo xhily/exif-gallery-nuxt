@@ -69,8 +69,9 @@ async function login() {
             left="38%"
           />
           <NuxtLink to="/">
-            <Button variant="ghost" class="w-full">
-              Back to Gallery
+            <Button variant="ghost" class="group w-full">
+              <div class="i-lucide-chevron-left transition-transform group-hover:translate-x--2" />
+              <span>Back to Gallery</span>
             </Button>
           </NuxtLink>
         </div>

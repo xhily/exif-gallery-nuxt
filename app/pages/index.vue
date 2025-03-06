@@ -55,7 +55,6 @@ useInfiniteScroll(window, loadMore, { distance: 10, canLoadMore: () => hasMore.v
           </NuxtLink>
         </template>
       </PhotoItem>
-      {{ loading }}
       <template v-if="loading">
         <Skeleton
           v-for="i in LIMIT"
@@ -63,6 +62,12 @@ useInfiniteScroll(window, loadMore, { distance: 10, canLoadMore: () => hasMore.v
           class="aspect-[4/3] w-full rounded-lg"
         />
       </template>
+      <div v-if="!loading && !photos?.length" class="m-auto h-66vh flex flex-col items-center justify-center gap4">
+        <h2>No Photos</h2>
+        <NuxtLink to="/admin">
+          <Button>Go To Admin Panel</Button>
+        </NuxtLink>
+      </div>
     </div>
   </section>
 </template>

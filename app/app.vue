@@ -4,6 +4,16 @@ const colorMode = useColorMode()
 const isDark = computed(() => colorMode.value === 'dark')
 const themeColor = computed(() => baseColors.find(c => c.name === theme.value)?.activeColor[isDark.value ? 'dark' : 'light'] || theme.value)
 
+onPrehydrate(() => {
+  const value = localStorage.getItem('shadcn-theme')
+  if (!value)
+    return
+  const oldClass = Array.from(document.body.classList).find(className => className.startsWith('theme-'))
+  if (oldClass)
+    document.body.classList.remove(oldClass)
+  document.body.classList.add(`theme-${value}`)
+})
+
 useHead({
   meta: [
     { name: 'viewport', content: 'width=device-width, initial-scale=1' },
