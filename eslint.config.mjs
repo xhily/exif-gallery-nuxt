@@ -7,4 +7,9 @@ export default antfu({
   ignores: [
     'server/database/migrations/*',
   ],
+  overrides: {
+    typescript: {
+      'node/prefer-global/process': 'off',
+    },
+  },
 })

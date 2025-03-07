@@ -1,5 +1,3 @@
-import process from 'node:process'
-
 type Session = Awaited<ReturnType<typeof getUserSession>> & { lastAttemptAt?: number }
 
 export default eventHandler(async (event) => {
