@@ -6,7 +6,7 @@ interface AIConfig {
 }
 
 const defaultConfig: AIConfig = {
-  provider: 'openai',
+  provider: 'gemini',
   baseUrl: '',
   secretKey: '',
   enabled: false,

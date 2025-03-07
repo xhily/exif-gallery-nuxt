@@ -1,5 +1,5 @@
 export function useTheme(init = false) {
-  const theme = useLocalStorage('shadcn-theme', 'zinc')
+  const theme = useLocalStorage('shadcn-theme', 'blue')
   const radius = useLocalStorage('shadcn-radius', '0.5')
 
   if (init && !import.meta.env.SSR) {
