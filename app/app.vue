@@ -46,6 +46,7 @@ useSeoMeta({
 </script>
 
 <template>
+  <NuxtLoadingIndicator color="hsl(var(--primary))" />
   <div class="relative min-h-[100dvh]">
     <Sonner :visible-toasts="20" />
     <NuxtLayout>
