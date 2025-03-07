@@ -62,6 +62,7 @@ async function login() {
             </div>
           </div>
           <InteractiveHoverButton
+            type="submit"
             :text="$t('login_form.login_button')"
             class="w-full"
             :disabled="!password || loading"
