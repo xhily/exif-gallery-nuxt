@@ -14,7 +14,7 @@ export interface UploadConfig {
 
 export function useUploadConfig() {
   const config = useLocalStorage<UploadConfig>('upload-config', {
-    enableCompression: false,
+    enableCompression: true,
     formats: {
       jpeg: false,
       webp: true,
