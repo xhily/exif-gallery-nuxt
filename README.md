@@ -4,6 +4,8 @@
 
 A full-stack photo album solution that integrates AI intelligent processing, browser image compression, and other functions.
 
+![exif-gallery-nuxt](./public/exif-gallery-nuxt.jpg)
+
 [![Deploy to NuxtHub](https://hub.nuxt.com/button.svg)](https://admin.hub.nuxt.com/new)
 
 ## Features
