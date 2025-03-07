@@ -41,12 +41,12 @@ async function login() {
       <form
         @submit.prevent="login"
       >
-        <div class="grid gap-4">
+        <div class="grid max-w-sm gap-4">
           <div class="grid gap-2">
             <div class="flex items-center">
               <Label for="password">{{ $t('login_form.password') }}</Label>
             </div>
-            <div class="relative max-w-sm w-full items-center">
+            <div class="relative w-full items-center">
               <IInput
                 id="password"
                 v-model="password"
