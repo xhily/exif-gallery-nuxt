@@ -137,6 +137,9 @@ async function processFileCompress(fileEntry: FileEntry) {
   fileEntry.compressedFile = Object.fromEntries(Object.entries(formatsConfig).map(
     ([type, value]) => [type, value ? 'loading' : undefined],
   ))
+  if (formatsConfig.thumbnail && aiConfig.value.enabled) {
+    fileEntry.aiLoading = true
+  }
   setFile(fileEntry)
   await compressImageMultiResult(
     fileEntry.file,
@@ -147,16 +150,19 @@ async function processFileCompress(fileEntry: FileEntry) {
         [type]: file,
       }
       setFile(fileEntry)
+      if (type === 'thumbnail' && aiConfig.value.enabled) {
+        processFileAiDescription(fileEntry, file)
+      }
     },
   )
 }
 
 const aiLimit = pLimit(1)
-async function processFileAiDescription(fileEntry: FileEntry) {
+async function processFileAiDescription(fileEntry: FileEntry, thumbnailFile?: File) {
   fileEntry.aiLoading = true
   setFile(fileEntry)
   try {
-    const aiData = await aiLimit(() => getAiImageAnalysis(fileEntry.file))
+    const aiData = await aiLimit(() => getAiImageAnalysis(thumbnailFile || fileEntry.file, !thumbnailFile))
     fileEntry.photo = { ...fileEntry.photo, ...aiData, tags: aiData.tags.join(',') }
   }
   catch (error) {
@@ -185,8 +191,8 @@ async function processFiles(rawFiles: File[]) {
       compressLoading.value = false
     })
   }
-  if (aiConfig.value.enabled) {
-    const aiTasks = fileEntries.map(processFileAiDescription)
+  if (!uploadConfig.value.formats.thumbnail && aiConfig.value.enabled) {
+    const aiTasks = fileEntries.map(file => processFileAiDescription(file))
     aiLoading.value = true
     Promise.allSettled(aiTasks).finally(() => {
       aiLoading.value = false

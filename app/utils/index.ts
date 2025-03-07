@@ -54,16 +54,18 @@ export function formatCameraText(p: IPhoto | Photo) {
   return [make, model].filter(Boolean).join(' ') || '--'
 }
 
-export async function getCompressedImageBase64(file: File): Promise<string> {
-  const compressedFiles = await compressImage(file, {
-    target: 'thumbnail',
-  })
+export async function getCompressedImageBase64(file: File, compress: boolean): Promise<string> {
+  if (compress) {
+    file = await compressImage(file, {
+      target: 'thumbnail',
+    })
+  }
 
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
     reader.onload = () => resolve(reader.result as string)
     reader.onerror = reject
-    reader.readAsDataURL(compressedFiles || file)
+    reader.readAsDataURL(file)
   })
 }
 

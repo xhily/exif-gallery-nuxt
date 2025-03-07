@@ -43,7 +43,7 @@ function initializeAIClient() {
   return null
 }
 
-export async function getAiImageAnalysis(imageFile: File) {
+export async function getAiImageAnalysis(imageFile: File, compress = true) {
   const client = initializeAIClient()
   const { config } = useAIConfig()
   const { t } = useNuxtApp().$i18n
@@ -84,7 +84,7 @@ export async function getAiImageAnalysis(imageFile: File) {
   }
 
   try {
-    const base64 = await getCompressedImageBase64(imageFile)
+    const base64 = await getCompressedImageBase64(imageFile, compress)
     const { object } = await generateObject({
       model: client(config.value.provider === 'openai' ? 'gpt-4o' : 'gemini-2.0-flash'),
       schema: imageAnalysisSchema,
