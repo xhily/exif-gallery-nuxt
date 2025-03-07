@@ -118,6 +118,9 @@ async function uploadAll() {
 
 async function processFileExif(fileEntry: FileEntry) {
   const photo = await getExifData(fileEntry.file)
+  if (!photo.takenAt) {
+    photo.takenAt = new Date(fileEntry.file.lastModified)
+  }
   fileEntry.photo = { ...fileEntry.photo, ...photo }
   setFile(fileEntry)
 }
