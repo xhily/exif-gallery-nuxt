@@ -13,7 +13,10 @@ export default defineConfig({
     }),
   ],
   preflights: [{
-    getCSS: () => '*, ::before, ::after { --un-default-border-color: hsl(var(--border)); }',
+    getCSS: () => `
+*, ::before, ::after { --un-default-border-color: hsl(var(--border)); }
+.dark input[type="datetime-local"]::-webkit-calendar-picker-indicator { filter: invert(1); }
+`,
   }],
   shortcuts: {
     'border-grid': 'border-border/30 dark:border-border border-dashed',
