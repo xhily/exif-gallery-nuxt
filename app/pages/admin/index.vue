@@ -45,7 +45,7 @@ function deletePhoto(id: string) {
     </NuxtLinkLocale>
     <div
       v-if="photos && photos.length"
-      class="grid grid-cols-4 flex-[3] gap-1 md:grid-cols-6"
+      class="grid grid-cols-3 gap-1 2xl:grid-cols-8 lg:grid-cols-5 sm:grid-cols-4 xl:grid-cols-6"
     >
       <div
         v-for="photo in photos"
@@ -54,8 +54,9 @@ function deletePhoto(id: string) {
       >
         <Button
           v-if="loggedIn"
+          size="icon"
           :loading="deletingPhoto === photo.id"
-          class="absolute right-4 top-4 z-[9999] opacity-0 group-hover:opacity-100"
+          class="absolute right--1 top--1 z-[9999] opacity-0 sm:right-4 sm:top-4 group-hover:opacity-100"
           @click="deletePhoto(photo.id)"
         >
           <div class="i-lucide-trash" />
