@@ -1,5 +1,5 @@
-title: Exif 图库 Nuxt
-description: 一个支持 Exif 数据的 Nuxt.js 图片画廊模板
+title: Exif相册
+description: 一个集成了 AI 智能处理、浏览器图片压缩等功能的全栈相册解决方案
 no_photos: 暂无照片
 go_to_admin: 前往管理面板
 image_detail: 图片详情

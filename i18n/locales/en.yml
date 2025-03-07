@@ -1,5 +1,5 @@
-title: Exif Gallery Nuxt
-description: A Nuxt.js image gallery template with Exif data support
+title: Exif Gallery
+description: A full-stack photo album solution that integrates AI intelligent processing, browser image compression, and other functions
 no_photos: No Photos
 go_to_admin: Go To Admin Panel
 image_detail: Image detail
