@@ -92,7 +92,7 @@ onUnmounted(() => {
               <UploadPhotoImage v-if="uploadConfig.formats.thumbnail" type="thumbnail" :file="compressFile?.thumbnail" />
             </div>
 
-            <div class="min-w-[200px] flex flex-1 flex-col gap-2 text-sm text-muted-foreground">
+            <div class="min-w-[200px] flex flex-1 flex-col gap-2 text-sm text-muted-foreground font-mono">
               <span>{{ formatCameraText(photo) }}</span>
               <span>{{ formatExposure(photo).join(' • ') }}</span>
               <span>{{ photo.focalLength ? toFixed(photo.focalLength, 1) : '--' }}mm <span

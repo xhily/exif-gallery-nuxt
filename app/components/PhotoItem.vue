@@ -58,7 +58,7 @@ function deletePhoto(id: string) {
             <Tag :label="tag" />
           </NuxtLinkLocale>
         </div>
-        <div class="flex flex-col text-sm text-muted-foreground">
+        <div class="flex flex-col text-sm text-muted-foreground font-mono">
           <div class="flex gap-2">
             <span>{{ photo.focalLength ? toFixed(photo.focalLength, 1) : '--' }}mm</span>
             <span

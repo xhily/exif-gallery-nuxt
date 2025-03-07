@@ -26,7 +26,7 @@ useHead({
     lang: 'en',
   },
   bodyAttrs: {
-    class: 'theme-zinc',
+    class: 'theme-zinc font-sans',
   },
 })
 const config = useRuntimeConfig()

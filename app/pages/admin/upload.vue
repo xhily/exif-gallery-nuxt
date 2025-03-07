@@ -235,7 +235,7 @@ function closeFile(id: number) {
       class="ml-auto"
       @click="uploadAll()"
     >
-      <span>上传全部</span>
+      <span>{{ $t('upload_photo.upload_all') }}</span>
     </Button>
 
     <UploadPhoto

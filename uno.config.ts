@@ -1,5 +1,5 @@
 // unocss.config.ts
-import { defineConfig, presetIcons, presetWind3 } from 'unocss'
+import { defineConfig, presetIcons, presetWebFonts, presetWind3 } from 'unocss'
 import presetAnimations from 'unocss-preset-animations'
 import { builtinColors, presetShadcn } from 'unocss-preset-shadcn'
 
@@ -10,6 +10,13 @@ export default defineConfig({
     presetShadcn(builtinColors.map(color => ({ color }))),
     presetIcons({
       scale: 1.2,
+    }),
+    presetWebFonts({
+      fonts: {
+        sans: 'DM Sans',
+        serif: 'DM Sans',
+        mono: 'DM Mono',
+      },
     }),
   ],
   preflights: [{
