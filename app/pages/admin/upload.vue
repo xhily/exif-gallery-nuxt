@@ -162,7 +162,9 @@ async function processFileAiDescription(fileEntry: FileEntry, thumbnailFile?: Fi
   fileEntry.aiLoading = true
   setFile(fileEntry)
   try {
-    const aiData = await aiLimit(() => getAiImageAnalysis(thumbnailFile || fileEntry.file, !thumbnailFile))
+    const thumbnail = thumbnailFile || fileEntry.compressedFile?.thumbnail
+    const fileToAnalyze = thumbnail instanceof File ? thumbnail : fileEntry.file
+    const aiData = await aiLimit(() => getAiImageAnalysis(fileToAnalyze, thumbnail instanceof File))
     fileEntry.photo = { ...fileEntry.photo, ...aiData, tags: aiData.tags.join(',') }
   }
   catch (error) {
@@ -201,6 +203,13 @@ async function processFiles(rawFiles: File[]) {
 }
 
 const activeId = ref<number>()
+
+function closeFile(id: number) {
+  const index = files.value.findIndex(f => f.id === id)
+  if (index !== -1) {
+    files.value.splice(index, 1)
+  }
+}
 </script>
 
 <template>
@@ -238,6 +247,7 @@ const activeId = ref<number>()
       :upload-loading="file.uploadLoading"
       @upload="upload(file)"
       @generate="processFileAiDescription(file)"
+      @close="closeFile(file.id)"
     />
   </div>
 </template>

@@ -13,9 +13,11 @@ const props = defineProps<{
 const emit = defineEmits<{
   upload: []
   generate: []
+  close: []
 }>()
 
 const { config: uploadConfig } = useUploadConfig()
+const { config: aiConfig } = useAIConfig()
 
 const photo = defineModel<IPhoto>({ required: true })
 const activeId = defineModel<number>('activeId')
@@ -82,9 +84,11 @@ onUnmounted(() => {
           <div class="flex flex-1 flex-wrap items-start gap-6">
             <div ref="viewerRef" class="flex flex-wrap gap-4">
               <UploadPhotoImage type="original" :file="file" />
-              <UploadPhotoImage v-if="uploadConfig.formats.jpeg" type="JPEG" :file="compressFile?.jpeg" />
-              <UploadPhotoImage v-if="uploadConfig.formats.webp" type="WebP" :file="compressFile?.webp" />
-              <UploadPhotoImage v-if="uploadConfig.formats.avif" type="AVIF" :file="compressFile?.avif" />
+              <template v-if="uploadConfig.enableCompression">
+                <UploadPhotoImage v-if="uploadConfig.formats.jpeg" type="JPEG" :file="compressFile?.jpeg" />
+                <UploadPhotoImage v-if="uploadConfig.formats.webp" type="WebP" :file="compressFile?.webp" />
+                <UploadPhotoImage v-if="uploadConfig.formats.avif" type="AVIF" :file="compressFile?.avif" />
+              </template>
               <UploadPhotoImage v-if="uploadConfig.formats.thumbnail" type="thumbnail" :file="compressFile?.thumbnail" />
             </div>
 
@@ -111,6 +115,7 @@ onUnmounted(() => {
             <span>{{ $t('upload_photo.upload_button') }}</span>
           </Button>
           <Button
+            v-if="aiConfig.enabled"
             variant="outline"
             class="w-fit"
             :loading="aiLoading"
@@ -133,5 +138,12 @@ onUnmounted(() => {
     >
       <div :class="isOpen ? 'i-lucide-chevron-up' : 'i-lucide-chevron-down'" />
     </Button>
+    <button
+      class="absolute right-4 top-4 rounded-sm bg-accent text-muted-foreground opacity-70 ring-offset-background transition-opacity disabled:pointer-events-none hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring"
+      @click="emit('close')"
+    >
+      <div class="i-lucide-x size-4" />
+      <span class="sr-only">Close</span>
+    </button>
   </Card>
 </template>
