@@ -40,8 +40,7 @@ useSeoMeta({
   description,
   ogDescription: description,
   ogSiteName: title,
-  // FIXME: use another image
-  ogImage: 'https://image-gallery.nuxt.dev/social-card.png',
+  ogImage: 'https://photo.wiidede.space/exif-gallery-nuxt.jpg',
   twitterCard: 'summary_large_image',
 })
 </script>

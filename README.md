@@ -1,26 +1,27 @@
-# NuxtHub Image Gallery Starter Template
+# EXIF Gallery Nuxt
 
-This starter lets you get started with [NuxtHub Blob](https://hub.nuxt.com/docs/storage/blob) in seconds.
+[English](README.md) | [简体中文](README_zh.md)
 
-[![Deploy to NuxtHub](https://hub.nuxt.com/button.svg)](https://admin.hub.nuxt.com/new?template=image-gallery)
+A full-stack photo album solution that integrates AI intelligent processing, browser image compression, and other functions.
 
-https://github.com/Flosciante/nuxt-image-gallery/assets/904724/6e2bafdf-f5a0-42cf-b1f8-1d11c6ec919f
+[![Deploy to NuxtHub](https://hub.nuxt.com/button.svg)](https://admin.hub.nuxt.com/new)
 
 ## Features
 
 - 📷 Image upload and display with [`hubBlob()`](http://hub.nuxt.com/docs/storage/blob)
-- 🖼️ Image Filters: Apply a variety of filters to your images.
-- 💾 Saving: Save your images with applied filters.
-- 🌐 Cloud Storage: Blob powered by NuxtHub (cloudflare R2).
-- 🎠 Custom Carousel: Includes a custom carousel component that can be adapted for in-house use.
-- 🏃🏻 [View transition API](https://developer.chrome.com/docs/web-platform/view-transitions) The View Transitions API provides a mechanism for easily creating animated transitions between different DOM states while also updating the DOM contents in a single step.
-- 🔑 [Nuxt Auth Utils](https://github.com/Atinux/nuxt-auth-utils) Minimalist Authentication module for Nuxt exposing Vue composables and server utils.
+- 🌐 Cloud Storage: Blob powered by NuxtHub (cloudflare R2)
+- 🤖 AI Integration: Support for OpenAI and Google AI for intelligent image processing
+- 🗜️ Image Compression: Multiple format support (JPEG, WebP, AVIF) with JSQuash
+- 🎨 Modern UI: Beautiful components with shadcn-vue and inspira-ui
+- 🏃🏻 [View transition API](https://developer.chrome.com/docs/web-platform/view-transitions) The View Transitions API provides a mechanism for easily creating animated transitions between different DOM states while also updating the DOM contents in a single step
+- 🔑 [Nuxt Auth Utils](https://github.com/Atinux/nuxt-auth-utils) Minimalist Authentication module for Nuxt exposing Vue composables and server utils
 
 ## Stack
 
 - [NuxtHub](https://hub.nuxt.com) - A Nuxt toolkit to build fullstack applications on the edge
-- [NuxtUI](https://ui.nuxt.com/getting-started) - A UI Library for Modern Web Apps
-- [Nuxt Fonts](https://github.com/nuxt/fonts) - Plug-and-play custom web font optimization and configuration for Nuxt apps.
+- [UnoCSS](https://unocss.dev/) - The instant on-demand atomic CSS engine
+- [shadcn-vue](https://www.shadcn-vue.com/) - Beautifully designed components built with Radix UI and Tailwind CSS
+- [inspira-ui](https://inspira-ui.com/) - Collection of beautiful UI components to build stunning animated interfaces
 - [VueUse](https://github.com/antfu/vueuse) - Collection of useful composition APIs
 - [ESLint](https://eslint.org/) with [@nuxt/eslint-config](https://github.com/nuxt/eslint), single quotes, no semi
 - [TypeScript](https://www.typescriptlang.org/)
@@ -37,6 +38,8 @@ https://github.com/Flosciante/nuxt-image-gallery/assets/904724/6e2bafdf-f5a0-42c
 
 - `NUXT_ADMIN_PASSWORD` - A password to access the admin panel and upload images, will default to `admin` if not provided.
 - `NUXT_SESSION_PASSWORD` - A secret key for session encryption used by [nuxt-auth-utils](https://github.com/Atinux/nuxt-auth-utils), will be generated automatically if not provided in development mode.
+- `NUXT_PUBLIC_TITLE` - The title of the application, will default to `Exif Gallery Nuxt` if not provided.
+- `NUXT_PUBLIC_DESCRIPTION` - The description of the application, will default to `A Nuxt.js image gallery template with Exif data support` if not provided.
 
 ## Development
 
@@ -60,9 +63,9 @@ You can deploy this project on your Cloudflare account for free and with zero co
 npx nuxthub deploy
 ```
 
-It's also possible to leverage Cloudflare Pages CI for deploying, learn more about the different options on https://hub.nuxt.com/docs/getting-started/deploy
+It's also possible to leverage Cloudflare Pages CI for deploying, learn more about the different options on <https://hub.nuxt.com/docs/getting-started/deploy>
 
-Learn more about remote storage on https://hub.nuxt.com/docs/getting-started/remote-storage
+Learn more about remote storage on <https://hub.nuxt.com/docs/getting-started/remote-storage>
 
 ## Template Starter
 
@@ -76,4 +79,5 @@ Contributions are welcome! Feel free to open an issue to report a bug or submit 
 
 ## Credits
 
-Thanks to [Atinux](https://github.com/Atinux) for the contributions and advice provided.
+Thanks to [exif-photo-blog](https://github.com/sambecker/exif-photo-blog)
+Thanks to [nuxt-image-gallery](https://github.com/Flosciante/nuxt-image-gallery)
