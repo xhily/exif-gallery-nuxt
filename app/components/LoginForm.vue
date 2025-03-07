@@ -41,7 +41,7 @@ async function login() {
       <form
         @submit.prevent="login"
       >
-        <div class="grid max-w-sm gap-4">
+        <div class="grid gap-4">
           <div class="grid gap-2">
             <div class="flex items-center">
               <Label for="password">{{ $t('login_form.password') }}</Label>
