@@ -74,6 +74,9 @@ export default defineNuxtConfig({
     optimizeDeps: {
       exclude: ['@jsquash/avif', '@jsquash/jpeg', '@jsquash/png', '@jsquash/resize', '@jsquash/webp'],
     },
+    worker: {
+      format: 'es',
+    },
     plugins: [
       {
         name: 'expose-theme',
