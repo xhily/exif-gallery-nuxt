@@ -5,10 +5,10 @@ const localePath = useLocalePath()
 
 const links = [{
   icon: 'i-lucide-layout-grid',
-  to: '/admin',
+  to: localePath('/admin'),
 }, {
   icon: 'i-lucide-upload',
-  to: '/admin/upload',
+  to: localePath('/admin/upload'),
 }]
 const disconnect = ref(false)
 const { loggedIn, clear } = useUserSession()
@@ -26,7 +26,7 @@ async function clearSession() {
       <NuxtLinkLocale to="/" class="me-2 min-w-0 flex-[0_1_auto] truncate font-medium">
         {{ config.public.title || $t('title') }}
       </NuxtLinkLocale>
-      <NuxtLinkLocale
+      <NuxtLink
         v-for="link in links"
         :key="link.to"
         :to="link.to"
@@ -34,7 +34,7 @@ async function clearSession() {
         :data-active="path === link.to"
       >
         <div :class="link.icon" />
-      </NuxtLinkLocale>
+      </NuxtLink>
     </nav>
     <nav class="flex items-center">
       <NuxtLinkLocale to="https://github.com/wiidede/exif-gallery-nuxt" target="_blank">

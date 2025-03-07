@@ -1,15 +1,16 @@
 <script setup lang="ts">
 const config = useRuntimeConfig()
 const { path } = toRefs(useRoute())
+const localePath = useLocalePath()
 
 const links = [
   {
     icon: 'i-lucide-gallery-vertical',
-    to: '/',
+    to: localePath('/'),
   },
   {
     icon: 'i-lucide-layout-grid',
-    to: '/grid',
+    to: localePath('/grid'),
   },
 ]
 </script>
@@ -20,7 +21,7 @@ const links = [
       <NuxtLinkLocale to="/" class="me-2 min-w-0 flex-[0_1_auto] truncate font-medium">
         {{ config.public.title || $t('title') }}
       </NuxtLinkLocale>
-      <NuxtLinkLocale
+      <NuxtLink
         v-for="link in links"
         :key="link.to"
         :to="link.to"
@@ -28,7 +29,7 @@ const links = [
         :data-active="path === link.to"
       >
         <div :class="link.icon" />
-      </NuxtLinkLocale>
+      </NuxtLink>
     </nav>
     <nav class="flex items-center">
       <NuxtLinkLocale to="https://github.com/wiidede/exif-gallery-nuxt" target="_blank">
