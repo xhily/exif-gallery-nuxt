@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { SelectTriggerProps } from 'radix-vue'
+import type { SelectTriggerProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 import { cn } from '@/lib/utils'
-import { SelectIcon, SelectTrigger, useForwardProps } from 'radix-vue'
+import { SelectIcon, SelectTrigger, useForwardProps } from 'reka-ui'
 import { computed } from 'vue'
 
 const props = defineProps<SelectTriggerProps & { class?: HTMLAttributes['class'] }>()

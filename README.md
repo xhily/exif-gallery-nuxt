@@ -22,7 +22,7 @@ A full-stack photo album solution that integrates AI intelligent processing, bro
 
 - [NuxtHub](https://hub.nuxt.com) - A Nuxt toolkit to build fullstack applications on the edge
 - [UnoCSS](https://unocss.dev/) - The instant on-demand atomic CSS engine
-- [shadcn-vue](https://www.shadcn-vue.com/) - Beautifully designed components built with Radix UI and Tailwind CSS
+- [shadcn-vue](https://www.shadcn-vue.com/) - Beautifully designed components built with Reka UI and Tailwind CSS
 - [inspira-ui](https://inspira-ui.com/) - Collection of beautiful UI components to build stunning animated interfaces
 - [VueUse](https://github.com/antfu/vueuse) - Collection of useful composition APIs
 - [ESLint](https://eslint.org/) with [@nuxt/eslint-config](https://github.com/nuxt/eslint), single quotes, no semi

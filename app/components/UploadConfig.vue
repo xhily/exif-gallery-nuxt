@@ -27,7 +27,7 @@ const { config: aiConfig, providers } = useAIConfig()
           <div class="flex items-center space-x-2">
             <Checkbox
               id="enable-compression"
-              v-model:checked="uploadConfig.enableCompression"
+              v-model="uploadConfig.enableCompression"
             />
             <Label for="enable-compression">{{ $t('compression_config.enable') }}</Label>
           </div>
@@ -38,21 +38,21 @@ const { config: aiConfig, providers } = useAIConfig()
                 <div class="flex items-center space-x-2">
                   <Checkbox
                     id="formats-jpeg"
-                    v-model:checked="uploadConfig.formats.jpeg"
+                    v-model="uploadConfig.formats.jpeg"
                   />
                   <Label for="formats-jpeg">{{ $t('compression_config.jpeg') }}</Label>
                 </div>
                 <div class="flex items-center space-x-2">
                   <Checkbox
                     id="formats-webp"
-                    v-model:checked="uploadConfig.formats.webp"
+                    v-model="uploadConfig.formats.webp"
                   />
                   <Label for="formats-webp">{{ $t('compression_config.webp') }}</Label>
                 </div>
                 <div class="flex items-center space-x-2">
                   <Checkbox
                     id="formats-avif"
-                    v-model:checked="uploadConfig.formats.avif"
+                    v-model="uploadConfig.formats.avif"
                   />
                   <Label for="formats-avif">{{ $t('compression_config.avif') }}</Label>
                 </div>
@@ -63,7 +63,7 @@ const { config: aiConfig, providers } = useAIConfig()
         <div class="flex items-center space-x-2">
           <Checkbox
             id="formats-thumbnail"
-            v-model:checked="uploadConfig.formats.thumbnail"
+            v-model="uploadConfig.formats.thumbnail"
           />
           <Label for="formats-thumbnail">{{ $t('compression_config.thumbnail') }}</Label>
         </div>
@@ -84,7 +84,7 @@ const { config: aiConfig, providers } = useAIConfig()
           <div class="flex items-center space-x-2">
             <Checkbox
               id="enable-ai"
-              v-model:checked="aiConfig.enabled"
+              v-model="aiConfig.enabled"
             />
             <Label for="enable-ai">{{ $t('ai_config.enable') }}</Label>
           </div>

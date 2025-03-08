@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { TagsInputItemDeleteProps } from 'radix-vue'
+import type { TagsInputItemDeleteProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 import { cn } from '@/lib/utils'
-import { TagsInputItemDelete, useForwardProps } from 'radix-vue'
+import { TagsInputItemDelete, useForwardProps } from 'reka-ui'
 import { computed } from 'vue'
 
 const props = defineProps<TagsInputItemDeleteProps & { class?: HTMLAttributes['class'] }>()

@@ -18,7 +18,7 @@
 
 - [NuxtHub](https://hub.nuxt.com) - 用于在边缘构建全栈应用的 Nuxt 工具包
 - [UnoCSS](https://unocss.dev/) - 即时按需的原子化 CSS 引擎
-- [shadcn-vue](https://www.shadcn-vue.com/) - 使用 Radix UI 和 Tailwind CSS 构建的精美组件
+- [shadcn-vue](https://www.shadcn-vue.com/) - 使用 Reka UI 和 Tailwind CSS 构建的精美组件
 - [inspira-ui](https://inspira-ui.com/) - 用于构建炫酷动画界面的精美 UI 组件集合
 - [VueUse](https://github.com/antfu/vueuse) - 实用的 Vue 组合式 API 集合
 - [ESLint](https://eslint.org/) 配合 [@nuxt/eslint-config](https://github.com/nuxt/eslint)，使用单引号，无分号
