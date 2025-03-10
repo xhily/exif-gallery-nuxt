@@ -59,11 +59,11 @@ const photo = defineModel<IPhoto>({ required: true })
         </div>
         <div>
           <Label class="text-sm font-medium">{{ $t('camera_lens.focal_length') }}</Label>
-          <Input v-model.number="photo.focalLength" type="number" class="h-8 py-1" />
+          <NumberField v-model="photo.focalLength" input-class="h-8" />
         </div>
         <div>
           <Label class="text-sm font-medium">{{ $t('camera_lens.focal_length_35mm') }}</Label>
-          <Input v-model.number="photo.focalLengthIn35mmFormat" type="number" class="h-8 py-1" />
+          <NumberField v-model="photo.focalLengthIn35mmFormat" input-class="h-8" />
         </div>
       </div>
     </div>
@@ -76,19 +76,19 @@ const photo = defineModel<IPhoto>({ required: true })
       <div class="grid grid-cols-1 gap-x-4 gap-y-1 lg:grid-cols-4 md:grid-cols-2">
         <div>
           <Label class="text-sm font-medium">{{ $t('exposure.aperture') }}</Label>
-          <Input v-model.number="photo.fNumber" type="number" step="0.1" class="h-8 py-1" />
+          <NumberField v-model="photo.fNumber" :step="0.1" :format-options="{ minimumFractionDigits: 1, maximumFractionDigits: 1 }" input-class="h-8" />
         </div>
         <div>
           <Label class="text-sm font-medium">{{ $t('exposure.iso') }}</Label>
-          <Input v-model.number="photo.iso" type="number" class="h-8 py-1" />
+          <NumberField v-model="photo.iso" input-class="h-8" />
         </div>
         <div>
           <Label class="text-sm font-medium">{{ $t('exposure.shutter_speed') }}</Label>
-          <Input v-model.number="photo.exposureTime" type="number" step="0.001" class="h-8 py-1" />
+          <NumberField v-model="photo.exposureTime" :step="0.00001" :format-options="{ minimumFractionDigits: 0, maximumFractionDigits: 5 }" input-class="h-8" />
         </div>
         <div>
           <Label class="text-sm font-medium">{{ $t('exposure.exposure_compensation') }}</Label>
-          <Input v-model.number="photo.exposureCompensation" type="number" step="0.1" class="h-8 py-1" />
+          <NumberField v-model="photo.exposureCompensation" :step="0.1" :format-options="{ minimumFractionDigits: 1, maximumFractionDigits: 1, signDisplay: 'always' }" input-class="h-8" />
         </div>
       </div>
     </div>
@@ -105,11 +105,11 @@ const photo = defineModel<IPhoto>({ required: true })
         </div>
         <div>
           <Label class="text-sm font-medium">{{ $t('location.latitude') }}</Label>
-          <Input v-model.number="photo.latitude" type="number" step="0.000001" class="h-8 py-1" />
+          <NumberField v-model="photo.latitude" :step="0.000001" :format-options="{ minimumFractionDigits: 0, maximumFractionDigits: 6 }" input-class="h-8" />
         </div>
         <div>
           <Label class="text-sm font-medium">{{ $t('location.longitude') }}</Label>
-          <Input v-model.number="photo.longitude" type="number" step="0.000001" class="h-8 py-1" />
+          <NumberField v-model="photo.longitude" :step="0.000001" :format-options="{ minimumFractionDigits: 0, maximumFractionDigits: 6 }" input-class="h-8" />
         </div>
         <div>
           <Label class="text-sm font-medium">{{ $t('location.taken_at') }}</Label>
