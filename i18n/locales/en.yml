@@ -22,10 +22,12 @@ login_form:
 compression_config:
   title: Image Compression
   enable: Enable image compression
+  info: Image compression can speed up page loading, but will slightly reduce image quality, and exif will be removed
   formats: Compression formats
   jpeg: JPEG
   webp: WebP
   avif: AVIF
+  avif_info: AVIF format has a better algorithm, but compression time is much longer
   thumbnail: Generate thumbnail
 ai_config:
   title: AI Features

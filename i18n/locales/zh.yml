@@ -22,10 +22,12 @@ login_form:
 compression_config:
   title: 图片压缩
   enable: 启用图片压缩
+  info: 图片压缩可以加快页面加载速度，但会略微降低图片质量，并且exif也会被移除
   formats: 压缩格式
   jpeg: JPEG
   webp: WebP
   avif: AVIF
+  avif_info: AVIF格式虽然拥有更好的算法，但是压缩操作耗时较长
   thumbnail: 生成缩略图
 ai_config:
   title: AI 功能

@@ -30,6 +30,14 @@ const { config: aiConfig, providers } = useAIConfig()
               v-model="uploadConfig.enableCompression"
             />
             <Label for="enable-compression">{{ $t('compression_config.enable') }}</Label>
+            <Tooltip>
+              <TooltipTrigger as-child>
+                <div class="i-lucide-info cursor-help" />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{{ $t('compression_config.info') }}</p>
+              </TooltipContent>
+            </Tooltip>
           </div>
           <CollapsibleContent>
             <div class="pl-6">
@@ -55,6 +63,14 @@ const { config: aiConfig, providers } = useAIConfig()
                     v-model="uploadConfig.formats.avif"
                   />
                   <Label for="formats-avif">{{ $t('compression_config.avif') }}</Label>
+                  <Tooltip>
+                    <TooltipTrigger as-child>
+                      <div class="i-lucide-info cursor-help" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>{{ $t('compression_config.avif_info') }}</p>
+                    </TooltipContent>
+                  </Tooltip>
                 </div>
               </div>
             </div>
