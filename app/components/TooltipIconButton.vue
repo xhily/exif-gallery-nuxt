@@ -10,11 +10,10 @@ const props = defineProps<Props>()
 interface Props extends ButtonProps {
   icon?: string
   label: string
-  disableClosingTrigger?: boolean
 }
 
 const buttonProps = computed(() => {
-  const { icon: _i, label: _l, disableClosingTrigger: _d, ...delegated } = props
+  const { icon: _i, label: _l, ...delegated } = props
   delegated.variant = delegated.variant || 'ghost'
   delegated.size = delegated.size || 'icon'
   return delegated
@@ -25,7 +24,7 @@ const attrs = useAttrs()
 
 <template>
   <Tooltip>
-    <TooltipTrigger as-child :disable-closing-trigger="disableClosingTrigger">
+    <TooltipTrigger as-child>
       <slot>
         <Button
           v-bind="{ ...attrs, ...buttonProps }"

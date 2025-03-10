@@ -56,7 +56,6 @@ async function clearSession() {
         icon="i-lucide-power text-red"
         @click="clearSession()"
       />
-
       <ThemePopover class="flex-shrink-0" />
     </nav>
   </header>
