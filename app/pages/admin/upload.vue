@@ -179,6 +179,17 @@ async function processFileAiDescription(fileEntry: FileEntry, thumbnailFile?: Fi
   }
 }
 
+async function processFile(fileEntry: FileEntry) {
+  await processFileExif(fileEntry)
+  if (uploadConfig.value.enableCompression) {
+    fileEntry.file = await processImageRotation(fileEntry.file)
+    processFileCompress(fileEntry)
+  }
+  if (!uploadConfig.value.formats.thumbnail && aiConfig.value.enabled) {
+    processFileAiDescription(fileEntry)
+  }
+}
+
 async function processFiles(rawFiles: File[]) {
   const fileEntries: FileEntry[] = rawFiles.map((file, index) => ({
     id: fileId + index,
@@ -187,22 +198,7 @@ async function processFiles(rawFiles: File[]) {
   }))
   files.value.push(...fileEntries)
   fileId += rawFiles.length
-  const exifTasks = fileEntries.map(processFileExif)
-  Promise.allSettled(exifTasks)
-  if (uploadConfig.value.enableCompression) {
-    const compressTasks = fileEntries.map(processFileCompress)
-    compressLoading.value = true
-    Promise.allSettled(compressTasks).finally(() => {
-      compressLoading.value = false
-    })
-  }
-  if (!uploadConfig.value.formats.thumbnail && aiConfig.value.enabled) {
-    const aiTasks = fileEntries.map(file => processFileAiDescription(file))
-    aiLoading.value = true
-    Promise.allSettled(aiTasks).finally(() => {
-      aiLoading.value = false
-    })
-  }
+  Promise.allSettled(fileEntries.map(processFile))
 }
 
 const activeId = ref<number>()
