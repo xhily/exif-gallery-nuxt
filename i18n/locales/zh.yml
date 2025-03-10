@@ -4,6 +4,15 @@ no_photos: 暂无照片
 go_to_admin: 前往管理面板
 image_detail: 图片详情
 go_to_upload: 前往上传照片
+header:
+  github: 在 GitHub 上查看项目
+  admin: 管理面板
+  admin_dashboard: 管理仪表盘
+  admin_upload: 上传照片
+  gallery_view: 画廊视图
+  grid_view: 网格视图
+  theme: 自定义主题
+  logout: 退出登录
 theme:
   color: 颜色
   radius: 圆角

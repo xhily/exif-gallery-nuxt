@@ -49,7 +49,7 @@ useSeoMeta({
   <NuxtLoadingIndicator color="hsl(var(--primary))" />
   <div class="relative min-h-[100dvh]">
     <Sonner :visible-toasts="20" />
-    <TooltipProvider :delay-duration="0">
+    <TooltipProvider :delay-duration="0" disable-closing-trigger>
       <NuxtLayout>
         <NuxtPage />
       </NuxtLayout>

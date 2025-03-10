@@ -4,6 +4,15 @@ no_photos: No Photos
 go_to_admin: Go To Admin Panel
 image_detail: Image detail
 go_to_upload: Go To Upload Photos
+header:
+  github: View project on GitHub
+  admin: Admin Panel
+  admin_dashboard: Admin Dashboard
+  admin_upload: Upload Photos
+  gallery_view: Gallery View
+  grid_view: Grid View
+  theme: Customize Theme
+  logout: Logout
 theme:
   color: Color
   radius: Radius
