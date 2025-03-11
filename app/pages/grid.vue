@@ -36,7 +36,7 @@ function getPhotoThumbnail(photo: Photo) {
 <template>
   <section class="relative p-4">
     <div class="flex gap-4 md:gap-8">
-      <div class="grid grid-cols-3 flex-auto gap-1 2xl:grid-cols-8 lg:grid-cols-5 sm:grid-cols-4 xl:grid-cols-6">
+      <div class="grid grid-cols-3 h-min flex-auto gap-1 2xl:grid-cols-8 lg:grid-cols-5 sm:grid-cols-4 xl:grid-cols-6">
         <PhotoItemCard
           v-for="photo in photos"
           :key="photo.id"
@@ -64,8 +64,10 @@ function getPhotoThumbnail(photo: Photo) {
           />
         </template>
       </div>
-      <div class="sticky top-16 h-fit flex-shrink-0 md:pr-10">
-        <Tags />
+      <div class="sticky top-16 h-min flex-shrink-0 md:pr-10">
+        <ScrollArea class="max-h-[calc(100vh-5rem)] flex" viewport-class="h-inherit">
+          <Tags />
+        </ScrollArea>
       </div>
     </div>
     <div v-if="!loading && !photos?.length" class="m-auto h-66vh flex flex-col items-center justify-center gap4 p4">

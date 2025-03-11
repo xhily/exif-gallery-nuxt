@@ -12,7 +12,7 @@ const {
   <div class="flex items-center">
     <div :class="icon" class="me-1 size-1em" />
     <slot>
-      <span>{{ label }}</span>
+      <span class="max-w-24 truncate lt-sm:max-w-16">{{ label }}</span>
     </slot>
   </div>
 </template>

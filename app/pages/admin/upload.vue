@@ -18,8 +18,7 @@ interface FileEntry {
 let fileId = 0
 
 const files = ref<FileEntry[]>([])
-const compressLoading = ref(false)
-const aiLoading = ref(false)
+const processLoading = ref(true)
 const uploadLoading = ref(false)
 
 const { config: uploadConfig } = useUploadConfig()
@@ -197,7 +196,10 @@ async function processFiles(rawFiles: File[]) {
   }))
   files.value.push(...fileEntries)
   fileId += rawFiles.length
-  Promise.allSettled(fileEntries.map(processFile))
+  processLoading.value = true
+  Promise.allSettled(fileEntries.map(processFile)).finally(() => {
+    processLoading.value = false
+  })
 }
 
 const activeId = ref<number>()
@@ -225,7 +227,7 @@ function closeFile(id: number) {
 
     <Button
       v-if="files.length"
-      :disabled="aiLoading || compressLoading"
+      :disabled="processLoading"
       :loading="uploadLoading"
       class="ml-auto"
       @click="uploadAll()"
