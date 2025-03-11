@@ -12,7 +12,7 @@ globalThis.onmessage = async (e) => {
     const fileType = file.type
 
     if (fileType === 'image/jpeg' || fileType === 'image/jpg') {
-      imageData = await decodeJpeg(arrayBuffer)
+      imageData = await decodeJpeg(arrayBuffer, { preserveOrientation: true })
     }
     else if (fileType === 'image/png') {
       imageData = await decodePng(arrayBuffer)

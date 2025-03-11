@@ -182,7 +182,6 @@ async function processFileAiDescription(fileEntry: FileEntry, thumbnailFile?: Fi
 async function processFile(fileEntry: FileEntry) {
   await processFileExif(fileEntry)
   if (uploadConfig.value.enableCompression) {
-    fileEntry.file = await processImageRotation(fileEntry.file)
     processFileCompress(fileEntry)
   }
   if (!uploadConfig.value.formats.thumbnail && aiConfig.value.enabled) {

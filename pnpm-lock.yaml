@@ -18,8 +18,8 @@ importers:
         specifier: ^2.0.0
         version: 2.0.0
       '@jsquash/jpeg':
-        specifier: ^1.4.0
-        version: 1.4.0
+        specifier: ^1.5.0-beta.1
+        version: 1.5.0-beta.1
       '@jsquash/png':
         specifier: ^3.0.1
         version: 3.0.1
@@ -1428,8 +1428,8 @@ packages:
   '@jsquash/avif@2.0.0':
     resolution: {integrity: sha512-Gu1S4PCNpZvKXdenpyFUa9pVG4XdAPpTR/H1prr78WQLIKmbBoTkH6Nyf4qrSiNrQFqteyHeFrILsysXD6YRWg==}
 
-  '@jsquash/jpeg@1.4.0':
-    resolution: {integrity: sha512-I/uGQ5Gk3qOEQNufUcR9boZ0qH+eoXW7cp0mW9eNInlgjRXwEhepvfbnutQ+RM1dNeuIHoOM5YVCEK1y/ATipQ==}
+  '@jsquash/jpeg@1.5.0-beta.1':
+    resolution: {integrity: sha512-noUKaq0C8uRLLnKqGGh+MJqs6FzBUdvtZbnxo4ZJXyeDNVXQKP9p0jpHXqSky9K5ZYk+LtgPrnWOdcmOxKIysA==}
 
   '@jsquash/png@3.0.1':
     resolution: {integrity: sha512-Bnvv93Y5LL92cuk2r2gpV+9JKuDo2/w7bOODw1iPxk8VARknky0sS1tSDgMosUdhNb4CdMlcCm3TMzTaqa3zZw==}
@@ -7396,7 +7396,7 @@ snapshots:
     dependencies:
       wasm-feature-detect: 1.8.0
 
-  '@jsquash/jpeg@1.4.0': {}
+  '@jsquash/jpeg@1.5.0-beta.1': {}
 
   '@jsquash/png@3.0.1': {}
 

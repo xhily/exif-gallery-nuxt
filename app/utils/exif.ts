@@ -37,37 +37,3 @@ export async function getExifData(file: File) {
 
   return photo
 }
-
-export async function processImageRotation(file: File): Promise<File> {
-  const orientation = await exifr.orientation(file)
-  if (!orientation)
-    return file
-
-  const img = await new Promise<HTMLImageElement>((resolve, reject) => {
-    const img = new Image()
-    img.onload = () => resolve(img)
-    img.onerror = reject
-    img.src = URL.createObjectURL(file)
-  })
-
-  const canvas = document.createElement('canvas')
-  canvas.width = img.naturalWidth
-  canvas.height = img.naturalHeight
-
-  const ctx = canvas.getContext('2d', { colorSpace: 'display-p3' })
-  if (!ctx)
-    throw new Error('Failed to get canvas context')
-
-  ctx.save()
-  ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight)
-
-  return new Promise<File>((resolve) => {
-    canvas.toBlob((blob) => {
-      URL.revokeObjectURL(img.src)
-      if (!blob)
-        throw new Error('Canvas toBlob failed')
-
-      resolve(new File([blob], file.name, { type: file.type }))
-    }, 'image/jpeg', 0.8)
-  })
-}
