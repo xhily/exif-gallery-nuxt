@@ -146,14 +146,14 @@ async function processFileCompress(fileEntry: FileEntry) {
   await compressImageMultiResult(
     fileEntry.file,
     formatsConfig,
-    (type, file) => {
+    async (type, file) => {
       fileEntry.compressedFile = {
         ...fileEntry.compressedFile,
         [type]: file,
       }
       setFile(fileEntry)
       if (type === 'thumbnail' && aiConfig.value.enabled) {
-        processFileAiDescription(fileEntry, file)
+        await processFileAiDescription(fileEntry, file)
       }
     },
   )
@@ -180,12 +180,14 @@ async function processFileAiDescription(fileEntry: FileEntry, thumbnailFile?: Fi
 
 async function processFile(fileEntry: FileEntry) {
   await processFileExif(fileEntry)
+  const task: Promise<unknown>[] = []
   if (uploadConfig.value.enableCompression) {
-    processFileCompress(fileEntry)
+    task.push(processFileCompress(fileEntry))
   }
   if (!uploadConfig.value.formats.thumbnail && aiConfig.value.enabled) {
-    processFileAiDescription(fileEntry)
+    task.push(processFileAiDescription(fileEntry))
   }
+  await Promise.allSettled(task)
 }
 
 async function processFiles(rawFiles: File[]) {

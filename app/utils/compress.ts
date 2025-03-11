@@ -57,7 +57,7 @@ export async function compressImage(file: File, options?: CompressOptions): Prom
 export async function compressImageMultiResult(
   file: File,
   options: CompressMultiResultOption,
-  completeCallback?: (type: CompressKeys, file: File) => void,
+  completeCallback?: (type: CompressKeys, file: File) => Promise<void>,
 ): Promise<compressFiles> {
   const imageData = await decode(file)
   const results: compressFiles = {}
@@ -66,7 +66,7 @@ export async function compressImageMultiResult(
       return
     const result = await encode(imageData, file.name, option === true ? { target: type } : option)
     results[type] = result
-    completeCallback?.(type, result)
+    await completeCallback?.(type, result)
   })
   await Promise.allSettled(encodeTask)
   return results
