@@ -50,7 +50,7 @@ export async function getAiImageAnalysis(imageFile: File, compress = true) {
 
   const imageAnalysisSchema = z.object({
     title: z.string().max(20).describe(t('ai.title_desc')),
-    caption: z.string().max(30).describe(t('ai.caption_desc')),
+    caption: z.string().max(60).describe(t('ai.caption_desc')),
     tags: z.array(z.string()).max(4).describe(t('ai.tags_desc')),
     semanticDescription: z.string().describe(t('ai.semantic_desc')),
   })
@@ -62,17 +62,6 @@ export async function getAiImageAnalysis(imageFile: File, compress = true) {
     + `- ${t('ai.caption')}\n`
     + `- ${t('ai.tags')}\n`
     + `- ${t('ai.semantic')}`
-
-  // if (import.meta.env.DEV) {
-  //   // FIXME: For development purposes only
-  //   await new Promise(resolve => setTimeout(resolve, 1000))
-  //   return {
-  //     title: `AI Title ${Math.round(Math.random() * 1000)}`,
-  //     caption: `AI Caption ${Math.round(Math.random() * 1000)}`,
-  //     tags: [`AI Tag ${Math.round(Math.random() * 10)}`, `AI Tag ${Math.round(Math.random() * 10)}`, `AI Tag ${Math.round(Math.random() * 10)}`],
-  //     semanticDescription: 'AI Semantic Description',
-  //   }
-  // }
 
   if (!client) {
     return {
