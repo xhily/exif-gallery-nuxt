@@ -4,6 +4,10 @@ no_photos: 暂无照片
 go_to_admin: 前往管理面板
 image_detail: 图片详情
 go_to_upload: 前往上传照片
+button:
+  edit: 编辑
+  delete: 删除
+  view_photo: 查看图片详情
 header:
   github: 在 GitHub 上查看项目
   admin: 管理面板
@@ -56,6 +60,10 @@ upload_photo:
   upload_button: 上传
   ai_button: AI 识图
   upload_all: 上传全部
+edit_photo:
+  title: 编辑照片
+  cancel: 取消
+  save_changes: 保存修改
 basic_info:
   title: 基本信息
   photo_title: 标题

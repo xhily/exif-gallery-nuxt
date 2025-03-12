@@ -43,15 +43,11 @@ useInfiniteScroll(window, loadMore, { distance: 10, canLoadMore: () => hasMore.v
           <NuxtLinkLocale
             :to="`/p/${photo.id}`"
           >
-            <Button
-              size="icon"
-              variant="ghost"
-              :title="$t('image_detail')"
-              class="text-muted-foreground"
+            <TooltipIconButton
+              :label="$t('button.view_photo')"
+              icon="i-lucide-image-upscale text-muted-foreground"
               @click="currentPhoto = photo.id"
-            >
-              <div class="i-lucide-image-upscale" />
-            </Button>
+            />
           </NuxtLinkLocale>
         </template>
       </PhotoItem>

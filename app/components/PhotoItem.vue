@@ -3,15 +3,20 @@ import type { HTMLAttributes } from 'vue'
 
 const {
   photo,
+  mini,
 } = defineProps<{
   photo: Photo
   loggedIn?: boolean
   imageClass?: HTMLAttributes['class']
+  hideAction?: boolean
+  mini?: boolean
 }>()
 
 const emit = defineEmits<{
   deleted: [id: string]
 }>()
+
+const isMini = computed(() => mdScreen.value && mini)
 
 const { deletingPhoto, deletePhoto: _deletePhoto } = useDeletePhoto()
 function deletePhoto(id: string) {
@@ -21,7 +26,10 @@ function deletePhoto(id: string) {
 
 <template>
   <div class="flex gap-1 lt-md:flex-col lg:gap-8 md:gap-4">
-    <PhotoItemCard :photo="photo" class="md:flex-[2] xl:flex-[3]" :image-class="imageClass" />
+    <div v-if="isMini" class="relative md:flex-[2] xl:flex-[3]">
+      <PhotoItemCard class="absolute inset-0 h-full w-full" :photo="photo" :image-class="imageClass" mini />
+    </div>
+    <PhotoItemCard v-else :photo="photo" class="md:flex-[2] xl:flex-[3]" :image-class="imageClass" />
     <div class="relative sticky top-16 z-1 h-fit md:flex-[1]">
       <div class="flex lt-md:mb-2 md:flex-col lt-md:justify-between">
         <div>
@@ -30,18 +38,18 @@ function deletePhoto(id: string) {
             {{ photo.caption }}
           </p>
         </div>
-        <div class="ml--2.4 min-h-2 flex items-center">
+        <div v-if="!hideAction" class="ml--2.4 min-h-2 flex items-center">
           <slot name="action-button" />
-          <Button
+          <NuxtLinkLocale v-if="loggedIn" :to="`/admin/edit/${photo.id}`">
+            <TooltipIconButton :label="$t('button.edit')" icon="i-lucide-edit text-muted-foreground" />
+          </NuxtLinkLocale>
+          <TooltipIconButton
             v-if="loggedIn"
-            size="icon"
-            variant="ghost"
             :loading="deletingPhoto === photo.id"
-            class="text-muted-foreground"
+            :label="$t('button.delete')"
+            icon="i-lucide-trash text-muted-foreground"
             @click="deletePhoto(photo.id)"
-          >
-            <div class="i-lucide-trash" />
-          </Button>
+          />
         </div>
       </div>
 

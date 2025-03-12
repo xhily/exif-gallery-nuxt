@@ -15,8 +15,8 @@ export default defineEventHandler(async (event) => {
     tags: z.string().optional(),
     make: z.string().optional(),
     model: z.string().optional(),
-    focalLength: z.number().int().optional(),
-    focalLengthIn35mmFormat: z.number().int().optional(),
+    focalLength: z.number().optional(),
+    focalLengthIn35mmFormat: z.number().optional(),
     lensMake: z.string().optional(),
     lensModel: z.string().optional(),
     fNumber: z.number().optional(),
@@ -27,9 +27,8 @@ export default defineEventHandler(async (event) => {
     latitude: z.number().optional(),
     longitude: z.number().optional(),
     priorityOrder: z.number().optional(),
-    takenAt: z.number().optional(),
+    takenAt: z.string().optional(),
     hidden: z.boolean().optional(),
-    uploading: z.boolean().optional(),
   })
 
   const body = await useValidatedBody(event, updatableFields)

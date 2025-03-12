@@ -4,6 +4,10 @@ no_photos: No Photos
 go_to_admin: Go To Admin Panel
 image_detail: Image detail
 go_to_upload: Go To Upload Photos
+button:
+  edit: Edit
+  delete: Delete
+  view_photo: View Photo
 header:
   github: View project on GitHub
   admin: Admin Panel
@@ -56,6 +60,10 @@ upload_photo:
   upload_button: Upload
   ai_button: AI Recognition
   upload_all: Upload All
+edit_photo:
+  title: Edit Photo
+  cancel: Cancel
+  save_changes: Save Changes
 basic_info:
   title: Basic Information
   photo_title: Title
