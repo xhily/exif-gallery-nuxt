@@ -19,8 +19,8 @@ export const photo = sqliteTable('photos', {
   // exif info
   make: text('make'),
   model: text('model'),
-  focalLength: integer('focal_length'),
-  focalLengthIn35mmFormat: integer('focal_length_in_35mm_format'),
+  focalLength: real('focal_length'),
+  focalLengthIn35mmFormat: real('focal_length_in_35mm_format'),
   lensMake: text('lens_make'),
   lensModel: text('lens_model'),
   fNumber: real('f_number'),
