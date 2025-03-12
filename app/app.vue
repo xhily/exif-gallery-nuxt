@@ -6,12 +6,10 @@ const themeColor = computed(() => baseColors.find(c => c.name === theme.value)?.
 
 onPrehydrate(() => {
   const value = localStorage.getItem('shadcn-theme')
-  if (!value)
-    return
-  const oldClass = Array.from(document.body.classList).find(className => className.startsWith('theme-'))
-  if (oldClass)
-    document.body.classList.remove(oldClass)
-  document.body.classList.add(`theme-${value}`)
+  const oldClass = Array.from(document.body.classList).filter(className => className.startsWith('theme-'))
+  if (oldClass.length)
+    document.body.classList.remove(...oldClass)
+  document.body.classList.add(`theme-${value || 'blue'}`)
 })
 
 useHead({
@@ -26,7 +24,7 @@ useHead({
     lang: 'en',
   },
   bodyAttrs: {
-    class: 'theme-blue font-sans',
+    class: 'font-sans',
   },
 })
 const config = useRuntimeConfig()
