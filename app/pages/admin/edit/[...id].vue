@@ -13,6 +13,8 @@ if (!id) {
   throw new Error('id is required')
 }
 
+const photosStore = useState<Map<string, any>>('infiniteData', () => shallowRef(new Map()))
+
 const { photo, loading } = usePhoto(id)
 const editedPhoto = ref<IPhoto | null>(null)
 const isSaving = ref(false)
@@ -43,6 +45,7 @@ async function saveChanges() {
     })
 
     toast.success('Photo updated successfully')
+    photosStore.value = shallowRef(new Map()).value
     await navigateTo(localePath(`/admin`))
   }
   catch (error: any) {
