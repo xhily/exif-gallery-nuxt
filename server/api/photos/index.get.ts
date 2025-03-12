@@ -3,7 +3,7 @@ import { and, eq, inArray, sql } from 'drizzle-orm'
 export default eventHandler(async (event) => {
   const db = useDB()
   const query = getQuery(event)
-  const { hidden, limit, offset, orderBy = 'createdAt', order = 'desc', tag } = query
+  const { hidden, limit, offset, orderBy = 'takenAt', order = 'desc', tag } = query
   const conditions = []
 
   if (hidden !== undefined)
