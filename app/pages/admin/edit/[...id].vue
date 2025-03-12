@@ -62,24 +62,9 @@ async function saveChanges() {
 
 <template>
   <div class="p-4 space-y-4">
-    <div class="flex items-center justify-between">
-      <h1 class="text-2xl font-bold">
-        {{ $t('edit_photo.title') }}
-      </h1>
-      <div class="flex gap-2">
-        <Button variant="outline" @click="navigateTo(localePath('/admin'))">
-          {{ $t('edit_photo.cancel') }}
-        </Button>
-        <Button
-          :loading="isSaving"
-          :disabled="loading || !editedPhoto"
-          @click="saveChanges()"
-        >
-          {{ $t('edit_photo.save_changes') }}
-        </Button>
-      </div>
-    </div>
-
+    <h1 class="text-2xl font-bold">
+      {{ $t('edit_photo.title') }}
+    </h1>
     <div v-if="loading || !editedPhoto" class="space-y-4">
       <Skeleton class="aspect-[4/3] w-full" />
       <Skeleton class="h-10 w-full" />
@@ -99,6 +84,18 @@ async function saveChanges() {
       <Card class="p-4">
         <UploadPhotoForm v-model="editedPhoto" />
       </Card>
+    </div>
+    <div class="flex justify-center gap-2">
+      <Button variant="outline" @click="navigateTo(localePath('/admin'))">
+        {{ $t('edit_photo.cancel') }}
+      </Button>
+      <Button
+        :loading="isSaving"
+        :disabled="loading || !editedPhoto"
+        @click="saveChanges()"
+      >
+        {{ $t('edit_photo.save_changes') }}dsd
+      </Button>
     </div>
   </div>
 </template>
