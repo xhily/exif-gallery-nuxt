@@ -1,5 +1,5 @@
 import type { DBType } from './drizzle'
-import { eq, inArray } from 'drizzle-orm'
+import { eq, inArray, sql } from 'drizzle-orm'
 import { tables } from './drizzle'
 
 export async function processPhotoTags(db: DBType, photoId: string, tags: string | null | undefined) {
@@ -9,6 +9,14 @@ export async function processPhotoTags(db: DBType, photoId: string, tags: string
   const tagNames = tags.split(',').map(t => t.trim()).filter(Boolean)
   if (tagNames.length === 0)
     return
+
+  // Get current photo tags for decrementing counts
+  const currentPhotoTags = await db.query.photoTag.findMany({
+    where: eq(tables.photoTag.photoId, photoId),
+  })
+
+  // Get the tag IDs that need to be decremented
+  const tagIdsToDecrement = currentPhotoTags.map(pt => pt.tagId)
 
   // First, find all existing tags in one query
   const existingTags = await db.query.tag.findMany({
@@ -23,6 +31,7 @@ export async function processPhotoTags(db: DBType, photoId: string, tags: string
     .filter(name => !tagMap.has(name))
     .map(name => ({
       name,
+      photoCount: 1, // New tags start with count 1
     }))
 
   // Insert new tags if any
@@ -36,9 +45,18 @@ export async function processPhotoTags(db: DBType, photoId: string, tags: string
     newTags.forEach(tag => tagMap.set(tag.name, tag.id))
   }
 
-  // Delete existing photo-tag relationships
-  await db.delete(tables.photoTag)
-    .where(eq(tables.photoTag.photoId, photoId))
+  // Delete existing photo-tag relationships and decrement counts
+  if (currentPhotoTags.length > 0) {
+    await db.delete(tables.photoTag)
+      .where(eq(tables.photoTag.photoId, photoId))
+
+    // Decrement counts for removed tags
+    if (tagIdsToDecrement.length > 0) {
+      await db.update(tables.tag)
+        .set({ photoCount: sql`${tables.tag.photoCount} - 1` })
+        .where(inArray(tables.tag.id, tagIdsToDecrement))
+    }
+  }
 
   // Create new photo-tag relationships
   const photoTagOperations = tagNames
@@ -51,5 +69,10 @@ export async function processPhotoTags(db: DBType, photoId: string, tags: string
     await db.insert(tables.photoTag)
       .values(photoTagOperations)
       .onConflictDoNothing()
+
+    // Increment counts for new tags
+    await db.update(tables.tag)
+      .set({ photoCount: sql`${tables.tag.photoCount} + 1` })
+      .where(inArray(tables.tag.id, photoTagOperations.map(op => op.tagId)))
   }
 }

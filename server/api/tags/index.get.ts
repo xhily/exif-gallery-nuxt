@@ -1,4 +1,4 @@
-import { sql } from 'drizzle-orm'
+import { desc, sql } from 'drizzle-orm'
 
 export default eventHandler(async (event) => {
   const db = useDB()
@@ -10,12 +10,10 @@ export default eventHandler(async (event) => {
       id: tables.tag.id,
       name: tables.tag.name,
       createdAt: tables.tag.createdAt,
-      photoCount: sql<number>`count(${tables.photoTag.photoId})`
+      photoCount: tables.tag.photoCount,
     })
     .from(tables.tag)
-    .leftJoin(tables.photoTag, sql`${tables.tag.id} = ${tables.photoTag.tagId}`)
-    .groupBy(tables.tag.id)
-    .orderBy(sql`count(${tables.photoTag.photoId}) DESC`)
+    .orderBy(desc(tables.tag.photoCount))
     .limit(limit ? Number(limit) : 9999999)
     .offset(offset ? Number(offset) : 0)
 

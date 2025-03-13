@@ -15,6 +15,13 @@
       "when": 1741799791698,
       "tag": "0001_noisy_lightspeed",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1741846907838,
+      "tag": "0002_colorful_reptil",
+      "breakpoints": true
     }
   ]
 }

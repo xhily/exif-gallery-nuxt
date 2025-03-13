@@ -45,6 +45,7 @@ export const photo = sqliteTable('photos', {
 export const tag = sqliteTable('tags', {
   id: text('id').primaryKey().$defaultFn(() => createCuid(8)),
   name: text('name').notNull().unique(),
+  photoCount: integer('photo_count').notNull().default(0),
   createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`CURRENT_TIMESTAMP`),
 })
 
