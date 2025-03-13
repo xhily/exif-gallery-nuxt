@@ -26,8 +26,13 @@ async function clearSession() {
   <header class="sticky top-0 z-50 h-12 w-full flex items-center justify-between border-b bg-background/60 px-4 backdrop-blur border-grid">
     <nav div class="min-w-0 flex flex-auto items-center justify-items-start">
       <NuxtLinkLocale to="/" class="me-2 min-w-0 flex-[0_1_auto] truncate font-medium">
+        <Logo class="size-6 text-primary op-80" />
+      </NuxtLinkLocale>
+      <NuxtLinkLocale to="/" class="min-w-0 flex-[0_1_auto] truncate font-medium lt-md:hidden">
         {{ config.public.title || $t('title') }}
       </NuxtLinkLocale>
+    </nav>
+    <nav div class="min-w-0 flex flex-auto items-center justify-items-start">
       <TooltipIconButton
         v-for="link in links"
         :key="link.to"
