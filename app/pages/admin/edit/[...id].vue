@@ -94,7 +94,7 @@ async function saveChanges() {
         :disabled="loading || !editedPhoto"
         @click="saveChanges()"
       >
-        {{ $t('edit_photo.save_changes') }}dsd
+        {{ $t('edit_photo.save_changes') }}
       </Button>
     </div>
   </div>
