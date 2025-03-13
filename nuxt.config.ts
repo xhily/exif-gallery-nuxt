@@ -7,6 +7,7 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     '@nuxt/eslint',
     '@nuxtjs/i18n',
+    '@pinia/nuxt',
     '@vueuse/nuxt',
     '@unocss/nuxt',
     'nuxt-auth-utils',

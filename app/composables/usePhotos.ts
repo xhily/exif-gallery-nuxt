@@ -1,9 +1,3 @@
-interface InfiniteState {
-  photos: Ref<Photo[]>
-  hasMore: Ref<boolean>
-  loading: Ref<boolean>
-}
-
 export function usePhotosInfinite(params?: {
   hidden?: boolean
   orderBy?: string
@@ -15,21 +9,19 @@ export function usePhotosInfinite(params?: {
     loadMore: () => Promise<void>
     loading: Ref<boolean>
   } {
-  const photosStore = useState<Map<string, InfiniteState>>(
-    'infiniteData',
-    () => shallowRef(new Map()),
-  )
+  const pStore = usePhotosStore()
+  const photosStore = pStore.photosStore
   const key = JSON.stringify(params)
 
-  if (!photosStore.value.has(key)) {
-    photosStore.value.set(key, {
+  if (!photosStore.has(key)) {
+    photosStore.set(key, {
       photos: ref([]),
       hasMore: ref(true),
       loading: ref(false),
     })
   }
 
-  const state = photosStore.value.get(key)!
+  const state = photosStore.get(key)!
 
   const error = ref()
 

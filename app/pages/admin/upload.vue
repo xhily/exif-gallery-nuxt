@@ -31,7 +31,8 @@ function setFile(fileEntry: FileEntry) {
   }
 }
 
-const photosStore = useState<Map<string, any>>('infiniteData', () => shallowRef(new Map()))
+const pStore = usePhotosStore()
+const photosStore = pStore.photosStore
 
 const uploadLimit = pLimit(4)
 async function upload(fileEntry: FileEntry) {
@@ -89,7 +90,7 @@ async function upload(fileEntry: FileEntry) {
       if (index !== -1) {
         files.value.splice(index, 1)
       }
-      photosStore.value = shallowRef(new Map()).value
+      photosStore.clear()
     }
     else {
       toast.error('上传失败', { description: '请重试' })

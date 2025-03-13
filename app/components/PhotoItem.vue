@@ -2,19 +2,21 @@
 import type { HTMLAttributes } from 'vue'
 
 const {
-  photo,
   mini,
 } = defineProps<{
-  photo: Photo
   loggedIn?: boolean
   imageClass?: HTMLAttributes['class']
   hideAction?: boolean
   mini?: boolean
+  editable?: boolean
 }>()
 
 const emit = defineEmits<{
   deleted: [id: string]
+  update: [photo: Photo]
 }>()
+
+const photo = defineModel<Photo>('photo', { required: true })
 
 const isMini = computed(() => mdScreen.value && mini)
 
@@ -40,9 +42,16 @@ function deletePhoto(id: string) {
         </div>
         <div v-if="!hideAction" class="ml--2.4 min-h-2 flex items-center">
           <slot name="action-button" />
-          <NuxtLinkLocale v-if="loggedIn" :to="`/admin/edit/${photo.id}`">
-            <TooltipIconButton :label="$t('button.edit')" icon="i-lucide-edit text-muted-foreground" />
-          </NuxtLinkLocale>
+          <EditPhotoDialog
+            v-if="editable"
+            :photo="photo"
+          >
+            <TooltipIconButton
+              v-if="loggedIn"
+              :label="$t('button.edit')"
+              icon="i-lucide-edit text-muted-foreground"
+            />
+          </EditPhotoDialog>
           <TooltipIconButton
             v-if="loggedIn"
             :loading="deletingPhoto === photo.id"

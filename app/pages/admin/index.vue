@@ -24,6 +24,12 @@ function deletePhoto(id: string) {
     photos.value = photos.value.filter(photo => photo.id !== id),
   )
 }
+
+const selectedPhoto = ref<Photo | null>(null)
+
+function openEditDialog(photo: Photo) {
+  selectedPhoto.value = photo
+}
 </script>
 
 <template>
@@ -51,9 +57,16 @@ function deletePhoto(id: string) {
         class="group relative aspect-[4/3] h-auto w-full flex rounded-lg lt-md:hover:border-2 lt-md:hover:border-primary/50"
       >
         <div class="absolute right--0 top--0 z-[9999] hidden gap-1 sm:right-1 sm:top-1 group-hover:flex lt-md:translate-y--100%">
-          <NuxtLinkLocale :to="`/admin/edit/${photo.id}`">
-            <TooltipIconButton :label="$t('button.edit')" icon="i-lucide-edit" variant="default" />
-          </NuxtLinkLocale>
+          <EditPhotoDialog
+            :photo="selectedPhoto"
+          >
+            <TooltipIconButton
+              :label="$t('button.edit')"
+              icon="i-lucide-edit"
+              variant="default"
+              @click="openEditDialog(photo)"
+            />
+          </EditPhotoDialog>
           <TooltipIconButton
             :loading="deletingPhoto === photo.id"
             :label="$t('button.delete')"

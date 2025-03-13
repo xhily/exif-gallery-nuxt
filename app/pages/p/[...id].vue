@@ -16,11 +16,12 @@ const { loggedIn } = useUserSession()
 
 const { photo } = usePhoto(id)
 
-const photosStore = useState<Map<string, any>>('infiniteData', () => shallowRef(new Map()))
+const pStore = usePhotosStore()
+const photosStore = pStore.photosStore
 
 function onDeleted() {
+  photosStore.clear()
   navigateTo(localePath('/'))
-  photosStore.value = shallowRef(new Map()).value
 }
 </script>
 
@@ -33,6 +34,7 @@ function onDeleted() {
       :photo="photo"
       :logged-in="loggedIn"
       image-class="current-image"
+      editable
       @deleted="onDeleted()"
     />
   </section>
