@@ -1,5 +1,5 @@
 import { sql } from 'drizzle-orm'
-import { integer, primaryKey, real, sqliteTable, text } from 'drizzle-orm/sqlite-core'
+import { index, integer, primaryKey, real, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 
 export const photo = sqliteTable('photos', {
   id: text('id').primaryKey().$defaultFn(() => createCuid(8)),
@@ -39,7 +39,12 @@ export const photo = sqliteTable('photos', {
   // sql default
   updatedAt: integer('updated_at', { mode: 'timestamp' }).default(sql`CURRENT_TIMESTAMP`),
   createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`CURRENT_TIMESTAMP`),
-})
+}, table => ({
+  // 定义照片表的索引
+  takenAtIdx: index('idx_photos_taken_at').on(table.takenAt),
+  hiddenIdx: index('idx_photos_hidden').on(table.hidden),
+  priorityOrderIdx: index('idx_photos_priority_order').on(table.priorityOrder),
+}))
 
 // New tag table for storing unique tags
 export const tag = sqliteTable('tags', {
@@ -47,7 +52,10 @@ export const tag = sqliteTable('tags', {
   name: text('name').notNull().unique(),
   photoCount: integer('photo_count').notNull().default(0),
   createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`CURRENT_TIMESTAMP`),
-})
+}, table => ({
+  // 定义标签表的索引
+  photoCountIdx: index('idx_tags_photo_count').on(table.photoCount),
+}))
 
 // Junction table for many-to-many relationship between photos and tags
 export const photoTag = sqliteTable('photo_tags', {
@@ -60,4 +68,7 @@ export const photoTag = sqliteTable('photo_tags', {
   createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`CURRENT_TIMESTAMP`),
 }, table => [
   primaryKey({ columns: [table.photoId, table.tagId] }),
+  // 定义关联表的索引
+  index('idx_photo_tags_photo_id').on(table.photoId),
+  index('idx_photo_tags_tag_id').on(table.tagId),
 ])
