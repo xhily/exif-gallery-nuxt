@@ -7,7 +7,7 @@ const {
   class: className,
   translateZ = 100,
 } = defineProps<{
-  photo?: Photo
+  photo?: IPhoto
   class?: HTMLAttributes['class']
   imageClass?: HTMLAttributes['class']
   translateZ?: number

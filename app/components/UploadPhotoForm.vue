@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const photo = defineModel<IPhoto>({ required: true })
+const photo = defineModel<IPhotoForm>({ required: true })
 </script>
 
 <template>

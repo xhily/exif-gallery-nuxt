@@ -37,8 +37,8 @@ useInfiniteScroll(window, loadMore, { distance: 10, canLoadMore: () => hasMore.v
         :photo="photo"
         :logged-in="loggedIn"
         :image-class="{ 'current-image': currentPhoto === photo.id }"
-        @deleted="photos = photos.filter(p => p.id !== $event)"
         editable
+        @deleted="photos = photos.filter(p => p.id !== $event)"
       >
         <template #action-button>
           <NuxtLinkLocale

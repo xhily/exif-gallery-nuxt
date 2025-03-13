@@ -11,7 +11,7 @@ const { photos, hasMore, loadMore, loading } = usePhotosInfinite({
 
 useInfiniteScroll(window, loadMore, { distance: 10, canLoadMore: () => hasMore.value })
 
-function getPhotoThumbnail(photo: Photo) {
+function getPhotoThumbnail(photo: IPhoto) {
   const path = photo.thumbnail || photo.jpeg || photo.webp || photo.avif
   if (!path)
     throw new Error('Photo has no Image File')
@@ -25,9 +25,9 @@ function deletePhoto(id: string) {
   )
 }
 
-const selectedPhoto = ref<Photo | null>(null)
+const selectedPhoto = ref<IPhoto>()
 
-function openEditDialog(photo: Photo) {
+function openEditDialog(photo: IPhoto) {
   selectedPhoto.value = photo
 }
 </script>

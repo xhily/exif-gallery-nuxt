@@ -38,7 +38,7 @@ export function formatExposureTime(exposureTime: number) {
     : `${exposureTime}`
 }
 
-export function formatExposure(p: IPhoto | Photo): string[] {
+export function formatExposure(p: IPhotoForm): string[] {
   return [
     `ƒ/${p.fNumber || '--'}`,
     `${p.exposureTime ? formatExposureTime(p.exposureTime) : '--'}s`,
@@ -46,7 +46,7 @@ export function formatExposure(p: IPhoto | Photo): string[] {
   ]
 }
 
-export function formatCameraText(p: IPhoto | Photo) {
+export function formatCameraText(p: IPhotoForm) {
   // Remove 'Corporation' from makes like 'Nikon Corporation'
   const make = p.make?.replace(/ Corporation/i, '')
   // Remove potential duplicate make from model
@@ -69,12 +69,12 @@ export async function getCompressedImageBase64(file: File, compress: boolean): P
   })
 }
 
-export function deserializePhoto(p: SerializeObject<Photo>): Photo {
+export function deserializePhoto(p: SerializeObject<Photo>): IPhoto {
   return ({
-    ...p,
-    fileModified: p.fileModified ? new Date(p.fileModified) : null,
-    takenAt: p.takenAt ? new Date(p.takenAt) : null,
-    createdAt: p.createdAt ? new Date(p.createdAt) : null,
-    updatedAt: p.updatedAt ? new Date(p.updatedAt) : null,
+    ...Object.fromEntries(Object.entries(p).map(([key, value]) => [key, value ?? undefined])) as IPhoto,
+    fileModified: p.fileModified ? new Date(p.fileModified) : undefined,
+    takenAt: p.takenAt ? new Date(p.takenAt) : undefined,
+    createdAt: p.createdAt ? new Date(p.createdAt) : undefined,
+    updatedAt: p.updatedAt ? new Date(p.updatedAt) : undefined,
   })
 }

@@ -1,31 +1,26 @@
 <script setup lang="ts">
 const { photo } = defineProps<{
-  photo: Photo | undefined | null
+  photo: IPhoto | undefined
 }>()
 
 const open = defineModel<boolean>('open')
 
 const pStore = usePhotosStore()
 
-const editedPhoto = ref<IPhoto | null>(null)
+const editedPhoto = ref<IPhoto>()
 const isSaving = ref(false)
 
 watch(() => photo, (val) => {
   if (val) {
-    editedPhoto.value = Object.fromEntries(Object.entries(val))
+    editedPhoto.value = { ...val }
   }
 }, { immediate: true })
 
 watch(open, (val) => {
   if (val && photo) {
-    editedPhoto.value = Object.fromEntries(Object.entries(photo))
+    editedPhoto.value = { ...photo }
   }
 }, { immediate: true })
-
-const photoItem = computed(() => ({
-  ...photo,
-  ...editedPhoto.value,
-}))
 
 async function saveChanges() {
   if (!editedPhoto.value)
@@ -41,7 +36,7 @@ async function saveChanges() {
       },
     })
 
-    pStore.updatePhoto(editedPhoto.value as Photo)
+    pStore.updatePhoto(editedPhoto.value)
 
     toast.success('Photo updated successfully')
 
@@ -71,7 +66,8 @@ async function saveChanges() {
       <div class="mx--6 overflow-y-auto px-6">
         <section class="relative mb-4">
           <PhotoItem
-            :photo="photoItem as Photo"
+            v-if="editedPhoto"
+            :photo="editedPhoto"
             :logged-in="true"
             mini
             hide-action

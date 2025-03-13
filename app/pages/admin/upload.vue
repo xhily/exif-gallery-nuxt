@@ -12,7 +12,7 @@ interface FileEntry {
   aiLoading?: boolean
   uploadLoading?: boolean
   compressedFile?: compressFiles
-  photo: IPhoto
+  photo: IPhotoForm
 }
 
 let fileId = 0

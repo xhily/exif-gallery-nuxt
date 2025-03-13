@@ -13,10 +13,10 @@ const {
 
 const emit = defineEmits<{
   deleted: [id: string]
-  update: [photo: Photo]
+  update: [photo: IPhoto]
 }>()
 
-const photo = defineModel<Photo>('photo', { required: true })
+const photo = defineModel<IPhoto>('photo', { required: true })
 
 const isMini = computed(() => mdScreen.value && mini)
 

@@ -19,7 +19,7 @@ const emit = defineEmits<{
 const { config: uploadConfig } = useUploadConfig()
 const { config: aiConfig } = useAIConfig()
 
-const photo = defineModel<IPhoto>({ required: true })
+const photo = defineModel<IPhotoForm>({ required: true })
 const activeId = defineModel<number>('activeId')
 const isOpen = computed({
   get: () => activeId.value === props.id,

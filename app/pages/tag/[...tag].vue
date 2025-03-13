@@ -38,7 +38,7 @@ useInfiniteScroll(window, loadMore, { distance: 10, canLoadMore: () => hasMore.v
 // Initial load
 onMounted(() => loadMore())
 
-function getPhotoThumbnail(photo: Photo) {
+function getPhotoThumbnail(photo: IPhoto) {
   const path = photo.thumbnail || photo.jpeg || photo.webp || photo.avif
   if (!path)
     throw new Error('Photo has no Image File')

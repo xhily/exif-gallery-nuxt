@@ -4,7 +4,7 @@ export function usePhotosInfinite(params?: {
   order?: string
   tag?: string
 }, limit = 12): {
-    photos: Ref<Photo[]>
+    photos: Ref<IPhoto[]>
     hasMore: Ref<boolean>
     loadMore: () => Promise<void>
     loading: Ref<boolean>
@@ -65,7 +65,7 @@ export function usePhotosInfinite(params?: {
 }
 
 export function usePhoto(id: MaybeRef<string>) {
-  const photo = ref<Photo | null>(null)
+  const photo = ref<IPhoto | null>(null)
   const loading = ref(false)
 
   async function fetchPhoto() {
