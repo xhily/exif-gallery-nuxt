@@ -8,7 +8,7 @@ import { computed } from 'vue'
 const props = defineProps<NumberFieldRootProps & {
   class?: HTMLAttributes['class']
   inputClass?: HTMLAttributes['class']
- }>()
+}>()
 const emits = defineEmits<NumberFieldRootEmits>()
 
 const delegatedProps = computed(() => {
@@ -25,7 +25,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
     <slot>
       <NumberFieldContent>
         <NumberFieldDecrement />
-        <NumberFieldInput :class="inputClass"/>
+        <NumberFieldInput :class="inputClass" />
         <NumberFieldIncrement />
       </NumberFieldContent>
     </slot>
