@@ -126,7 +126,7 @@ export default eventHandler(async (event) => {
         throw new Error('Failed to insert photo')
       }
 
-      const photoId = newPhoto[0].id
+      const photoId = newPhoto[0]!.id
       await processPhotoTags(db, photoId, photoEntry.tags)
     }
     catch (error) {
