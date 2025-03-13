@@ -26,12 +26,12 @@ export async function processPhotoTags(db: DBType, photoId: string, tags: string
   // Create a map of tag names to their IDs for quick lookup
   const tagMap = new Map(existingTags.map(tag => [tag.name, tag.id]))
 
-  // Prepare operations for new tags
+  // Prepare operations for new tags - set photoCount to 0 (will be incremented later)
   const newTagOperations = tagNames
     .filter(name => !tagMap.has(name))
     .map(name => ({
       name,
-      photoCount: 1, // New tags start with count 1
+      photoCount: 0, // Start with 0, will be incremented later
     }))
 
   // Insert new tags if any
@@ -45,34 +45,56 @@ export async function processPhotoTags(db: DBType, photoId: string, tags: string
     newTags.forEach(tag => tagMap.set(tag.name, tag.id))
   }
 
-  // Delete existing photo-tag relationships and decrement counts
-  if (currentPhotoTags.length > 0) {
-    await db.delete(tables.photoTag)
-      .where(eq(tables.photoTag.photoId, photoId))
+  // Get all tag IDs that will be used
+  const allTagIds = tagNames.map(name => tagMap.get(name)!)
 
-    // Decrement counts for removed tags
-    if (tagIdsToDecrement.length > 0) {
-      await db.update(tables.tag)
-        .set({ photoCount: sql`${tables.tag.photoCount} - 1` })
-        .where(inArray(tables.tag.id, tagIdsToDecrement))
-    }
+  // Find which tags are being added and which are being kept
+  const addedTagIds = allTagIds.filter(id => !tagIdsToDecrement.includes(id))
+  const removedTagIds = tagIdsToDecrement.filter(id => !allTagIds.includes(id))
+
+  // Batch operations for better performance
+  const operations = []
+
+  // 1. Delete existing photo-tag relationships
+  if (currentPhotoTags.length > 0) {
+    operations.push(
+      db.delete(tables.photoTag)
+        .where(eq(tables.photoTag.photoId, photoId)),
+    )
   }
 
-  // Create new photo-tag relationships
-  const photoTagOperations = tagNames
-    .map(name => ({
-      photoId,
-      tagId: tagMap.get(name)!,
-    }))
+  // 2. Decrement counts for removed tags
+  if (removedTagIds.length > 0) {
+    operations.push(
+      db.update(tables.tag)
+        .set({ photoCount: sql`${tables.tag.photoCount} - 1` })
+        .where(inArray(tables.tag.id, removedTagIds)),
+    )
+  }
+
+  // 3. Create new photo-tag relationships
+  const photoTagOperations = allTagIds.map(tagId => ({
+    photoId,
+    tagId,
+  }))
 
   if (photoTagOperations.length > 0) {
-    await db.insert(tables.photoTag)
-      .values(photoTagOperations)
-      .onConflictDoNothing()
-
-    // Increment counts for new tags
-    await db.update(tables.tag)
-      .set({ photoCount: sql`${tables.tag.photoCount} + 1` })
-      .where(inArray(tables.tag.id, photoTagOperations.map(op => op.tagId)))
+    operations.push(
+      db.insert(tables.photoTag)
+        .values(photoTagOperations)
+        .onConflictDoNothing(),
+    )
   }
+
+  // 4. Increment counts for added tags
+  if (addedTagIds.length > 0) {
+    operations.push(
+      db.update(tables.tag)
+        .set({ photoCount: sql`${tables.tag.photoCount} + 1` })
+        .where(inArray(tables.tag.id, addedTagIds)),
+    )
+  }
+
+  // Execute all operations in parallel for better performance
+  await Promise.all(operations)
 }
