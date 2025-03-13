@@ -4,8 +4,6 @@ definePageMeta({
   middleware: 'auth',
 })
 
-const { loggedIn } = useUserSession()
-
 const LIMIT = 36
 const { photos, hasMore, loadMore, loading } = usePhotosInfinite({
   hidden: false,
@@ -50,17 +48,20 @@ function deletePhoto(id: string) {
       <div
         v-for="photo in photos"
         :key="photo.id"
-        class="group relative aspect-[4/3] h-auto w-full flex"
+        class="group relative aspect-[4/3] h-auto w-full flex rounded-lg lt-md:hover:border-2 lt-md:hover:border-primary/50"
       >
-        <Button
-          v-if="loggedIn"
-          size="icon"
-          :loading="deletingPhoto === photo.id"
-          class="absolute right--1 top--1 z-[9999] opacity-0 sm:right-4 sm:top-4 group-hover:opacity-100"
-          @click="deletePhoto(photo.id)"
-        >
-          <div class="i-lucide-trash" />
-        </Button>
+        <div class="absolute right--0 top--0 z-[9999] hidden gap-1 sm:right-1 sm:top-1 group-hover:flex lt-md:translate-y--100%">
+          <NuxtLinkLocale :to="`/admin/edit/${photo.id}`">
+            <TooltipIconButton :label="$t('button.edit')" icon="i-lucide-edit" variant="default" />
+          </NuxtLinkLocale>
+          <TooltipIconButton
+            :loading="deletingPhoto === photo.id"
+            :label="$t('button.delete')"
+            icon="i-lucide-trash"
+            variant="default"
+            @click="deletePhoto(photo.id)"
+          />
+        </div>
         <img
           v-if="photo"
           :src="`/photos/${getPhotoThumbnail(photo)}`"
