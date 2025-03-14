@@ -6,7 +6,7 @@ const tags = computed(() => data.value?.data)
 </script>
 
 <template>
-  <div class="flex flex-col gap-1 pr-6 text-sm text-muted-foreground">
+  <div class="flex flex-col gap-1 pr-10 text-sm text-muted-foreground">
     <NuxtLinkLocale
       v-for="tag in tags"
       :key="tag.id"
@@ -14,7 +14,7 @@ const tags = computed(() => data.value?.data)
       class="group relative w-fit rounded-lg bg-muted px-1 transition-colors"
     >
       <Tag :label="tag.name" />
-      <div class="absolute bottom-0 right--3 top-0 text-sm op-50 md:hidden md:group-hover:block">
+      <div class="absolute bottom-0 right-0 top-0 translate-x-full text-sm op-50 md:hidden md:group-hover:block">
         {{ tag.photoCount }}
       </div>
     </NuxtLinkLocale>
