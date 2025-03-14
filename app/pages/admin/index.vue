@@ -49,43 +49,60 @@ function openEditDialog(photo: IPhoto) {
     </NuxtLinkLocale>
     <div
       v-if="photos && photos.length"
-      class="grid grid-cols-3 gap-1 2xl:grid-cols-8 lg:grid-cols-5 sm:grid-cols-4 xl:grid-cols-6"
+      class="grid grid-cols-3 border-l border-t 2xl:grid-cols-8 lg:grid-cols-5 sm:grid-cols-4 xl:grid-cols-6"
     >
       <div
         v-for="photo in photos"
         :key="photo.id"
-        class="group relative aspect-[4/3] h-auto w-full flex rounded-lg lt-md:hover:border-2 lt-md:hover:border-primary/50"
+        class="group relative border-b border-r p-2 hover:bg-muted"
       >
-        <div class="absolute right--0 top--0 z-[9999] hidden gap-1 sm:right-1 sm:top-1 group-hover:flex lt-md:translate-y--100%">
-          <EditPhotoDialog
-            :photo="selectedPhoto"
-          >
+        <div class="aspect-[4/3] h-auto w-full flex rounded-lg">
+          <div class="absolute right--0 top--0 z-[9999] hidden gap-1 sm:right-1 sm:top-1 group-hover:flex lt-md:translate-y--100%">
+            <EditPhotoDialog
+              :photo="selectedPhoto"
+            >
+              <TooltipIconButton
+                :label="$t('button.edit')"
+                icon="i-lucide-edit"
+                variant="default"
+                @click="openEditDialog(photo)"
+              />
+            </EditPhotoDialog>
             <TooltipIconButton
-              :label="$t('button.edit')"
-              icon="i-lucide-edit"
+              :loading="deletingPhoto === photo.id"
+              :label="$t('button.delete')"
+              icon="i-lucide-trash"
               variant="default"
-              @click="openEditDialog(photo)"
+              @click="deletePhoto(photo.id)"
             />
-          </EditPhotoDialog>
-          <TooltipIconButton
-            :loading="deletingPhoto === photo.id"
-            :label="$t('button.delete')"
-            icon="i-lucide-trash"
-            variant="default"
-            @click="deletePhoto(photo.id)"
-          />
+          </div>
+          <img
+            v-if="photo"
+            :src="`/photos/${getPhotoThumbnail(photo)}`"
+            class="m-auto rounded-lg object-contain shadow-black/50 shadow-lg"
+            :class="photo.aspectRatio ? photo.aspectRatio > (4 / 3) ? 'w-full h-auto' : 'h-full w-auto' : 'h-full w-full'"
+          >
         </div>
-        <img
-          v-if="photo"
-          :src="`/photos/${getPhotoThumbnail(photo)}`"
-          class="m-auto rounded-lg object-contain"
-          :class="photo.aspectRatio ? photo.aspectRatio > (4 / 3) ? 'w-full h-auto' : 'h-full w-auto' : 'h-full w-full'"
-        >
+        <div>
+          <div class="flex items-center justify-center gap-2">
+            <span> {{ photo.title }}</span>
+          </div>
+          <div class="flex items-center justify-center gap-2">
+            <span class="text-sm text-muted-foreground">{{ photo.caption }}</span>
+          </div>
+          <div class="flex flex-wrap justify-center gap-x-1 gap-y-0">
+            <Tag
+              v-for="tag in photo.tags?.split(',') || []"
+              :key="tag" :label="tag"
+              class="text-sm text-muted-foreground"
+            />
+          </div>
+        </div>
       </div>
       <template v-if="loading">
-        <li v-for="i in LIMIT" :key="i">
+        <div v-for="i in LIMIT" :key="i">
           <Skeleton class="aspect-[4/3] w-full rounded-lg" />
-        </li>
+        </div>
       </template>
     </div>
   </div>
