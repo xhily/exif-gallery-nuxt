@@ -79,7 +79,7 @@ function openEditDialog(photo: IPhoto) {
           <img
             v-if="photo"
             :src="`/photos/${getPhotoThumbnail(photo)}`"
-            class="m-auto rounded-lg object-contain shadow-black/50 shadow-lg"
+            class="m-auto rounded-lg object-cover shadow-black/50 shadow-lg"
             :class="photo.aspectRatio ? photo.aspectRatio > (4 / 3) ? 'w-full h-auto' : 'h-full w-auto' : 'h-full w-full'"
           >
         </div>
