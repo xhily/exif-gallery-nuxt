@@ -1,4 +1,4 @@
-import { eq, inArray, notInArray } from 'drizzle-orm'
+import { eq, inArray, sql } from 'drizzle-orm'
 
 export default eventHandler(async (event) => {
   await requireUserSession(event)
@@ -41,25 +41,23 @@ export default eventHandler(async (event) => {
 
   await Promise.allSettled(deletePromises)
 
-  // Delete from database and cleanup orphaned tags
   try {
-    await db.delete(tables.photo).where(eq(tables.photo.id, id))
-
-    // Find and delete orphaned tags
-    const usedTagIds = await db
-      .select({ tagId: tables.photoTag.tagId })
-      .from(tables.photoTag)
-
-    const orphanedTags = await db.query.tag.findMany({
-      where: notInArray(
-        tables.tag.id,
-        usedTagIds.map(t => t.tagId),
-      ),
+    const currentPhotoTags = await db.query.photoTag.findMany({
+      where: eq(tables.photoTag.photoId, id),
     })
 
-    if (orphanedTags.length > 0) {
+    await db.delete(tables.photo).where(eq(tables.photo.id, id))
+
+    if (currentPhotoTags.length > 0) {
+      await db.delete(tables.photoTag)
+        .where(eq(tables.photoTag.photoId, id))
+
+      await db.update(tables.tag)
+        .set({ photoCount: sql`${tables.tag.photoCount} - 1` })
+        .where(inArray(tables.tag.id, currentPhotoTags.map(pt => pt.tagId)))
+
       await db.delete(tables.tag)
-        .where(inArray(tables.tag.id, orphanedTags.map(tag => tag.id)))
+        .where(eq(tables.tag.photoCount, 0))
     }
   }
   catch (error) {
