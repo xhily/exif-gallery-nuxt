@@ -33,7 +33,7 @@ if (initPhotos.value) {
   photos.value.push(...initPhotos.value.data.map(deserializePhoto))
 }
 
-useInfiniteScroll(window, loadMore, { distance: 10, canLoadMore: () => hasMore.value })
+useInfiniteScroll(window, loadMore, { distance: 240, canLoadMore: () => hasMore.value })
 
 // Initial load
 onMounted(() => loadMore())

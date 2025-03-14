@@ -9,7 +9,7 @@ const { photos, hasMore, loadMore, loading } = usePhotosInfinite({
   hidden: false,
 }, LIMIT)
 
-useInfiniteScroll(window, loadMore, { distance: 10, canLoadMore: () => hasMore.value })
+useInfiniteScroll(window, loadMore, { distance: 320, canLoadMore: () => hasMore.value })
 
 function getPhotoThumbnail(photo: IPhoto) {
   const path = photo.thumbnail || photo.jpeg || photo.webp || photo.avif
@@ -83,7 +83,7 @@ function openEditDialog(photo: IPhoto) {
             :class="photo.aspectRatio ? photo.aspectRatio > (4 / 3) ? 'w-full h-auto' : 'h-full w-auto' : 'h-full w-full'"
           >
         </div>
-        <div>
+        <div class="mt-2">
           <div class="flex items-center justify-center gap-2">
             <span> {{ photo.title }}</span>
           </div>
