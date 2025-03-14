@@ -12,10 +12,17 @@ onPrehydrate(() => {
   document.body.classList.add(`theme-${value || 'blue'}`)
 })
 
+const config = useRuntimeConfig()
+const { t } = useI18n()
+const title = config.public.title || t('title')
+const description = config.public.description || t('description')
+
 useHead({
+  title,
   meta: [
     { name: 'viewport', content: 'width=device-width, initial-scale=1' },
     { key: 'theme-color', name: 'theme-color', content: themeColor.value },
+    { name: 'description', content: description },
   ],
   link: [
     { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
@@ -27,10 +34,6 @@ useHead({
     class: 'font-sans',
   },
 })
-const config = useRuntimeConfig()
-const { t } = useI18n()
-const title = config.public.title || t('title')
-const description = config.public.description || t('description')
 
 useSeoMeta({
   title,

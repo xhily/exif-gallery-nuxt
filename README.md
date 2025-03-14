@@ -12,7 +12,7 @@ A full-stack photo album solution that integrates AI intelligent processing, bro
 
 - 📷 Image upload and display with [`hubBlob()`](http://hub.nuxt.com/docs/storage/blob)
 - 🌐 Cloud Storage: Blob powered by NuxtHub (cloudflare R2)
-- 🤖 AI Integration: Support for OpenAI and Google AI for intelligent image processing
+- 🤖 AI Integration: Support for OpenAI and Gemini for intelligent image processing
 - 🗜️ Image Compression: Multiple format support (JPEG, WebP, AVIF) with JSQuash
 - 🎨 Modern UI: Beautiful components with shadcn-vue and inspira-ui
 - 🏃🏻 [View transition API](https://developer.chrome.com/docs/web-platform/view-transitions) The View Transitions API provides a mechanism for easily creating animated transitions between different DOM states while also updating the DOM contents in a single step
@@ -41,7 +41,7 @@ A full-stack photo album solution that integrates AI intelligent processing, bro
 - `NUXT_ADMIN_PASSWORD` - A password to access the admin panel and upload images, will default to `admin` if not provided.
 - `NUXT_SESSION_PASSWORD` - A secret key for session encryption used by [nuxt-auth-utils](https://github.com/Atinux/nuxt-auth-utils), will be generated automatically if not provided in development mode.
 - `NUXT_PUBLIC_TITLE` - The title of the application, will default to `Exif Gallery Nuxt` if not provided.
-- `NUXT_PUBLIC_DESCRIPTION` - The description of the application, will default to `A Nuxt.js image gallery template with Exif data support` if not provided.
+- `NUXT_PUBLIC_DESCRIPTION` - The description of the application, will default to `A full-stack photo album solution that integrates AI intelligent processing, browser image compression, and other functions` if not provided.
 
 ## Development
 
@@ -68,12 +68,6 @@ npx nuxthub deploy
 It's also possible to leverage Cloudflare Pages CI for deploying, learn more about the different options on <https://hub.nuxt.com/docs/getting-started/deploy>
 
 Learn more about remote storage on <https://hub.nuxt.com/docs/getting-started/remote-storage>
-
-## Template Starter
-
-This project is a template starter provided by NuxtHub. It's designed to help kickstart your NuxtHub files project.
-
-Check out the [deployment documentation](https://hub.nuxt.com/docs/getting-started/deploy) for more information.
 
 ## Contribution
 
