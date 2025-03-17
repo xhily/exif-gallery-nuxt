@@ -57,7 +57,7 @@ pnpm dev --remote
 
 ### 部署说明
 
-使用 [NuxtHub](https://hub.nuxt.com) 可免费部署到 Cloudflare，无需配置：
+使用 [NuxtHub](https://hub.nuxt.com) 可免费部署到 Cloudflare。
 
 ```bash
 npx nuxthub deploy

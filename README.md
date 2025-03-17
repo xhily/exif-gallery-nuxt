@@ -59,7 +59,7 @@ pnpm dev --remote
 
 ### Deploy
 
-You can deploy this project on your Cloudflare account for free and with zero configuration using [NuxtHub](https://hub.nuxt.com).
+You can deploy this project on your Cloudflare account for free using [NuxtHub](https://hub.nuxt.com).
 
 ```bash
 npx nuxthub deploy
