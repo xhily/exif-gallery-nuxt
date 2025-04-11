@@ -33,7 +33,7 @@ function deletePhoto(id: string) {
       <PhotoItemCard class="absolute inset-0 h-full w-full" :photo="photo" :image-class="imageClass" mini />
     </div>
     <PhotoItemCard v-else :photo="photo" class="md:flex-[2] xl:flex-[3]" :image-class="imageClass" />
-    <div class="relative sticky top-16 z-1 h-fit md:flex-[1]">
+    <div class="relative sticky top-16 z-1 h-fit md:flex-[1]" :class="{ 'md:top-0': isMini }">
       <div class="flex lt-md:mb-2 md:flex-col lt-md:justify-between">
         <div>
           <h3> {{ photo.title }}</h3>

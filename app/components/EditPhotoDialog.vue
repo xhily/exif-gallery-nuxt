@@ -67,6 +67,7 @@ async function saveChanges() {
         <section class="relative mb-4">
           <PhotoItem
             v-if="editedPhoto"
+            class="min-h-60"
             :photo="editedPhoto"
             :logged-in="true"
             mini

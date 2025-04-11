@@ -25,6 +25,7 @@ theme:
   dark: 深色
   system: 系统
   language: 语言
+  3dcard: 禁用3D卡片效果
 login_form:
   title: 登录
   description: 登录以管理照片

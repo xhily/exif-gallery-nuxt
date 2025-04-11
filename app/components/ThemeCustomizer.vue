@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-const { theme, radius } = useTheme()
+const { theme, radius, disable3DCard } = useTheme()
 const colorMode = useColorMode()
 const isDark = computed(() => colorMode.value === 'dark')
 const switchLocalePath = useSwitchLocalePath()
@@ -22,7 +22,6 @@ const languageValues = [
     <div class="flex flex-1 flex-col space-y-4 md:space-y-6">
       <div class="space-y-1.5">
         <Label for="language" class="text-xs"> {{ $t('theme.language') }} </Label>
-
         <div class="flex space-x-2">
           <NuxtLink
             v-for="(langValue, index) in languageValues"
@@ -108,6 +107,15 @@ const languageValues = [
           </Button>
         </div>
       </div>
+      <div class="space-y-1.5">
+        <div class="flex items-center space-x-2">
+          <Label for="3dcard" class="text-xs"> {{ $t('theme.3dcard') }} </Label>
+          <Checkbox
+            id="3dcard"
+            v-model="disable3DCard"
+          />
+        </div>
+      </div> 
     </div>
   </div>
 </template>

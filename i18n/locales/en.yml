@@ -25,6 +25,7 @@ theme:
   dark: Dark
   system: System
   language: Language
+  3dcard: Disable 3D Card Effect
 login_form:
   title: Login
   description: Login to manage photos
