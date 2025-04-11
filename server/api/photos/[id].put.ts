@@ -2,6 +2,7 @@ import { eq } from 'drizzle-orm'
 import { useValidatedBody, useValidatedParams, z } from 'h3-zod'
 
 export default defineEventHandler(async (event) => {
+  await requireUserSession(event)
   const { id } = await useValidatedParams(event, z.object({
     id: z.string().min(1, 'id is required'),
   }))
