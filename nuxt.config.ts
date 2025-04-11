@@ -55,6 +55,9 @@ export default defineNuxtConfig({
       { code: 'zh', iso: 'zh-CN', file: 'zh.yml' },
     ],
     defaultLocale: 'en',
+    bundle: {
+      optimizeTranslationDirective: false,
+    },
   },
   devtools: { enabled: true },
   eslint: {
