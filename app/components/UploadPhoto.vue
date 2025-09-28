@@ -18,6 +18,7 @@ const emit = defineEmits<{
 
 const { config: uploadConfig } = useUploadConfig()
 const { config: aiConfig } = useAIConfig()
+const { loggedIn } = useUserSession()
 
 const photo = defineModel<IPhotoForm>({ required: true })
 const activeId = defineModel<number>('activeId')
@@ -108,9 +109,9 @@ onUnmounted(() => {
           <Button
             variant="outline"
             class="w-fit"
-            :disabled="aiLoading || compressLoading"
+            :disabled="aiLoading || compressLoading || !loggedIn"
             :loading="uploadLoading"
-            @click="emit('upload')"
+            @click="loggedIn && emit('upload')"
           >
             <span>{{ $t('upload_photo.upload_button') }}</span>
           </Button>

@@ -26,13 +26,26 @@
 - [ESLint](https://eslint.org/) 配合 [@nuxt/eslint-config](https://github.com/nuxt/eslint) - 使用单引号且不带分号的代码规范
 - [TypeScript](https://www.typescriptlang.org/)
 
-## 安装步骤
+### 部署说明
 
-1. 将本仓库克隆到本地
-2. 使用 `pnpm install` 或其他包管理器安装依赖
-3. 运行 `pnpm dev` 或其他包管理器启动应用
+使用 [NuxtHub](https://hub.nuxt.com) 可免费部署到 Cloudflare。
 
-> 若未安装 pnpm，可运行：`corepack enable pnpm`
+1. 确保您已拥有Cloudflare账户并开通R2服务。
+2. 将此代码库（Repository） fork 到您的GitHub账户中。
+3. 前往 [NuxtHub官网](https://hub.nuxt.com)，使用GitHub账户登录。
+4. 点击"Deploy"部署按钮，选择您fork的代码库。
+5. 根据需要配置环境变量。
+
+> [!NOTE]
+> 如果Github Actions已创建但未自动触发，您可以通过提交新更改（例如修改README.md文件并提交）来手动触发部署。
+
+```bash
+npx nuxthub deploy
+```
+
+也可通过 Cloudflare Pages CI 部署，更多部署选项请参考：<https://hub.nuxt.com/docs/getting-started/deploy>
+
+远程存储相关文档：<https://hub.nuxt.com/docs/getting-started/remote-storage>
 
 ## 环境变量
 
@@ -40,6 +53,14 @@
 - `NUXT_SESSION_PASSWORD` - [nuxt-auth-utils](https://github.com/Atinux/nuxt-auth-utils) 使用的会话加密密钥，开发环境未设置时将自动生成
 - `NUXT_PUBLIC_TITLE` - 应用标题，未设置时默认为 `Exif Gallery Nuxt`
 - `NUXT_PUBLIC_DESCRIPTION` - 应用描述，未设置时默认为 `一个集成了 AI 智能处理、浏览器图片压缩等功能的全栈相册解决方案`
+
+## 安装步骤
+
+1. 将本仓库克隆到本地
+2. 使用 `pnpm install` 或其他包管理器安装依赖
+3. 运行 `pnpm dev` 或其他包管理器启动应用
+
+> 若未安装 pnpm，可运行：`corepack enable pnpm`
 
 ## 开发指南
 
@@ -54,18 +75,6 @@ pnpm dev
 ```bash
 pnpm dev --remote
 ```
-
-### 部署说明
-
-使用 [NuxtHub](https://hub.nuxt.com) 可免费部署到 Cloudflare。
-
-```bash
-npx nuxthub deploy
-```
-
-也可通过 Cloudflare Pages CI 部署，更多部署选项请参考：<https://hub.nuxt.com/docs/getting-started/deploy>
-
-远程存储相关文档：<https://hub.nuxt.com/docs/getting-started/remote-storage>
 
 ## 贡献指南
 

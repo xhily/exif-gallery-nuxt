@@ -17,6 +17,7 @@ const emit = defineEmits<{
 }>()
 
 const photo = defineModel<IPhoto>('photo', { required: true })
+const photoWithExif = computed(() => photo.value.make || photo.value.model || photo.value.focalLength || photo.value.focalLengthIn35mmFormat || photo.value.fNumber || photo.value.exposureTime || photo.value.iso || photo.value.exposureCompensation)
 
 const isMini = computed(() => mdScreen.value && mini)
 
@@ -32,7 +33,7 @@ function deletePhoto(id: string) {
       <PhotoItemCard class="absolute inset-0 h-full w-full" :photo="photo" :image-class="imageClass" mini />
     </div>
     <PhotoItemCard v-else :photo="photo" class="md:flex-[2] xl:flex-[3]" :image-class="imageClass" />
-    <div class="relative sticky top-16 z-1 h-fit md:flex-[1]">
+    <div class="relative sticky top-16 z-1 h-fit md:flex-[1]" :class="{ 'md:top-0': isMini }">
       <div class="flex lt-md:mb-2 md:flex-col lt-md:justify-between">
         <div>
           <h3> {{ photo.title }}</h3>
@@ -65,7 +66,7 @@ function deletePhoto(id: string) {
       <div class="flex text-sm text-muted-foreground md:flex-col lt-md:justify-between md:gap-2">
         <div class="flex flex-col gap-1">
           <span>{{ formatDate(photo.takenAt) }}</span>
-          <span>{{ formatCameraText(photo) }}</span>
+          <span v-if="photoWithExif">{{ formatCameraText(photo) }}</span>
           <NuxtLinkLocale
             v-for="tag in photo.tags?.split(',') || []"
             :key="tag"
@@ -75,7 +76,10 @@ function deletePhoto(id: string) {
             <Tag :label="tag" />
           </NuxtLinkLocale>
         </div>
-        <div class="flex flex-col text-sm text-muted-foreground font-mono">
+        <div
+          v-if="photoWithExif"
+          class="flex flex-col text-sm text-muted-foreground font-mono"
+        >
           <div class="flex gap-2">
             <span>{{ photo.focalLength ? toFixed(photo.focalLength, 1) : '--' }}mm</span>
             <span

@@ -5,6 +5,7 @@ const { photo } = defineProps<{
 
 const open = defineModel<boolean>('open')
 
+const { loggedIn } = useUserSession()
 const pStore = usePhotosStore()
 
 const editedPhoto = ref<IPhoto>()
@@ -67,6 +68,7 @@ async function saveChanges() {
         <section class="relative mb-4">
           <PhotoItem
             v-if="editedPhoto"
+            class="min-h-60"
             :photo="editedPhoto"
             :logged-in="true"
             mini
@@ -83,7 +85,8 @@ async function saveChanges() {
         </Button>
         <Button
           :loading="isSaving"
-          @click="saveChanges()"
+          :disabled="!loggedIn"
+          @click="loggedIn && saveChanges()"
         >
           {{ $t('edit_photo.save_changes') }}
         </Button>

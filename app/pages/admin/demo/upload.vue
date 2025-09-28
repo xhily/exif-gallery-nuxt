@@ -1,10 +1,9 @@
 <script setup lang="ts">
 definePageMeta({
-  layout: 'admin',
-  middleware: 'auth',
+  layout: 'admin-demo',
 })
 </script>
 
 <template>
-  <AdminIndex />
+  <AdminUpload />
 </template>
